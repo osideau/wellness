@@ -1,6 +1,6 @@
-# Liza & Co. — Editorial Luxury Wellness
+# The Wellness Clinic — Editorial Luxury Wellness
 
-A complete 7-page first-draft website for Liza Pinili's multi-disciplinary
+A complete 7-page first-draft website for a multi-disciplinary wellness
 wellness practice. Editorial luxury aesthetic — boutique hotel meets wellness
 brand, art-directed not templated.
 
@@ -48,14 +48,14 @@ brand, art-directed not templated.
 ## Before launch — things to update
 
 **Booking** — iframe in `booking.html` currently points to `drmtclinic.janeapp.com/embed`
-(Dawn's URL, used as placeholder). Swap to Liza's real Jane App URL.
+(Dawn's URL, used as placeholder). Swap to the clinic's real Jane App URL.
 
-**Clinic name** — currently "Liza & Co." as a working placeholder. Find/replace
+**Clinic name** — currently "The Wellness Clinic" as a working placeholder. Find/replace
 across all 7 files if she lands on a real name.
 
 **Contact details** — address, phone, email, hours all placeholder. Update in `contact.html`.
 
-**Practitioners** — Liza's bio is a sketch and needs her review. Therapists 2/3/4
+**Practitioners** — Practitioner bios are placeholders, swap in real content. Therapists 2/3/4
 are placeholders, swap in real names/bios.
 
 **Photography** — every image is an atmospheric gradient placeholder. Replace
