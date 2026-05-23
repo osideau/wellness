@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reserve — Liza &amp; Co.</title>
+  <meta name="description" content="Reserve your appointment. Live availability through Jane App.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter+Tight:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a href="index.html" class="brand">Liza <em>&amp;</em> Co.</a>
+      <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span></button>
+      <nav class="nav" aria-label="Main">
+        <a href="index.html">Index</a>
+        <a href="about.html">Practice</a>
+        <a href="services.html">Disciplines</a>
+        <a href="team.html">Practitioners</a>
+        <a href="video.html">Journal</a>
+        <a href="contact.html">Visit</a>
+        <a href="booking.html" class="nav-cta active">Reserve</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="page-hero">
+      <div class="wrap">
+        <span class="eyebrow rv">— Reserve</span>
+        <h1 class="rv" data-delay="1">
+          Find a time<br>
+          that <em>works</em><br>
+          for you.
+        </h1>
+        <p class="lead rv" data-delay="2">
+          Live availability across the practice, powered by Jane App.
+          Choose your practitioner, choose your time.
+        </p>
+      </div>
+    </section>
+
+    <!-- BOOKING EMBED -->
+    <section class="section-sm">
+      <div class="wrap">
+        <div class="booking-embed rv">
+          <iframe
+            src="https://drmtclinic.janeapp.com/embed"
+            title="Online booking"
+            loading="lazy"
+            allow="payment">
+          </iframe>
+        </div>
+        <p class="rv" data-delay="1" style="margin-top: 1.5rem; text-align: center; font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--olive-mid);">
+          <span class="divider-mark"></span> Powered by Jane App <span class="divider-mark"></span>
+        </p>
+      </div>
+    </section>
+
+    <!-- BEFORE YOUR VISIT -->
+    <section class="section bg-paper">
+      <div class="wrap">
+        <div style="margin-bottom: clamp(3rem, 6vw, 5rem);">
+          <span class="eyebrow rv">— Before you arrive</span>
+          <h2 class="rv" data-delay="1" style="margin-top: 1.5rem; max-width: 18ch;">
+            A few notes on<br>
+            <em>your first visit.</em>
+          </h2>
+        </div>
+
+        <div class="disciplines">
+          <div class="discipline rv">
+            <span class="discipline-num">i</span>
+            <span class="discipline-name">Arrive <em>early</em></span>
+            <div class="discipline-meta">
+              <span class="discipline-desc">First appointments include a short intake conversation. A few minutes early lets us begin on time.</span>
+            </div>
+          </div>
+          <div class="discipline rv" data-delay="1">
+            <span class="discipline-num">ii</span>
+            <span class="discipline-name">Direct billing</span>
+            <div class="discipline-meta">
+              <span class="discipline-desc">We direct bill most major extended health providers. Bring your insurance details to your first visit.</span>
+            </div>
+          </div>
+          <div class="discipline rv" data-delay="2">
+            <span class="discipline-num">iii</span>
+            <span class="discipline-name"><em>Cancellation</em></span>
+            <div class="discipline-meta">
+              <span class="discipline-desc">We ask for at least 24 hours notice for cancellations, so the time can go to someone who needs it.</span>
+            </div>
+          </div>
+          <div class="discipline rv" data-delay="3">
+            <span class="discipline-num">iv</span>
+            <span class="discipline-name">Need help?</span>
+            <div class="discipline-meta">
+              <span class="discipline-desc">If you are not sure which practitioner or treatment is right, reach out and we will help.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CLOSING -->
+    <section class="closing">
+      <div class="wrap-text">
+        <span class="eyebrow rv">— Questions</span>
+        <h2 class="rv" data-delay="1">
+          Or <em>reach out</em><br>
+          first.
+        </h2>
+        <div class="rv" data-delay="2" style="margin-top: 2rem;">
+          <a href="contact.html" class="link link-arrow">Send a note</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <a href="index.html" class="brand">Liza <em>&amp;</em> Co.</a>
+      <div class="footer-grid">
+        <div class="footer-block"><p class="footer-intro">A small, boutique multi-disciplinary wellness practice in the Lower Mainland of British Columbia.</p></div>
+        <div class="footer-block"><h4>Visit</h4><ul><li>Suite 000, 000 Main St</li><li>Lower Mainland, BC</li><li><a href="contact.html">Hours &amp; map →</a></li></ul></div>
+        <div class="footer-block"><h4>Practice</h4><ul><li><a href="about.html">The practice</a></li><li><a href="services.html">Disciplines</a></li><li><a href="team.html">Practitioners</a></li><li><a href="video.html">Journal</a></li></ul></div>
+        <div class="footer-block"><h4>Reserve</h4><ul><li><a href="booking.html">Book online</a></li><li>Direct billing</li><li><a href="contact.html">Reach us</a></li></ul></div>
+      </div>
+      <div class="footer-base"><span>© <span id="year"></span> Liza &amp; Co.</span><span>Site by Kiar</span></div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

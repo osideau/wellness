@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visit — Liza &amp; Co.</title>
+  <meta name="description" content="Hours, location, and a way to reach us.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter+Tight:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a href="index.html" class="brand">Liza <em>&amp;</em> Co.</a>
+      <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span></button>
+      <nav class="nav" aria-label="Main">
+        <a href="index.html">Index</a>
+        <a href="about.html">Practice</a>
+        <a href="services.html">Disciplines</a>
+        <a href="team.html">Practitioners</a>
+        <a href="video.html">Journal</a>
+        <a href="contact.html" class="active">Visit</a>
+        <a href="booking.html" class="nav-cta">Reserve</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="page-hero">
+      <div class="wrap">
+        <span class="eyebrow rv">— Visit</span>
+        <h1 class="rv" data-delay="1">
+          We are <em>here</em><br>
+          when you<br>
+          need us.
+        </h1>
+        <p class="lead rv" data-delay="2">
+          The fastest way to book is online. If you have a question, or
+          would simply like to talk first, send a note below.
+        </p>
+      </div>
+    </section>
+
+    <!-- INFO + FORM -->
+    <section class="section">
+      <div class="wrap">
+        <div class="split split--narrow">
+
+          <!-- Left: info -->
+          <div class="split-text">
+
+            <div class="rv" style="margin-bottom: 3rem;">
+              <span class="eyebrow" style="margin-bottom: 1rem;">— Address</span>
+              <address style="font-style: normal; font-family: var(--font-display); font-weight: 300; font-size: clamp(1.2rem, 1.8vw, 1.6rem); line-height: 1.45; color: var(--olive-ink); margin-top: 0.8rem;">
+                Suite 000<br>
+                000 Main Street<br>
+                Lower Mainland, BC
+              </address>
+            </div>
+
+            <div class="rv" data-delay="1" style="margin-bottom: 3rem;">
+              <span class="eyebrow" style="margin-bottom: 1rem;">— Reach us</span>
+              <p style="font-family: var(--font-display); font-size: clamp(1.2rem, 1.8vw, 1.6rem); font-weight: 300; line-height: 1.5; margin-top: 0.8rem;">
+                <a href="mailto:hello@lizaandco.ca" class="link-tan" style="font-size: inherit; letter-spacing: 0; text-transform: none; padding-bottom: 2px; border-bottom-width: 1px;">hello@lizaandco.ca</a><br>
+                <a href="tel:+16040000000" class="link-tan" style="font-size: inherit; letter-spacing: 0; text-transform: none; padding-bottom: 2px; border-bottom-width: 1px;">(604) 000-0000</a>
+              </p>
+            </div>
+
+            <div class="rv" data-delay="2" style="margin-bottom: 3rem;">
+              <span class="eyebrow">— Hours</span>
+              <ul class="hours" style="margin-top: 1.2rem;">
+                <li><span class="day">Monday</span><span class="time">9 — 6</span></li>
+                <li><span class="day">Tuesday</span><span class="time">9 — 6</span></li>
+                <li><span class="day">Wednesday</span><span class="time">9 — 7</span></li>
+                <li><span class="day">Thursday</span><span class="time">9 — 7</span></li>
+                <li><span class="day">Friday</span><span class="time">9 — 5</span></li>
+                <li><span class="day">Saturday</span><span class="time">10 — 4</span></li>
+                <li><span class="day">Sunday</span><span class="time">Closed</span></li>
+              </ul>
+            </div>
+
+            <div class="rv" data-delay="3">
+              <span class="eyebrow" style="margin-bottom: 1rem;">— Elsewhere</span>
+              <p style="font-family: var(--font-display); font-size: clamp(1.2rem, 1.8vw, 1.6rem); font-weight: 300; line-height: 1.5; margin-top: 0.8rem;">
+                <a href="#" class="link-tan" style="font-size: inherit; letter-spacing: 0; text-transform: none; padding-bottom: 2px; border-bottom-width: 1px;">Instagram</a><br>
+                <a href="#" class="link-tan" style="font-size: inherit; letter-spacing: 0; text-transform: none; padding-bottom: 2px; border-bottom-width: 1px;">Google Reviews</a>
+              </p>
+            </div>
+          </div>
+
+          <!-- Right: form -->
+          <div class="split-text">
+            <span class="eyebrow rv">— Send a note</span>
+            <h2 class="rv" data-delay="1" style="margin-top: 1.5rem; margin-bottom: 2.5rem;">
+              We will respond<br>
+              within <em>one day.</em>
+            </h2>
+
+            <form data-contact class="rv" data-delay="2">
+              <div class="field-row">
+                <div class="field">
+                  <label for="name">Name</label>
+                  <input type="text" id="name" name="name" required>
+                </div>
+                <div class="field">
+                  <label for="email">Email</label>
+                  <input type="email" id="email" name="email" required>
+                </div>
+              </div>
+              <div class="field-row">
+                <div class="field">
+                  <label for="phone">Phone (optional)</label>
+                  <input type="tel" id="phone" name="phone">
+                </div>
+                <div class="field">
+                  <label for="reason">Reason</label>
+                  <select id="reason" name="reason">
+                    <option>General question</option>
+                    <option>Booking help</option>
+                    <option>Insurance / billing</option>
+                    <option>I am a practitioner</option>
+                    <option>Something else</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" required placeholder="Tell us what you are thinking..."></textarea>
+              </div>
+              <div style="margin-top: 2.5rem;">
+                <button type="submit" class="link link-arrow">Send</button>
+              </div>
+              <p class="form-status" aria-live="polite" style="margin-top: 1.5rem; font-size: 0.85rem; color: var(--tan);"></p>
+            </form>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- MAP / LOCATION -->
+    <section class="section-sm">
+      <div class="wrap">
+        <div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: baseline; gap: 2rem; flex-wrap: wrap;">
+          <span class="eyebrow rv">— Find us</span>
+          <span class="label text-mid rv" data-delay="1">Lower Mainland, BC</span>
+        </div>
+        <div class="rv-img">
+          <div class="atmos atmos--full atmos-3" style="aspect-ratio: 21 / 9;">
+            <!-- Map pin overlay -->
+            <div style="position: absolute; inset: 0; display: grid; place-items: center; z-index: 2;">
+              <div style="width: 14px; height: 14px; border-radius: 50%; background: var(--bone); box-shadow: 0 0 0 8px rgba(244, 240, 232, 0.2); position: relative;">
+                <div style="position: absolute; left: 50%; bottom: -32px; transform: translateX(-50%); font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--bone); white-space: nowrap;">Liza &amp; Co.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="rv" data-delay="2" style="margin-top: 1.5rem; font-size: 0.85rem; color: var(--olive-mid);">
+          Map will display the clinic location once finalized.
+          Easy access by car and transit, with parking nearby.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <a href="index.html" class="brand">Liza <em>&amp;</em> Co.</a>
+      <div class="footer-grid">
+        <div class="footer-block"><p class="footer-intro">A small, boutique multi-disciplinary wellness practice in the Lower Mainland of British Columbia.</p></div>
+        <div class="footer-block"><h4>Visit</h4><ul><li>Suite 000, 000 Main St</li><li>Lower Mainland, BC</li><li><a href="contact.html">Hours &amp; map →</a></li></ul></div>
+        <div class="footer-block"><h4>Practice</h4><ul><li><a href="about.html">The practice</a></li><li><a href="services.html">Disciplines</a></li><li><a href="team.html">Practitioners</a></li><li><a href="video.html">Journal</a></li></ul></div>
+        <div class="footer-block"><h4>Reserve</h4><ul><li><a href="booking.html">Book online</a></li><li>Direct billing</li><li><a href="contact.html">Reach us</a></li></ul></div>
+      </div>
+      <div class="footer-base"><span>© <span id="year"></span> Liza &amp; Co.</span><span>Site by Kiar</span></div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
