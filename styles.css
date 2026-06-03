@@ -145,11 +145,7 @@ h4 {
   letter-spacing: -0.01em;
 }
 
-em, .italic {
-  font-family: var(--font-italic);
-  font-style: normal;
-  font-weight: 300;
-}
+
 
 p {
   max-width: var(--w-text);
@@ -173,7 +169,7 @@ p {
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.22em;
-  color: var(--blue-accent);
+  color: var(--olive-mid);
   display: inline-block;
 }
 
@@ -885,7 +881,7 @@ p {
   font-size: var(--fs-xs);
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--blue-accent);
+  color: var(--olive-mid);
   margin-bottom: 1rem;
 }
 .practitioner-bio {
@@ -1198,12 +1194,12 @@ p {
   content: '+';
   font-family: var(--font-body);
   font-size: var(--fs-xl);
-  color: var(--blue-accent);
+  color: var(--olive-mid);
   flex: none;
   line-height: 1;
 }
 .faq details[open] summary::after { content: '\2013'; }
-.faq summary:hover { color: var(--blue-accent); }
+.faq summary:hover { color: var(--olive-ink); }
 .faq-answer {
   padding-bottom: clamp(1.4rem, 3vw, 2rem);
   max-width: 72ch;
@@ -1232,8 +1228,8 @@ p {
 .prose ul { margin: 0 0 1.2rem 1.3rem; color: var(--olive-soft); max-width: 74ch; }
 .prose li { margin-bottom: 0.5rem; }
 .prose a {
-  color: var(--blue-accent);
-  border-bottom: 1px solid var(--blue-accent);
+  color: var(--olive-ink);
+  border-bottom: 1px solid var(--olive-ink);
   padding-bottom: 1px;
 }
 .prose a:hover { color: var(--tan); border-bottom-color: var(--tan); }
