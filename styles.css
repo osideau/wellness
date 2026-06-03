@@ -22,6 +22,17 @@
   --blue-mid:    #2c3a5e;
   --blue-accent: #43568a;
 
+
+  /* Type scale — 6 steps */
+  --fs-xs:   0.7rem;
+  --fs-sm:   0.875rem;
+  --fs-md:   1rem;
+  --fs-lg:   1.25rem;
+  --fs-xl:   1.5rem;
+  --fs-2xl:  clamp(1.75rem, 3vw, 2.5rem);
+  --fs-3xl:  clamp(2.5rem, 6vw, 5rem);
+  --fs-4xl:  clamp(3.5rem, 10vw, 10rem);
+
   /* Type system */
   --font-display: 'Jost', 'DM Sans', system-ui, sans-serif;
   --font-italic:  'Jost', 'DM Sans', system-ui, sans-serif;
@@ -69,7 +80,7 @@ body {
   color: var(--olive-ink);
   font-family: var(--font-body);
   font-weight: 300;
-  font-size: 1rem;
+  font-size: var(--fs-md);
   line-height: 1.6;
   letter-spacing: 0.005em;
   -webkit-font-smoothing: antialiased;
@@ -101,55 +112,55 @@ main, header, footer { position: relative; z-index: 2; }
 /* ---------- Type ---------- */
 h1, h2, h3, h4 {
   font-family: var(--font-display);
-  font-weight: 200;
+  font-weight: 400;
   color: var(--olive-ink);
   letter-spacing: -0.03em;
   line-height: 1.02;
 }
 
 h1 {
-  font-size: clamp(3.5rem, 11vw, 11rem);
-  font-weight: 200;
+  font-size: var(--fs-4xl);
+  font-weight: 400;
   letter-spacing: -0.04em;
   line-height: 0.92;
 }
 
 h2 {
-  font-size: clamp(2.5rem, 7vw, 6rem);
-  font-weight: 200;
+  font-size: var(--fs-3xl);
+  font-weight: 400;
   letter-spacing: -0.035em;
   line-height: 0.98;
 }
 
 h3 {
-  font-size: clamp(1.6rem, 3.2vw, 2.4rem);
-  font-weight: 300;
+  font-size: var(--fs-2xl);
+  font-weight: 400;
   letter-spacing: -0.025em;
   line-height: 1.1;
 }
 
 h4 {
-  font-size: 1.05rem;
+  font-size: var(--fs-xl);
   font-weight: 400;
   letter-spacing: -0.01em;
 }
 
 em, .italic {
   font-family: var(--font-italic);
-  font-style: italic;
-  font-weight: 200;
+  font-style: normal;
+  font-weight: 300;
 }
 
 p {
   max-width: var(--w-text);
-  font-size: 1rem;
+  font-size: var(--fs-md);
   line-height: 1.75;
   font-weight: 300;
   color: var(--olive-soft);
 }
 
 .lead {
-  font-size: clamp(1.05rem, 1.3vw, 1.2rem);
+  font-size: var(--fs-lg);
   line-height: 1.7;
   color: var(--olive-soft);
   font-weight: 300;
@@ -158,7 +169,7 @@ p {
 
 .label, .eyebrow {
   font-family: var(--font-body);
-  font-size: 0.7rem;
+  font-size: var(--fs-xs);
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.22em;
@@ -210,12 +221,27 @@ p {
   padding-block: 1.6rem;
   transition: background var(--med) var(--ease), padding var(--med) var(--ease);
 }
+.site-header .brand { color: var(--bone); }
+.site-header .brand em { color: var(--tan); }
+.site-header .nav a { color: rgba(241, 235, 222, 0.82); }
+.site-header .nav a:hover,
+.site-header .nav a.active { color: var(--bone); }
+.site-header .nav a.active::after { background: var(--tan); }
+.site-header .nav-cta {
+  color: var(--bone) !important;
+  border-bottom-color: rgba(241, 235, 222, 0.55) !important;
+}
+.site-header .nav-cta:hover {
+  color: var(--tan) !important;
+  border-bottom-color: var(--tan) !important;
+}
+.site-header .menu-toggle span { background: var(--bone); }
 .site-header.scrolled {
-  background: rgba(241, 235, 222, 0.88);
+  background: rgba(26, 34, 56, 0.95);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   padding-block: 1rem;
-  border-bottom: var(--hairline-soft);
+  border-bottom: 1px solid rgba(241, 235, 222, 0.08);
 }
 
 .site-header .wrap {
@@ -228,7 +254,7 @@ p {
 .brand {
   font-family: var(--font-display);
   font-weight: 300;
-  font-size: 1.4rem;
+  font-size: var(--fs-xl);
   letter-spacing: 0.06em;
   color: var(--olive-ink);
   display: inline-flex;
@@ -257,7 +283,7 @@ p {
   gap: clamp(1.5rem, 3.5vw, 3rem);
 }
 .nav a {
-  font-size: 0.7rem;
+  font-size: var(--fs-xs);
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -282,7 +308,7 @@ p {
 }
 
 .nav-cta {
-  font-size: 0.7rem !important;
+  font-size: var(--fs-xs) !important;
   font-weight: 500 !important;
   letter-spacing: 0.22em !important;
   color: var(--olive-ink) !important;
@@ -341,16 +367,16 @@ p {
   .nav.is-open { transform: translateX(0); }
   .nav a {
     font-family: var(--font-display);
-    font-size: clamp(2rem, 9vw, 3.5rem);
+    font-size: var(--fs-3xl);
     text-transform: none;
     letter-spacing: -0.03em;
-    font-weight: 200;
+    font-weight: 300;
     padding-block: 0.4rem;
   }
   .nav a.active::after { display: none; }
   .nav a.active { color: var(--tan); }
   .nav-cta {
-    font-size: 0.75rem !important;
+    font-size: var(--fs-xs) !important;
     text-transform: uppercase !important;
     letter-spacing: 0.22em !important;
     border-bottom-width: 1px !important;
@@ -368,7 +394,7 @@ p {
 .link {
   position: relative;
   display: inline-block;
-  font-size: 0.7rem;
+  font-size: var(--fs-xs);
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -485,7 +511,7 @@ p {
   .hero-meta { display: block; }
 }
 .hero-meta .meta-line {
-  font-size: 0.7rem;
+  font-size: var(--fs-xs);
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--olive-mid);
@@ -505,7 +531,7 @@ p {
   align-items: center;
   gap: 0.6rem;
   color: var(--olive-mid);
-  font-size: 0.65rem;
+  font-size: var(--fs-xs);
   letter-spacing: 0.22em;
   text-transform: uppercase;
 }
@@ -643,9 +669,9 @@ p {
 }
 .pause-line {
   font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 200;
-  font-size: clamp(2rem, 5.5vw, 4.5rem);
+  font-style: normal;
+  font-weight: 300;
+  font-size: var(--fs-3xl);
   color: var(--olive-ink);
   letter-spacing: -0.035em;
   line-height: 1.2;
@@ -724,7 +750,7 @@ p {
 }
 
 .atmos-caption {
-  font-size: 0.7rem;
+  font-size: var(--fs-xs);
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--olive-mid);
@@ -733,11 +759,11 @@ p {
 
 /* ---------- Editorial number markers ---------- */
 .numeral {
-  font-family: var(--font-italic);
-  font-style: italic;
+  font-family: var(--font-display);
+  font-style: normal;
   font-weight: 300;
   color: var(--tan);
-  font-size: 1.4rem;
+  font-size: var(--fs-xl);
   letter-spacing: 0;
 }
 
@@ -762,15 +788,16 @@ p {
 .numeral { display: none; }
 .discipline-name {
   font-family: var(--font-display);
-  font-weight: 200;
-  font-size: clamp(2.2rem, 5.5vw, 4.5rem);
+  font-weight: 400;
+  font-size: var(--fs-3xl);
   letter-spacing: -0.035em;
   color: var(--olive-ink);
   line-height: 1;
 }
 .discipline-name em {
-  font-family: var(--font-italic);
-  font-style: italic;
+  font-family: var(--font-display);
+  font-style: normal;
+  font-weight: 300;
   color: var(--tan);
 }
 .discipline-meta {
@@ -781,13 +808,13 @@ p {
   gap: 0.5rem;
 }
 .discipline-status {
-  font-size: 0.65rem;
+  font-size: var(--fs-xs);
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--blue-accent);
 }
 .discipline-desc {
-  font-size: 0.95rem;
+  font-size: var(--fs-sm);
   color: var(--olive-soft);
   max-width: 28ch;
   font-weight: 300;
@@ -813,9 +840,9 @@ p {
 }
 .pullquote-text {
   font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 200;
-  font-size: clamp(1.8rem, 4vw, 3.2rem);
+  font-style: normal;
+  font-weight: 300;
+  font-size: var(--fs-3xl);
   line-height: 1.25;
   color: var(--olive-ink);
   letter-spacing: -0.03em;
@@ -823,7 +850,7 @@ p {
   margin: 0 auto clamp(2rem, 3vw, 2.5rem);
 }
 .pullquote-attribution {
-  font-size: 0.7rem;
+  font-size: var(--fs-xs);
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--olive-mid);
@@ -849,20 +876,20 @@ p {
 .practitioner-name {
   font-family: var(--font-display);
   font-weight: 300;
-  font-size: 1.6rem;
+  font-size: var(--fs-xl);
   letter-spacing: -0.025em;
   margin-bottom: 0.3rem;
   color: var(--olive-ink);
 }
 .practitioner-role {
-  font-size: 0.7rem;
+  font-size: var(--fs-xs);
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--blue-accent);
   margin-bottom: 1rem;
 }
 .practitioner-bio {
-  font-size: 0.9rem;
+  font-size: var(--fs-sm);
   color: var(--olive-soft);
   line-height: 1.6;
   margin-bottom: 1.2rem;
@@ -877,7 +904,7 @@ p {
   margin-bottom: 1.5rem;
 }
 .field label {
-  font-size: 0.7rem;
+  font-size: var(--fs-xs);
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--olive-mid);
@@ -892,7 +919,7 @@ p {
   border-bottom: 1px solid rgba(13, 13, 13, 0.2);
   padding: 0.8rem 0;
   font-family: var(--font-body);
-  font-size: 1rem;
+  font-size: var(--fs-md);
   font-weight: 300;
   color: var(--olive-ink);
   transition: border-color var(--med) var(--ease);
@@ -925,7 +952,7 @@ p {
   align-items: baseline;
   padding-block: 0.85rem;
   border-bottom: var(--hairline-soft);
-  font-size: 0.92rem;
+  font-size: var(--fs-sm);
   font-weight: 300;
 }
 .hours li:last-child { border: 0; }
@@ -944,9 +971,9 @@ p {
   text-align: center;
 }
 .closing h2 {
-  font-style: italic;
+  font-style: normal;
   margin-bottom: clamp(2rem, 4vw, 3rem);
-  font-size: clamp(3rem, 9vw, 8rem);
+  font-size: var(--fs-4xl);
 }
 .closing .eyebrow {
   margin-bottom: 1.5rem;
@@ -966,7 +993,7 @@ p {
 .site-footer .wrap { display: block; }
 .site-footer .brand {
   color: var(--bone);
-  font-size: 2rem;
+  font-size: var(--fs-2xl);
   display: inline-block;
   margin-bottom: clamp(2rem, 4vw, 3rem);
 }
@@ -989,7 +1016,7 @@ p {
 
 .footer-block h4 {
   font-family: var(--font-body);
-  font-size: 0.7rem;
+  font-size: var(--fs-xs);
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: rgba(244, 240, 232, 0.5);
@@ -999,7 +1026,7 @@ p {
 .footer-block ul { list-style: none; }
 .footer-block li {
   margin-bottom: 0.7rem;
-  font-size: 0.92rem;
+  font-size: var(--fs-sm);
   font-weight: 300;
   color: rgba(235, 228, 214, 0.75);
   line-height: 1.6;
@@ -1010,7 +1037,7 @@ p {
 .footer-block a:hover { color: var(--tan); }
 
 .footer-intro {
-  font-size: 1.1rem;
+  font-size: var(--fs-lg);
   line-height: 1.6;
   color: rgba(235, 228, 214, 0.7);
   max-width: 36ch;
@@ -1025,7 +1052,7 @@ p {
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
-  font-size: 0.7rem;
+  font-size: var(--fs-xs);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: rgba(235, 228, 214, 0.4);
@@ -1155,7 +1182,7 @@ p {
   gap: 2rem;
   font-family: var(--font-display);
   font-weight: 300;
-  font-size: clamp(1.3rem, 2.4vw, 1.9rem);
+  font-size: var(--fs-2xl);
   letter-spacing: -0.025em;
   color: var(--olive-ink);
   line-height: 1.2;
@@ -1165,7 +1192,7 @@ p {
 .faq summary::after {
   content: '+';
   font-family: var(--font-body);
-  font-size: 1.5rem;
+  font-size: var(--fs-xl);
   color: var(--blue-accent);
   flex: none;
   line-height: 1;
@@ -1182,13 +1209,13 @@ p {
 /* ---------- Prose (policy pages) ---------- */
 .prose { max-width: 74ch; }
 .prose h2 {
-  font-size: clamp(1.6rem, 3vw, 2.3rem);
+  font-size: var(--fs-2xl);
   margin-top: clamp(2.5rem, 5vw, 3.5rem);
   margin-bottom: 1rem;
 }
 .prose h2:first-child { margin-top: 0; }
 .prose h3 {
-  font-size: 1.15rem;
+  font-size: var(--fs-lg);
   font-family: var(--font-body);
   font-weight: 500;
   letter-spacing: -0.01em;
@@ -1207,7 +1234,7 @@ p {
 .prose a:hover { color: var(--tan); border-bottom-color: var(--tan); }
 .prose strong { font-weight: 500; color: var(--olive-ink); }
 .prose .updated {
-  font-size: 0.8rem;
+  font-size: var(--fs-xs);
   letter-spacing: 0.05em;
   color: var(--olive-mid);
   margin-top: 3rem;
