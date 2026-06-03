@@ -850,6 +850,8 @@ p {
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--olive-mid);
+  display: block;
+  text-align: center;
 }
 
 /* ---------- Team grid (editorial) ---------- */
