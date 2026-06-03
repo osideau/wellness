@@ -854,6 +854,7 @@ p {
   text-transform: uppercase;
   color: var(--olive-mid);
   display: block;
+  max-width: none;
   text-align: center;
 }
 
