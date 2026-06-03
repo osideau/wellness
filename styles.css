@@ -23,9 +23,9 @@
   --blue-accent: #43568a;
 
   /* Type system */
-  --font-display: 'Libre Baskerville', 'Georgia', serif;
-  --font-italic:  'Libre Baskerville', 'Georgia', serif;
-  --font-body:    'Inter', system-ui, sans-serif;
+  --font-display: 'Jost', 'DM Sans', system-ui, sans-serif;
+  --font-italic:  'Jost', 'DM Sans', system-ui, sans-serif;
+  --font-body:    'DM Sans', 'Jost', system-ui, sans-serif;
 
   /* Spacing — generous, editorial */
   --s-1: 0.5rem;
@@ -62,16 +62,16 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
-  font-size: 16px;
+  font-size: 17px;
 }
 body {
   background: var(--bone);
   color: var(--olive-ink);
   font-family: var(--font-body);
   font-weight: 300;
-  font-size: 0.9375rem;
-  line-height: 1.85;
-  letter-spacing: 0.008em;
+  font-size: 1rem;
+  line-height: 1.6;
+  letter-spacing: 0.005em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
@@ -101,74 +101,73 @@ main, header, footer { position: relative; z-index: 2; }
 /* ---------- Type ---------- */
 h1, h2, h3, h4 {
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: 200;
   color: var(--olive-ink);
-  letter-spacing: 0.01em;
-  line-height: 1.15;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
 }
 
 h1 {
-  font-size: clamp(2rem, 4.5vw, 3.2rem);
-  font-weight: 400;
-  letter-spacing: 0.01em;
-  line-height: 1.2;
+  font-size: clamp(3.5rem, 11vw, 11rem);
+  font-weight: 200;
+  letter-spacing: -0.04em;
+  line-height: 0.92;
 }
 
 h2 {
-  font-size: clamp(1.5rem, 2.8vw, 2rem);
-  font-weight: 400;
-  letter-spacing: 0.01em;
-  line-height: 1.3;
+  font-size: clamp(2.5rem, 7vw, 6rem);
+  font-weight: 200;
+  letter-spacing: -0.035em;
+  line-height: 0.98;
 }
 
 h3 {
-  font-size: clamp(1.15rem, 2vw, 1.5rem);
-  font-weight: 400;
-  letter-spacing: 0.01em;
-  line-height: 1.35;
+  font-size: clamp(1.6rem, 3.2vw, 2.4rem);
+  font-weight: 300;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
 }
 
 h4 {
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   font-weight: 400;
-  letter-spacing: 0.02em;
+  letter-spacing: -0.01em;
 }
 
 em, .italic {
   font-family: var(--font-italic);
   font-style: italic;
-  font-weight: 400;
-  color: inherit;
+  font-weight: 200;
 }
 
 p {
   max-width: var(--w-text);
-  font-size: 0.9375rem;
-  line-height: 1.9;
+  font-size: 1rem;
+  line-height: 1.75;
   font-weight: 300;
   color: var(--olive-soft);
 }
 
 .lead {
-  font-size: clamp(0.9375rem, 1.1vw, 1.05rem);
-  line-height: 2;
+  font-size: clamp(1.05rem, 1.3vw, 1.2rem);
+  line-height: 1.7;
   color: var(--olive-soft);
   font-weight: 300;
-  max-width: 60ch;
+  max-width: 52ch;
 }
 
 .label, .eyebrow {
   font-family: var(--font-body);
-  font-size: 0.65rem;
-  font-weight: 400;
+  font-size: 0.7rem;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--olive-mid);
+  letter-spacing: 0.22em;
+  color: var(--blue-accent);
   display: inline-block;
 }
 
 .eyebrow--dark { color: var(--olive-ink); }
-.eyebrow--tan  { color: var(--tan-deep); }
+.eyebrow--tan  { color: var(--tan); }
 
 /* ---------- Layout ---------- */
 .wrap {
@@ -212,11 +211,11 @@ p {
   transition: background var(--med) var(--ease), padding var(--med) var(--ease);
 }
 .site-header.scrolled {
-  background: rgba(26, 34, 56, 0.96);
+  background: rgba(241, 235, 222, 0.88);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   padding-block: 1rem;
-  border-bottom: none;
+  border-bottom: var(--hairline-soft);
 }
 
 .site-header .wrap {
@@ -228,9 +227,9 @@ p {
 
 .brand {
   font-family: var(--font-display);
-  font-weight: 400;
-  font-size: 1rem;
-  letter-spacing: 0.04em;
+  font-weight: 300;
+  font-size: 1.4rem;
+  letter-spacing: 0.06em;
   color: var(--olive-ink);
   display: inline-flex;
   align-items: center;
@@ -247,10 +246,9 @@ p {
   flex: none;
 }
 .brand em {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-style: italic;
-  color: var(--tan-deep);
+  font-family: var(--font-italic);
+  font-weight: 300;
+  color: var(--tan);
 }
 
 .nav {
@@ -259,7 +257,7 @@ p {
   gap: clamp(1.5rem, 3.5vw, 3rem);
 }
 .nav a {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -343,10 +341,10 @@ p {
   .nav.is-open { transform: translateX(0); }
   .nav a {
     font-family: var(--font-display);
-    font-size: clamp(1.4rem, 5vw, 2rem);
+    font-size: clamp(2rem, 9vw, 3.5rem);
     text-transform: none;
-    letter-spacing: 0.01em;
-    font-weight: 400;
+    letter-spacing: -0.03em;
+    font-weight: 200;
     padding-block: 0.4rem;
   }
   .nav a.active::after { display: none; }
@@ -370,18 +368,18 @@ p {
 .link {
   position: relative;
   display: inline-block;
-  font-size: 0.8125rem;
-  font-weight: 300;
-  letter-spacing: 0.04em;
-  text-transform: none;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
   color: var(--olive-ink);
-  padding-bottom: 0.3rem;
-  border-bottom: 1px solid rgba(13,13,13,0.25);
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--olive-ink);
   transition: color var(--med) var(--ease), border-color var(--med) var(--ease);
 }
 .link:hover {
-  color: var(--olive-mid);
-  border-bottom-color: var(--olive-mid);
+  color: var(--tan);
+  border-bottom-color: var(--tan);
 }
 
 .link-arrow::after {
@@ -457,8 +455,8 @@ p {
 .hero h1,
 .page-hero h1,
 .page-hero--image h1 {
-  line-height: 1.2;
-  letter-spacing: 0.01em;
+  line-height: 1.0;
+  letter-spacing: -0.018em;
 }
 .page-hero--image .eyebrow {
   display: block;
@@ -605,8 +603,8 @@ p {
 }
 .hero--image .link:hover,
 .page-hero--image .link:hover {
-  color: var(--olive-mid);
-  border-bottom-color: var(--olive-mid);
+  color: var(--tan);
+  border-bottom-color: var(--tan);
 }
 .page-hero--image .lead { color: rgba(241, 235, 222, 0.84); }
 .hero--image .scroll-indicator::after { background: rgba(241, 235, 222, 0.55); }
@@ -628,25 +626,6 @@ p {
     border-bottom-color: var(--tan) !important;
   }
 }
-
-/* Nav legibility on blue scrolled header (all pages) */
-.site-header.scrolled .brand { color: var(--bone); }
-.site-header.scrolled .brand em { color: var(--tan); }
-.site-header.scrolled .nav a { color: rgba(241, 235, 222, 0.82); }
-.site-header.scrolled .nav a:hover,
-.site-header.scrolled .nav a.active { color: var(--bone); }
-.site-header.scrolled .nav a.active::after { background: var(--tan); }
-.site-header.scrolled .nav-cta {
-  color: var(--bone) !important;
-  border-bottom-color: rgba(241, 235, 222, 0.7) !important;
-}
-.site-header.scrolled .nav-cta:hover {
-  color: var(--tan) !important;
-  border-bottom-color: var(--tan) !important;
-}
-@media (max-width: 880px) {
-  .site-header.scrolled .menu-toggle span { background: var(--bone); }
-}
 @media (max-width: 880px) {
   .site-header:not(.scrolled) .brand { color: var(--bone); }
   .site-header:not(.scrolled) .brand em { color: var(--tan); }
@@ -665,10 +644,10 @@ p {
 .pause-line {
   font-family: var(--font-display);
   font-style: italic;
-  font-weight: 400;
-  font-size: clamp(1.2rem, 2.2vw, 1.8rem);
+  font-weight: 200;
+  font-size: clamp(2rem, 5.5vw, 4.5rem);
   color: var(--olive-ink);
-  letter-spacing: 0.01em;
+  letter-spacing: -0.035em;
   line-height: 1.2;
   max-width: 22ch;
   margin: 0 auto;
@@ -754,11 +733,11 @@ p {
 
 /* ---------- Editorial number markers ---------- */
 .numeral {
-  font-family: var(--font-display);
+  font-family: var(--font-italic);
   font-style: italic;
-  font-weight: 400;
-  color: var(--tan-deep);
-  font-size: 1.1rem;
+  font-weight: 300;
+  color: var(--tan);
+  font-size: 1.4rem;
   letter-spacing: 0;
 }
 
@@ -783,17 +762,16 @@ p {
 .numeral { display: none; }
 .discipline-name {
   font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(1.2rem, 2.2vw, 1.6rem);
-  letter-spacing: 0.01em;
+  font-weight: 200;
+  font-size: clamp(2.2rem, 5.5vw, 4.5rem);
+  letter-spacing: -0.035em;
   color: var(--olive-ink);
   line-height: 1;
 }
 .discipline-name em {
-  font-family: var(--font-display);
+  font-family: var(--font-italic);
   font-style: italic;
-  font-weight: 400;
-  color: inherit;
+  color: var(--tan);
 }
 .discipline-meta {
   text-align: right;
@@ -836,11 +814,11 @@ p {
 .pullquote-text {
   font-family: var(--font-display);
   font-style: italic;
-  font-weight: 400;
-  font-size: clamp(1.1rem, 1.8vw, 1.5rem);
-  line-height: 1.7;
+  font-weight: 200;
+  font-size: clamp(1.8rem, 4vw, 3.2rem);
+  line-height: 1.25;
   color: var(--olive-ink);
-  letter-spacing: 0.01em;
+  letter-spacing: -0.03em;
   max-width: 26ch;
   margin: 0 auto clamp(2rem, 3vw, 2.5rem);
 }
@@ -870,15 +848,15 @@ p {
 }
 .practitioner-name {
   font-family: var(--font-display);
-  font-weight: 400;
-  font-size: 1.15rem;
-  letter-spacing: 0.01em;
+  font-weight: 300;
+  font-size: 1.6rem;
+  letter-spacing: -0.025em;
   margin-bottom: 0.3rem;
   color: var(--olive-ink);
 }
 .practitioner-role {
-  font-size: 0.65rem;
-  letter-spacing: 0.14em;
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--blue-accent);
   margin-bottom: 1rem;
@@ -967,14 +945,12 @@ p {
 }
 .closing h2 {
   font-style: italic;
-  font-weight: 400;
-  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
-  font-size: clamp(1.5rem, 2.8vw, 2.2rem);
-  letter-spacing: 0.01em;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(3rem, 9vw, 8rem);
 }
 .closing .eyebrow {
-  margin-bottom: 1.2rem;
-  letter-spacing: 0.14em;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.34em;
 }
 .closing .lead {
   letter-spacing: 0.015em;
@@ -1013,11 +989,11 @@ p {
 
 .footer-block h4 {
   font-family: var(--font-body);
-  font-size: 0.65rem;
-  letter-spacing: 0.14em;
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: rgba(244, 240, 232, 0.5);
-  font-weight: 400;
+  font-weight: 500;
   margin-bottom: 1.2rem;
 }
 .footer-block ul { list-style: none; }
@@ -1178,9 +1154,9 @@ p {
   align-items: baseline;
   gap: 2rem;
   font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(0.95rem, 1.5vw, 1.2rem);
-  letter-spacing: 0.01em;
+  font-weight: 300;
+  font-size: clamp(1.3rem, 2.4vw, 1.9rem);
+  letter-spacing: -0.025em;
   color: var(--olive-ink);
   line-height: 1.2;
   transition: color var(--med) var(--ease);
@@ -1213,9 +1189,9 @@ p {
 .prose h2:first-child { margin-top: 0; }
 .prose h3 {
   font-size: 1.15rem;
-  font-family: var(--font-display);
-  font-weight: 400;
-  letter-spacing: 0.01em;
+  font-family: var(--font-body);
+  font-weight: 500;
+  letter-spacing: -0.01em;
   margin-top: 2rem;
   margin-bottom: 0.7rem;
   color: var(--olive-ink);
@@ -1248,7 +1224,7 @@ p {
 .plain-hero .site-header .nav a { color: rgba(241, 235, 222, 0.82); }
 .plain-hero .site-header .nav a:hover,
 .plain-hero .site-header .nav a.active { color: var(--bone); }
-.plain-hero .site-header .nav-cta { color: var(--bone) !important; border-bottom-color: rgba(241,235,222,0.5) !important; }
+.plain-hero .site-header .nav-cta { color: var(--bone); border-color: rgba(241,235,222,0.5); }
 .plain-hero .site-header .menu-toggle span { background: var(--bone); }
 .plain-hero .page-hero { padding-top: clamp(9rem, 15vw, 13rem); }
 .plain-hero .page-hero h1 { max-width: 100%; }
