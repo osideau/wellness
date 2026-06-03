@@ -672,7 +672,8 @@ p {
   letter-spacing: -0.035em;
   line-height: 1.2;
   max-width: 22ch;
-  margin: 0 auto;
+  margin-inline: auto;
+  text-align: center;
 }
 
 /* ---------- Editorial split (image left, text right or vice versa) ---------- */
@@ -844,6 +845,7 @@ p {
   letter-spacing: -0.03em;
   max-width: 100%;
   margin: 0 auto clamp(2rem, 3vw, 2.5rem);
+  text-align: center;
 }
 .pullquote-attribution {
   font-size: var(--fs-xs);
