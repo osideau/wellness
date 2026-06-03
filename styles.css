@@ -972,15 +972,20 @@ p {
 }
 .closing h2 {
   font-style: normal;
-  margin-bottom: clamp(2rem, 4vw, 3rem);
-  font-size: var(--fs-4xl);
+  font-size: var(--fs-3xl);
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
 }
 .closing .eyebrow {
   margin-bottom: 1.5rem;
   letter-spacing: 0.34em;
+  display: block;
 }
 .closing .lead {
   letter-spacing: 0.015em;
+  margin-inline: auto;
+}
+.closing .link {
+  display: inline-block;
 }
 
 /* ---------- Footer ---------- */
