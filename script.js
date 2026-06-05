@@ -27,19 +27,36 @@
   const toggle = document.querySelector('.menu-toggle');
   const nav = document.querySelector('.nav');
   if (!toggle || !nav) return;
+
+  const close = () => {
+    nav.classList.remove('is-open');
+    toggle.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('menu-open');
+    document.body.style.overflow = '';
+  };
+
   toggle.addEventListener('click', () => {
     const open = nav.classList.toggle('is-open');
     toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     document.body.classList.toggle('menu-open', open);
     document.body.style.overflow = open ? 'hidden' : '';
   });
-  nav.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => {
-      nav.classList.remove('is-open');
-      toggle.setAttribute('aria-expanded', 'false');
-      document.body.classList.remove('menu-open');
-      document.body.style.overflow = '';
-    });
+
+  // Close on any link click inside nav (including those inside nav-item spans)
+  nav.addEventListener('click', (e) => {
+    if (e.target.tagName === 'A') close();
+  });
+
+  // Close on backdrop click (clicking outside nav panel)
+  document.addEventListener('click', (e) => {
+    if (nav.classList.contains('is-open') && !nav.contains(e.target) && !toggle.contains(e.target)) {
+      close();
+    }
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && nav.classList.contains('is-open')) close();
   });
 })();
 
