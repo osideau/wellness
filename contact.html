@@ -40,6 +40,7 @@
 
   <main>
 
+    <!-- HERO -->
     <section class="page-hero page-hero--image">
       <img class="hero-photo" src="images/visit-hero.jpg" alt="" decoding="async">
       <div class="hero-scrim"></div>
@@ -59,31 +60,30 @@
     <!-- INFO + FORM -->
     <section class="section">
       <div class="wrap">
-        <div class="split split--narrow" style="align-items: start;">
+        <div style="display: grid; grid-template-columns: 1fr 1.6fr; gap: clamp(4rem, 8vw, 8rem); align-items: start;">
 
-          <!-- Left: info -->
-          <div class="split-text">
+          <!-- Left: all location info stacked cleanly -->
+          <div>
 
-            <div class="rv" style="margin-bottom: 3rem;">
-              <span class="eyebrow" style="margin-bottom: 1rem;">— Address</span>
-              <address style="font-style: normal; font-family: var(--font-display); font-weight: 300; font-size: var(--fs-xl); line-height: 1.45; color: var(--olive-ink); margin-top: 0.8rem;">
-                #201 / 202<br>
-                12894 16th Avenue<br>
+            <div class="rv" style="padding-bottom: 2.5rem; border-bottom: var(--hairline); margin-bottom: 2.5rem;">
+              <span class="eyebrow" style="display: block; margin-bottom: 1.2rem;">— Address</span>
+              <address style="font-style: normal; line-height: 1.8; color: var(--olive-ink);">
+                #201 / 202 — 12894 16th Avenue<br>
                 Surrey, BC V4A 1N7
               </address>
+              <a
+                href="https://maps.google.com/?q=12894+16th+Avenue,+Surrey,+BC"
+                target="_blank"
+                rel="noopener"
+                class="link link-arrow"
+                style="display: inline-block; margin-top: 1rem;">
+                Get directions
+              </a>
             </div>
 
-            <div class="rv" data-delay="1" style="margin-bottom: 3rem;">
-              <span class="eyebrow" style="margin-bottom: 1rem;">— Reach us</span>
-              <p style="font-family: var(--font-display); font-size: var(--fs-xl); font-weight: 300; line-height: 1.5; margin-top: 0.8rem;">
-                <a href="mailto:hello@isoroppia.ca" class="link-tan" style="font-size: inherit; letter-spacing: 0; text-transform: none; padding-bottom: 2px; border-bottom-width: 1px;">hello@isoroppia.ca</a><br>
-                <a href="tel:+16044171434" class="link-tan" style="font-size: inherit; letter-spacing: 0; text-transform: none; padding-bottom: 2px; border-bottom-width: 1px;">(604) 417-1434</a>
-              </p>
-            </div>
-
-            <div class="rv" data-delay="2" style="margin-bottom: 3rem;">
-              <span class="eyebrow">— Hours</span>
-              <ul class="hours" style="margin-top: 1.2rem;">
+            <div class="rv" data-delay="1" style="padding-bottom: 2.5rem; border-bottom: var(--hairline); margin-bottom: 2.5rem;">
+              <span class="eyebrow" style="display: block; margin-bottom: 1.2rem;">— Hours</span>
+              <ul class="hours">
                 <li><span class="day">Monday</span><span class="time">9 — 6</span></li>
                 <li><span class="day">Tuesday</span><span class="time">9 — 6</span></li>
                 <li><span class="day">Wednesday</span><span class="time">9 — 7</span></li>
@@ -94,19 +94,30 @@
               </ul>
             </div>
 
+            <div class="rv" data-delay="2" style="padding-bottom: 2.5rem; border-bottom: var(--hairline); margin-bottom: 2.5rem;">
+              <span class="eyebrow" style="display: block; margin-bottom: 1.2rem;">— Reach us</span>
+              <p style="line-height: 1.8; margin: 0;">
+                <a href="mailto:hello@isoroppia.ca" class="link-tan" style="font-size: inherit; letter-spacing: 0; text-transform: none; padding-bottom: 2px; border-bottom-width: 1px;">hello@isoroppia.ca</a><br>
+                <a href="tel:+16044171434" class="link-tan" style="font-size: inherit; letter-spacing: 0; text-transform: none; padding-bottom: 2px; border-bottom-width: 1px;">(604) 417-1434</a>
+              </p>
+            </div>
+
             <div class="rv" data-delay="3">
-              <span class="eyebrow" style="margin-bottom: 1rem;">— Elsewhere</span>
-              <p style="font-family: var(--font-display); font-size: var(--fs-xl); font-weight: 300; line-height: 1.5; margin-top: 0.8rem;">
+              <span class="eyebrow" style="display: block; margin-bottom: 1.2rem;">— Follow</span>
+              <p style="line-height: 1.8; margin: 0;">
                 <a href="#" class="link-tan" style="font-size: inherit; letter-spacing: 0; text-transform: none; padding-bottom: 2px; border-bottom-width: 1px;">Instagram</a><br>
                 <a href="#" class="link-tan" style="font-size: inherit; letter-spacing: 0; text-transform: none; padding-bottom: 2px; border-bottom-width: 1px;">Google Reviews</a>
               </p>
             </div>
+
           </div>
 
           <!-- Right: form -->
-          <div class="split-text" style="padding-top: 0;">
-            <span class="eyebrow rv" style="margin-bottom: 1rem;">— Send a note</span>
-            <p class="rv" data-delay="1" style="font-family: var(--font-display); font-weight: 300; font-size: var(--fs-2xl); color: var(--olive-ink); line-height: 1.3; margin-top: 0.5rem; margin-bottom: 2rem;">We will respond<br>within one day.</p>
+          <div>
+            <span class="eyebrow rv" style="display: block; margin-bottom: 1.5rem;">— Send a note</span>
+            <h2 class="rv" data-delay="1" style="margin-bottom: 2.5rem;">
+              We will respond<br>within one day.
+            </h2>
 
             <form data-contact class="rv" data-delay="2">
               <div class="field-row">
@@ -144,35 +155,22 @@
               </div>
               <p class="form-status" aria-live="polite" style="margin-top: 1.5rem; font-size: var(--fs-sm); color: var(--tan);"></p>
             </form>
-
           </div>
 
         </div>
       </div>
     </section>
 
-    <!-- MAP / LOCATION -->
-    <section class="section-sm">
-      <div class="wrap">
-        <div class="rv" style="margin-bottom: 2rem; text-align: center;">
-          <span class="eyebrow" style="letter-spacing: 0.34em;">— Find us</span>
-        </div>
-        <div class="rv-img">
-          <div style="aspect-ratio: 21 / 9; overflow: hidden; background: var(--ash); border: var(--hairline);">
-            <iframe
-              title="Map to Isorropia — 12894 16th Avenue, Surrey, BC V4A 1N7"
-              src="https://www.google.com/maps?q=12894+16th+Avenue+Unit+201,+Surrey,+BC+V4A+1N7&output=embed"
-              style="width: 100%; height: 100%; border: 0; display: block; filter: grayscale(0.25) contrast(1.02);"
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-              allowfullscreen>
-            </iframe>
-          </div>
-        </div>
-        <p class="rv" data-delay="1" style="margin-top: 1.5rem; text-align: center; font-size: var(--fs-xs); letter-spacing: 0.05em; color: var(--olive-mid);">
-          
-        </p>
-      </div>
+    <!-- MAP -->
+    <section style="height: 480px; overflow: hidden;">
+      <iframe
+        title="Map to Isorropia — 12894 16th Avenue, Surrey, BC V4A 1N7"
+        src="https://www.google.com/maps?q=12894+16th+Avenue+Unit+201,+Surrey,+BC+V4A+1N7&output=embed"
+        style="width: 100%; height: 100%; border: 0; display: block; filter: grayscale(0.2) contrast(1.02);"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        allowfullscreen>
+      </iframe>
     </section>
 
   </main>
