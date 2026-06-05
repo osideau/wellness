@@ -255,11 +255,13 @@ p {
   display: block;
   height: 3.5rem;
   width: auto;
-  filter: brightness(0) invert(1) sepia(0.1) saturate(0.7) brightness(0.94);
-  transition: filter var(--med) var(--ease);
+  transition: opacity var(--med) var(--ease);
 }
 .site-header.scrolled .brand img {
-  filter: brightness(0) invert(1) sepia(0.1) saturate(0.7) brightness(0.94);
+  opacity: 1;
+}
+body.menu-open .site-header .brand img {
+  filter: brightness(0);
 }
 body.menu-open .site-header .brand img {
   filter: brightness(0); /* black on cream mobile menu */
