@@ -21,7 +21,16 @@
       <nav class="nav" aria-label="Main">
         <a href="index.html" class="active">Home</a>
         <a href="about.html">Practice</a>
-        <a href="services.html">Disciplines</a>
+        <span class="nav-item">
+          <a href="services.html">Services</a>
+          <div class="nav-dropdown">
+            <a href="service-massage.html">Massage Therapy</a>
+            <a href="service-acupuncture.html">Acupuncture</a>
+            <a href="service-naturopathy.html">Naturopathic Medicine</a>
+            <div class="nav-dropdown-divider"></div>
+            <a href="services.html">All Services</a>
+          </div>
+        </span>
         <a href="team.html">Practitioners</a>
         <a href="video.html">Journal</a>
         <a href="contact.html">Visit</a>
@@ -36,7 +45,7 @@
     <!-- ====================== HERO ====================== -->
     <section class="hero hero--image">
       <div class="hero-bg"></div>
-      <img class="hero-photo" src="https://images.unsplash.com/photo-1591343395082-e120087004b4?w=2000&q=80&auto=format&fit=crop" alt="" decoding="async">
+      <img class="hero-photo" src="images/home-hero.jpg" alt="" decoding="async">
       <div class="hero-scrim"></div>
 
       <div class="wrap hero-content">
@@ -59,14 +68,6 @@
       <div class="scroll-indicator">Scroll</div>
     </section>
 
-    <!-- ====================== PAUSE 01 ====================== -->
-    <section class="pause">
-      <p class="pause-line rv">
-        A small practice,<br>
-        with uncommon care.
-      </p>
-    </section>
-
     <!-- ====================== PHILOSOPHY ====================== -->
     <section class="section">
       <div class="wrap">
@@ -79,11 +80,10 @@
           <div class="split-text">
             <span class="eyebrow rv">— Philosophy</span>
             <h2 class="rv" data-delay="1">
-              Slower<br>
-              appointments.<br>
+              Slower appointments.<br>
               Deeper care.
             </h2>
-            <p class="lead rv" data-delay="2">
+            <p class="rv" data-delay="2">
               We built the kind of clinic we wanted to find ourselves.
               Treatments that take the time they need. Conversations that
               listen before deciding what to do.
@@ -120,8 +120,8 @@
       <div class="wrap">
         <div style="margin-bottom: clamp(4rem, 8vw, 6rem); display: grid; grid-template-columns: 1fr; gap: 2rem;">
           <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 2rem; flex-wrap: wrap;">
-            <span class="eyebrow rv">— Disciplines</span>
-            <span class="label text-mid rv" data-delay="1">Three modalities, one roof</span>
+            <span class="eyebrow rv">— Services</span>
+            <span class="label text-mid rv" data-delay="1">Three modalities, one practice</span>
           </div>
           <h2 class="rv" data-delay="1" style="max-width: 18ch;">
             Care that grows with the practice.
@@ -129,29 +129,32 @@
         </div>
 
         <div class="disciplines">
-          <a href="services.html#rmt" class="discipline rv">
+          <a href="service-massage.html" class="discipline rv">
             <span class="discipline-num">i</span>
             <span class="discipline-name">Massage Therapy</span>
             <div class="discipline-meta">
               <span class="discipline-status">Available</span>
               <span class="discipline-desc">Registered massage therapy. Chronic care, prenatal, deep tissue, recovery.</span>
             </div>
+            <span class="discipline-link">Learn more →</span>
           </a>
-          <a href="services.html#acupuncture" class="discipline rv" data-delay="1">
+          <a href="service-acupuncture.html" class="discipline rv" data-delay="1">
             <span class="discipline-num">ii</span>
             <span class="discipline-name">Acupuncture</span>
             <div class="discipline-meta">
               <span class="discipline-status">Joining 2026</span>
               <span class="discipline-desc">Traditional Chinese medicine for pain, sleep, stress, and balance.</span>
             </div>
+            <span class="discipline-link">Learn more →</span>
           </a>
-          <a href="services.html#naturopathy" class="discipline rv" data-delay="2">
+          <a href="service-naturopathy.html" class="discipline rv" data-delay="2">
             <span class="discipline-num">iii</span>
             <span class="discipline-name">Naturopathic Medicine</span>
             <div class="discipline-meta">
               <span class="discipline-status">Joining 2026</span>
               <span class="discipline-desc">Root-cause care for digestive, hormonal, and chronic conditions.</span>
             </div>
+            <span class="discipline-link">Learn more →</span>
           </a>
         </div>
       </div>
@@ -161,7 +164,7 @@
     <section class="pullquote">
       <div class="wrap">
         <p class="pullquote-text rv">
-          "The clinic we are building is the clinic we wanted to find ourselves."
+          "The clinic we are building<br>is the clinic we wanted to find ourselves."
         </p>
         <p class="pullquote-attribution rv" data-delay="1">
           <span class="divider-mark"></span> A note from the practice <span class="divider-mark"></span>
@@ -184,7 +187,7 @@
               A small,<br>
               thoughtful team.
             </h2>
-            <p class="lead rv" data-delay="2">
+            <p class="rv" data-delay="2">
               Each member of the practice has been chosen for craft, for
               attention, and for the way they hold a room.
             </p>
@@ -199,8 +202,9 @@
     <!-- ====================== CLOSING ====================== -->
     <section class="closing">
       <div class="wrap-text">
-        <h2 class="rv" style="margin-bottom: 0;">
-          Begin.
+        <span class="eyebrow rv">— Reserve</span>
+        <h2 class="rv" data-delay="1">
+          Your recovery<br>starts here.
         </h2>
         <div class="rv" data-delay="2" style="margin-top: 2rem;">
           <a href="booking.html" class="link link-arrow">Reserve a treatment</a>
@@ -233,7 +237,16 @@
           <h4>Practice</h4>
           <ul>
             <li><a href="about.html">The practice</a></li>
-            <li><a href="services.html">Disciplines</a></li>
+            <li><span class="nav-item">
+          <a href="services.html">Services</a>
+          <div class="nav-dropdown">
+            <a href="service-massage.html">Massage Therapy</a>
+            <a href="service-acupuncture.html">Acupuncture</a>
+            <a href="service-naturopathy.html">Naturopathic Medicine</a>
+            <div class="nav-dropdown-divider"></div>
+            <a href="services.html">All Services</a>
+          </div>
+        </span></li>
             <li><a href="team.html">Practitioners</a></li>
             <li><a href="video.html">Journal</a></li>
           </ul>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Disciplines — Isorropia</title>
+  <title>Services — Isorropia</title>
   <meta name="description" content="The disciplines we practice. Massage therapy, with acupuncture and naturopathy joining the practice.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,7 +21,16 @@
       <nav class="nav" aria-label="Main">
         <a href="index.html">Home</a>
         <a href="about.html">Practice</a>
-        <a href="services.html" class="active">Disciplines</a>
+        <span class="nav-item">
+          <a href="services.html" class="active">Services</a>
+          <div class="nav-dropdown">
+            <a href="service-massage.html">Massage Therapy</a>
+            <a href="service-acupuncture.html">Acupuncture</a>
+            <a href="service-naturopathy.html">Naturopathic Medicine</a>
+            <div class="nav-dropdown-divider"></div>
+            <a href="services.html">All Services</a>
+          </div>
+        </span>
         <a href="team.html">Practitioners</a>
         <a href="video.html">Journal</a>
         <a href="contact.html">Visit</a>
@@ -37,13 +46,12 @@
       <img class="hero-photo" src="images/disciplines-hero.jpg" alt="" decoding="async">
       <div class="hero-scrim"></div>
       <div class="wrap">
-        <span class="eyebrow rv">— Disciplines</span>
+        <span class="eyebrow rv">— Services</span>
         <h1 class="rv" data-delay="1">
-          Three<br>
-          modalities,<br>
+          Three modalities,<br>
           one practice.
         </h1>
-        <p class="lead rv" data-delay="2">
+        <p class="rv" data-delay="2">
           We began with registered massage therapy. Acupuncture and
           naturopathic care will join the practice this year, all under
           the same roof and the same standard of attention.
@@ -52,7 +60,7 @@
     </section>
 
     <!-- DISCIPLINE 01 — MASSAGE -->
-    <section class="section" id="rmt">
+    <section class="section" id="massage">
       <div class="wrap">
         <div class="split split--narrow">
           <div class="split-text">
@@ -64,7 +72,7 @@
               Massage<br>
               Therapy.
             </h2>
-            <p class="lead rv" data-delay="2" style="margin-top: 2rem;">
+            <p class="rv" data-delay="2" style="margin-top: 2rem;">
               Restore movement. Reduce pain. Improve function. Our RMTs use
               orthopedic assessment, manual therapy, and targeted treatment
               techniques to address musculoskeletal pain, tension, and
@@ -78,8 +86,9 @@
               <li style="padding-block: 0.8rem; border-bottom: var(--hairline-soft); font-size: 0.95rem; color: var(--olive-soft); display: flex; gap: 1rem;"><span class="text-tan" style="font-family: var(--font-italic); font-style: italic;">—</span>Swedish relaxation &amp; prenatal massage</li>
               <li style="padding-block: 0.8rem; font-size: 0.95rem; color: var(--olive-soft); display: flex; gap: 1rem;"><span class="text-tan" style="font-family: var(--font-italic); font-style: italic;">—</span>Post-injury rehabilitation</li>
             </ul>
-            <div class="rv" data-delay="4" style="margin-top: 3rem;">
+            <div class="rv" data-delay="4" style="margin-top: 3rem; display: flex; gap: 2.5rem; align-items: baseline; flex-wrap: wrap;">
               <a href="booking.html" class="link link-arrow">Reserve a treatment</a>
+              <a href="service-massage.html" class="link">About this service</a>
             </div>
           </div>
           <div class="rv-img">
@@ -111,7 +120,7 @@
             <h2 class="rv" data-delay="1">
               Acupuncture.
             </h2>
-            <p class="lead rv" data-delay="2" style="margin-top: 2rem;">
+            <p class="rv" data-delay="2" style="margin-top: 2rem;">
               Balance the body. Support healing. Reduce stress. A safe,
               evidence-supported therapy that stimulates the body's natural
               healing response, integrating Traditional Chinese Medicine
@@ -124,8 +133,9 @@
               <li style="padding-block: 0.8rem; border-bottom: var(--hairline-soft); font-size: 0.95rem; color: var(--olive-soft); display: flex; gap: 1rem;"><span class="text-tan" style="font-family: var(--font-italic); font-style: italic;">—</span>Electro-acupuncture</li>
               <li style="padding-block: 0.8rem; font-size: 0.95rem; color: var(--olive-soft); display: flex; gap: 1rem;"><span class="text-tan" style="font-family: var(--font-italic); font-style: italic;">—</span>TCM herbal recommendations</li>
             </ul>
-            <div class="rv" data-delay="4" style="margin-top: 3rem;">
+            <div class="rv" data-delay="4" style="margin-top: 3rem; display: flex; gap: 2.5rem; align-items: baseline; flex-wrap: wrap;">
               <a href="contact.html" class="link link-arrow">Notify me at launch</a>
+              <a href="service-acupuncture.html" class="link">About this service</a>
             </div>
           </div>
           <div class="rv-img">
@@ -150,7 +160,7 @@
               Naturopathic<br>
               Medicine.
             </h2>
-            <p class="lead rv" data-delay="2" style="margin-top: 2rem;">
+            <p class="rv" data-delay="2" style="margin-top: 2rem;">
               Holistic, evidence-informed medical care. Our Naturopathic
               Doctors provide comprehensive assessments and individualized
               treatment plans to address the root causes of your health
@@ -163,8 +173,9 @@
               <li style="padding-block: 0.8rem; border-bottom: var(--hairline-soft); font-size: 0.95rem; color: var(--olive-soft); display: flex; gap: 1rem;"><span class="text-tan" style="font-family: var(--font-italic); font-style: italic;">—</span>Supplementation &amp; hormone support</li>
               <li style="padding-block: 0.8rem; font-size: 0.95rem; color: var(--olive-soft); display: flex; gap: 1rem;"><span class="text-tan" style="font-family: var(--font-italic); font-style: italic;">—</span>Lab testing &amp; functional diagnostics</li>
             </ul>
-            <div class="rv" data-delay="4" style="margin-top: 3rem;">
+            <div class="rv" data-delay="4" style="margin-top: 3rem; display: flex; gap: 2.5rem; align-items: baseline; flex-wrap: wrap;">
               <a href="contact.html" class="link link-arrow">Notify me at launch</a>
+              <a href="service-naturopathy.html" class="link">About this service</a>
             </div>
           </div>
           <div class="rv-img">
@@ -219,7 +230,7 @@
       <div class="wrap-text">
         <span class="eyebrow rv">— Reserve</span>
         <h2 class="rv" data-delay="1">
-          Book.
+          Book now.
         </h2>
         <div class="rv" data-delay="2" style="margin-top: 2rem;">
           <a href="booking.html" class="link link-arrow">Find a time</a>
@@ -235,7 +246,7 @@
       <div class="footer-grid">
         <div class="footer-block"><p class="footer-intro">A small, boutique multi-disciplinary wellness practice in the Lower Mainland of British Columbia.</p></div>
         <div class="footer-block"><h4>Visit</h4><ul><li>#201 / 202 — 12894 16th Ave</li><li>Surrey, BC V4A 1N7</li><li><a href="contact.html">Hours &amp; map →</a></li></ul></div>
-        <div class="footer-block"><h4>Practice</h4><ul><li><a href="about.html">The practice</a></li><li><a href="services.html">Disciplines</a></li><li><a href="team.html">Practitioners</a></li><li><a href="video.html">Journal</a></li></ul></div>
+        <div class="footer-block"><h4>Practice</h4><ul><li><a href="about.html">The practice</a></li><li><a href="services.html">Services</a></li><li><a href="team.html">Practitioners</a></li><li><a href="video.html">Journal</a></li></ul></div>
         <div class="footer-block"><h4>Reserve</h4><ul><li><a href="booking.html">Book online</a></li><li>Direct billing</li><li><a href="contact.html">Reach us</a></li><li><a href="faq.html">FAQ &amp; policies</a></li></ul></div>
         <div class="footer-block footer-newsletter">
           <h4>Stay in touch</h4>
