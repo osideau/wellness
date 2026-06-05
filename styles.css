@@ -217,12 +217,10 @@ p {
   padding-block: 1.6rem;
   transition: background var(--med) var(--ease), padding var(--med) var(--ease);
 }
-.site-header .brand { color: var(--bone); }
-.site-header .brand em { color: var(--tan); }
 .site-header .nav a { color: rgba(241, 235, 222, 0.82); }
 .site-header .nav a:hover,
 .site-header .nav a.active { color: var(--bone); }
-.site-header .nav a.active::after { background: var(--tan); }
+.plain-hero .site-header .nav a.active::after { background: var(--tan); }
 .site-header .nav-cta {
   color: var(--bone) !important;
   border-bottom-color: rgba(241, 235, 222, 0.55) !important;
@@ -248,29 +246,23 @@ p {
 }
 
 .brand {
-  font-family: var(--font-display);
-  font-weight: 300;
-  font-size: var(--fs-xl);
-  letter-spacing: 0.06em;
-  color: var(--olive-ink);
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  line-height: 1;
 }
-.brand::before {
-  content: "";
-  display: inline-block;
-  width: 1.35em;
-  height: 1.35em;
-  background-color: currentColor;
-  -webkit-mask: url("images/logo.svg") center / contain no-repeat;
-  mask: url("images/logo.svg") center / contain no-repeat;
-  flex: none;
+.brand::before { display: none; }
+.brand img {
+  display: block;
+  height: 3.5rem;
+  width: auto;
+  filter: brightness(0) invert(1);
+  transition: filter var(--med) var(--ease);
 }
-.brand em {
-  font-family: var(--font-italic);
-  font-weight: 300;
-  color: var(--tan);
+.site-header.scrolled .brand img {
+  filter: brightness(0) invert(1); /* stays white on blue scrolled */
+}
+body.menu-open .site-header .brand img {
+  filter: brightness(0); /* black on cream mobile menu */
 }
 
 .nav {
@@ -300,7 +292,7 @@ p {
   right: 30%;
   bottom: 0;
   height: 1px;
-  background: var(--blue-accent);
+  background: var(--tan);
 }
 
 .nav-cta {
@@ -658,8 +650,6 @@ p {
 
 /* Nav legibility over the dark hero (top of page, before scroll) */
 @media (min-width: 881px) {
-  .site-header:not(.scrolled) .brand { color: var(--bone); }
-  .site-header:not(.scrolled) .brand em { color: var(--tan); }
   .site-header:not(.scrolled) .nav a { color: rgba(241, 235, 222, 0.82); }
   .site-header:not(.scrolled) .nav a:hover,
   .site-header:not(.scrolled) .nav a.active { color: var(--bone); }
@@ -674,13 +664,9 @@ p {
   }
 }
 @media (max-width: 880px) {
-  .site-header:not(.scrolled) .brand { color: var(--bone); }
-  .site-header:not(.scrolled) .brand em { color: var(--tan); }
   .site-header:not(.scrolled) .menu-toggle span { background: var(--bone); }
   /* While the cream overlay menu is open, revert chrome to dark for contrast */
-  body.menu-open .site-header .brand { color: var(--olive-ink); }
-  body.menu-open .site-header .brand em { color: var(--tan); }
-  body.menu-open .menu-toggle span { background: var(--olive-ink) !important; }
+  body.menu-open   body.menu-open .menu-toggle span { background: var(--olive-ink) !important; }
 }
 
 /* ---------- Pause section ---------- */
@@ -1368,9 +1354,7 @@ p {
   background: #1a2238;
   border-bottom: none;
 }
-.plain-hero .site-header .brand { color: var(--bone); }
-.plain-hero .site-header .brand em { color: var(--tan); }
-.plain-hero .site-header .nav a { color: rgba(241, 235, 222, 0.82); }
+.plain-hero .plain-hero .plain-hero .site-header .nav a { color: rgba(241, 235, 222, 0.82); }
 .plain-hero .site-header .nav a:hover,
 .plain-hero .site-header .nav a.active { color: var(--bone); }
 .plain-hero .site-header .nav-cta { color: var(--bone); border-color: rgba(241,235,222,0.5); }
