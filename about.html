@@ -220,11 +220,14 @@
           <h4>Stay in touch</h4>
           <p style="font-size: var(--fs-sm); color: rgba(235,228,214,0.6); margin-bottom: 1.2rem; line-height: 1.5;">A short occasional letter when we publish new work.</p>
           <form data-contact style="display: flex; flex-direction: column; gap: 0.8rem;">
+            <input type="hidden" name="subject" value="Isorropia Wellness Clinic — Newsletter signup">
+            <input type="hidden" name="from_name" value="Isorropia Website">
             <div class="field" style="margin: 0;">
               <label for="footer-email" style="color: rgba(235,228,214,0.5);">Email address</label>
-              <input type="email" id="footer-email" required style="border-bottom-color: rgba(235,228,214,0.3); color: var(--bone); background: transparent;">
+              <input type="email" id="footer-email" name="email" required style="border-bottom-color: rgba(235,228,214,0.3); color: var(--bone); background: transparent;">
             </div>
             <button type="submit" class="link link-arrow" style="color: var(--bone); border-bottom-color: var(--bone); align-self: flex-start;">Subscribe</button>
+            <p class="form-status" aria-live="polite" style="font-size: var(--fs-xs); color: var(--tan); min-height: 1em;"></p>
           </form>
         </div>
       </div>
