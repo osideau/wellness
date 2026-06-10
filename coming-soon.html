@@ -224,8 +224,8 @@
 
     <div class="form-wrap">
       <p class="form-label">Be notified when we open</p>
-      <form class="form-row" id="notify-form">
-        <input type="email" placeholder="Your email address" required autocomplete="email">
+      <form class="form-row" id="form">
+        <input type="email" name="email" placeholder="Your email address" required autocomplete="email">
         <button type="submit">Notify me →</button>
       </form>
       <p class="form-status" id="form-status"></p>
@@ -242,31 +242,32 @@
   <script>
     document.getElementById('yr').textContent = new Date().getFullYear();
 
-    document.getElementById('notify-form').addEventListener('submit', async function(e) {
+    const form = document.getElementById('form');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const status = document.getElementById('form-status');
-      const email = this.querySelector('input').value;
-      status.textContent = 'Sending…';
+      const formData = new FormData(form);
+      formData.append("access_key", "146fb680-c163-4b1c-aa8d-13ac826c9ff7");
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = "Sending...";
+      submitBtn.disabled = true;
       try {
-        const res = await fetch('https://api.web3forms.com/submit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            access_key: '146fb680-c163-4b1c-aa8d-13ac826c9ff7',
-            email,
-            subject: 'Isorropia — Launch notification signup',
-            message: `${email} wants to be notified when Isorropia opens.`
-          })
+        const response = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          body: formData
         });
-        const data = await res.json();
-        if (data.success) {
-          status.textContent = 'You\'re on the list. We\'ll be in touch.';
-          this.reset();
+        const data = await response.json();
+        if (response.ok) {
+          alert("Success! Your message has been sent.");
+          form.reset();
         } else {
-          status.textContent = 'Something went wrong — please email us directly.';
+          alert("Error: " + data.message);
         }
-      } catch {
-        status.textContent = 'Something went wrong — please email us directly.';
+      } catch (error) {
+        alert("Something went wrong. Please try again.");
+      } finally {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
       }
     });
   </script>
