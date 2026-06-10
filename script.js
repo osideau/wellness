@@ -22,7 +22,16 @@
   update();
 })();
 
-// ---------- Mobile nav ----------
+// ---------- Open accordion via URL hash ----------
+(function () {
+  const hash = window.location.hash;
+  if (!hash) return;
+  const target = document.querySelector(hash);
+  if (target && target.tagName === 'DETAILS') {
+    target.open = true;
+    setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+  }
+})();
 (function () {
   const toggle = document.querySelector('.menu-toggle');
   const nav = document.querySelector('.nav');

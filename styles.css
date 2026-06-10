@@ -249,6 +249,7 @@ p {
   display: inline-flex;
   align-items: center;
   line-height: 1;
+  margin-right: auto;
 }
 .brand::before { display: none; }
 .brand img {
@@ -256,9 +257,6 @@ p {
   height: 3.5rem;
   width: auto;
   transition: opacity var(--med) var(--ease);
-}
-.site-header.scrolled .brand img {
-  opacity: 1;
 }
 body.menu-open .site-header .brand img {
   filter: brightness(0);
@@ -270,7 +268,7 @@ body.menu-open .site-header .brand img {
 .nav {
   display: flex;
   align-items: center;
-  gap: clamp(1.5rem, 3.5vw, 3rem);
+  gap: clamp(1rem, 2vw, 2rem);
 }
 .nav a {
   font-size: var(--fs-xs);
@@ -1028,9 +1026,13 @@ body.menu-open .site-header .brand img {
 .site-footer .wrap { display: block; }
 .site-footer .brand {
   color: var(--bone);
-  font-size: var(--fs-2xl);
   display: inline-block;
   margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+.site-footer .brand img {
+  height: 5rem;
+  width: auto;
+  filter: none;
 }
 .site-footer .brand em { color: var(--tan); }
 
@@ -1268,11 +1270,12 @@ body.menu-open .site-header .brand img {
   display: inline-block;
   margin-top: 0;
   font-size: var(--fs-xs);
-  letter-spacing: 0.18em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--tan);
   border-bottom: 1px solid rgba(176, 138, 85, 0.4);
   padding-bottom: 2px;
+  width: fit-content;
   transition: border-color var(--med) var(--ease), color var(--med) var(--ease);
 }
 .discipline:hover .discipline-link {

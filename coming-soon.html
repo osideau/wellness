@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coming Soon — Isorropia Wellness Clinic</title>
+  <meta name="description" content="Isorropia Wellness Clinic — registered massage therapy and acupuncture in Surrey, BC. Opening soon.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400&family=DM+Sans:opsz,wght@9..40,300;9..40,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bone:    #f4eee3;
+      --ink:     #1a2238;
+      --tan:     #a88a5c;
+      --mid:     rgba(244, 238, 227, 0.55);
+      --font-display: 'Jost', system-ui, sans-serif;
+      --font-body:    'DM Sans', system-ui, sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      background: var(--ink);
+      color: var(--bone);
+      font-family: var(--font-body);
+      font-weight: 300;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(3rem, 8vw, 6rem) clamp(1.5rem, 6vw, 4rem);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Subtle grain texture */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      background-size: 200px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Soft radial glow */
+    body::after {
+      content: '';
+      position: fixed;
+      top: -20%;
+      right: -10%;
+      width: 60vw;
+      height: 60vw;
+      background: radial-gradient(circle, rgba(168,138,92,0.08) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 680px;
+      width: 100%;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(2rem, 5vw, 3.5rem);
+    }
+
+    /* Logo */
+    .logo {
+      display: block;
+      height: clamp(3rem, 8vw, 5rem);
+      width: auto;
+    }
+
+    /* Divider */
+    .divider {
+      width: 40px;
+      height: 1px;
+      background: var(--tan);
+      opacity: 0.6;
+    }
+
+    /* Headline */
+    .headline {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: var(--bone);
+    }
+
+    /* Subtext */
+    .subtext {
+      font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+      color: var(--mid);
+      line-height: 1.75;
+      max-width: 42ch;
+    }
+
+    /* Location pill */
+    .location {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--tan);
+      border: 1px solid rgba(168,138,92,0.3);
+      padding: 0.5rem 1.2rem;
+      border-radius: 100px;
+    }
+    .location::before {
+      content: '';
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      background: var(--tan);
+      border-radius: 50%;
+    }
+
+    /* Email form */
+    .form-wrap {
+      width: 100%;
+      max-width: 420px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .form-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--mid);
+      text-align: center;
+    }
+    .form-row {
+      display: flex;
+      border-bottom: 1px solid rgba(244,238,227,0.25);
+      transition: border-color 0.3s ease;
+    }
+    .form-row:focus-within {
+      border-bottom-color: var(--tan);
+    }
+    .form-row input {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--bone);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 300;
+      padding: 0.75rem 0;
+      min-width: 0;
+    }
+    .form-row input::placeholder {
+      color: rgba(244,238,227,0.35);
+    }
+    .form-row button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--tan);
+      padding: 0.75rem 0 0.75rem 1rem;
+      white-space: nowrap;
+      transition: color 0.3s ease;
+    }
+    .form-row button:hover { color: var(--bone); }
+    .form-status {
+      font-size: 0.8rem;
+      color: var(--tan);
+      text-align: center;
+      min-height: 1.2em;
+    }
+
+    /* Footer line */
+    .footer-line {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(244,238,227,0.25);
+    }
+    .footer-line a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .footer-line a:hover { color: var(--mid); }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <img src="images/logo.svg" alt="Isorropia Wellness Clinic" class="logo">
+
+    <div class="divider"></div>
+
+    <h1 class="headline">
+      Something good<br>is almost here.
+    </h1>
+
+    <p class="subtext">
+      Isorropia Wellness Clinic is a registered massage therapy and acupuncture practice opening soon in Surrey, BC. Evidence-based care, patient first.
+    </p>
+
+    <span class="location">Surrey, British Columbia</span>
+
+    <div class="form-wrap">
+      <p class="form-label">Be notified when we open</p>
+      <form class="form-row" id="notify-form">
+        <input type="email" placeholder="Your email address" required autocomplete="email">
+        <button type="submit">Notify me →</button>
+      </form>
+      <p class="form-status" id="form-status"></p>
+    </div>
+
+    <p class="footer-line">
+      Questions? <a href="mailto:hello@isoroppia.ca">hello@isoroppia.ca</a>
+      &nbsp;&nbsp;·&nbsp;&nbsp;
+      © <span id="yr"></span> Isorropia Wellness Clinic
+    </p>
+
+  </div>
+
+  <script>
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    document.getElementById('notify-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const status = document.getElementById('form-status');
+      const email = this.querySelector('input').value;
+      status.textContent = 'Sending…';
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            access_key: '9e20f0fa-1476-4377-aad0-f3f74440ffb3',
+            email,
+            subject: 'Isorropia — Launch notification signup',
+            message: `${email} wants to be notified when Isorropia opens.`
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          status.textContent = 'You\'re on the list. We\'ll be in touch.';
+          this.reset();
+        } else {
+          status.textContent = 'Something went wrong — please email us directly.';
+        }
+      } catch {
+        status.textContent = 'Something went wrong — please email us directly.';
+      }
+    });
+  </script>
+
+</body>
+</html>
