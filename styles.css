@@ -727,6 +727,7 @@ body.menu-open .site-header .brand img {
 @media (min-width: 880px) {
   .split { grid-template-columns: 1fr 1fr; }
   .split--narrow { grid-template-columns: 0.7fr 1.3fr; }
+  .split--narrow.split--reverse { grid-template-columns: 1.3fr 0.7fr; }
   .split--wide { grid-template-columns: 1.2fr 0.8fr; }
   .split--reverse > :first-child { order: 2; }
 }
