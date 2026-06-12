@@ -130,17 +130,39 @@
   if (y) y.textContent = new Date().getFullYear();
 })();
 
-// ---------- Form (placeholder) ----------
+// ---------- Contact forms (Web3Forms) ----------
 (function () {
-  const form = document.querySelector('form[data-contact]');
-  if (!form) return;
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const status = form.querySelector('.form-status');
-    if (status) {
-      status.textContent = 'Thank you. We will be in touch shortly.';
-      status.style.color = 'var(--tan)';
-    }
-    form.reset();
+  document.querySelectorAll('form[data-contact]').forEach(form => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const status = form.querySelector('.form-status');
+      const btn = form.querySelector('button[type="submit"]');
+      const originalText = btn ? btn.textContent : '';
+
+      if (status) { status.textContent = 'Sending…'; status.style.color = 'var(--tan)'; }
+      if (btn) btn.disabled = true;
+
+      const data = { access_key: '49d827fa-b098-4649-b106-6c90e7d89da3' };
+      new FormData(form).forEach((v, k) => { data[k] = v; });
+
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        const json = await res.json();
+        if (json.success) {
+          if (status) status.textContent = 'Thank you. We will be in touch shortly.';
+          form.reset();
+        } else {
+          if (status) { status.textContent = 'Something went wrong — please email us directly.'; status.style.color = 'inherit'; }
+        }
+      } catch {
+        if (status) { status.textContent = 'Something went wrong — please email us directly.'; status.style.color = 'inherit'; }
+      } finally {
+        if (btn) { btn.disabled = false; btn.textContent = originalText; }
+      }
+    });
   });
 })();

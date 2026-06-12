@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Naturopathic Medicine — Isorropia Wellness Clinic Wellness Clinic</title>
+  <title>Naturopathic Medicine — Isorropia Wellness Clinic</title>
   <meta name="description" content="Naturopathic medicine at Isorropia. Root-cause care for digestive, hormonal, and chronic conditions. Joining 2026.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,6 +15,7 @@
   <header class="site-header">
     <div class="wrap">
       <a href="index.html" class="brand"><img src="images/logo.svg" alt="Isorropia" width="120" height="32"></a>
+      <a href="booking.html" class="header-book-btn">Book</a>
       <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
         <span></span><span></span>
       </button>
@@ -183,11 +184,15 @@
           <h4>Stay in touch</h4>
           <p style="font-size: var(--fs-sm); color: rgba(235,228,214,0.6); margin-bottom: 1.2rem; line-height: 1.5;">A short occasional letter when we publish new work.</p>
           <form data-contact style="display: flex; flex-direction: column; gap: 0.8rem;">
+            <input type="hidden" name="subject" value="Isorropia Wellness Clinic — Newsletter signup">
+            <input type="hidden" name="access_key" value="146fb680-c163-4b1c-aa8d-13ac826c9ff7">
+            <input type="hidden" name="from_name" value="Isorropia Website">
             <div class="field" style="margin: 0;">
               <label for="footer-email" style="color: rgba(235,228,214,0.5);">Email address</label>
-              <input type="email" id="footer-email" required style="border-bottom-color: rgba(235,228,214,0.3); color: var(--bone); background: transparent;">
+              <input type="email" id="footer-email" name="email" required style="border-bottom-color: rgba(235,228,214,0.3); color: var(--bone); background: transparent;">
             </div>
             <button type="submit" class="link link-arrow" style="color: var(--bone); border-bottom-color: var(--bone); align-self: flex-start;">Subscribe</button>
+            <p class="form-status" aria-live="polite" style="font-size: var(--fs-xs); color: var(--tan); min-height: 1em;"></p>
           </form>
         </div>
       </div>

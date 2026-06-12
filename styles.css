@@ -311,6 +311,36 @@ body.menu-open .site-header .brand img {
   border-bottom-color: var(--tan) !important;
 }
 
+.header-book-btn {
+  display: none;
+}
+@media (max-width: 880px) {
+  .header-book-btn {
+    display: inline-flex;
+    align-items: center;
+    margin-left: auto;
+    margin-right: 1rem;
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--bone);
+    border: 1px solid rgba(241, 235, 222, 0.4);
+    padding: 0.5rem 1rem;
+    border-radius: 100px;
+    transition: border-color var(--med) var(--ease), color var(--med) var(--ease);
+  }
+  .header-book-btn:hover {
+    border-color: var(--tan);
+    color: var(--tan);
+  }
+  body.menu-open .header-book-btn {
+    color: var(--olive-ink);
+    border-color: rgba(13, 13, 13, 0.25);
+  }
+}
+
 .menu-toggle {
   display: none;
   width: 32px;
@@ -666,7 +696,7 @@ body.menu-open .site-header .brand img {
 @media (max-width: 880px) {
   .site-header:not(.scrolled) .menu-toggle span { background: var(--bone); }
   /* While the cream overlay menu is open, revert chrome to dark for contrast */
-  body.menu-open   body.menu-open .menu-toggle span { background: var(--olive-ink) !important; }
+  body.menu-open .menu-toggle span { background: var(--olive-ink) !important; }
 }
 
 /* ---------- Pause section ---------- */
@@ -1295,10 +1325,10 @@ body.menu-open .site-header .brand img {
   gap: 2rem;
   font-family: var(--font-display);
   font-weight: 300;
-  font-size: var(--fs-2xl);
-  letter-spacing: -0.02em;
+  font-size: var(--fs-xl);
+  letter-spacing: -0.015em;
   color: var(--olive-ink);
-  line-height: 1.1;
+  line-height: 1.2;
   transition: color var(--med) var(--ease);
 }
 .faq summary::-webkit-details-marker { display: none; }
