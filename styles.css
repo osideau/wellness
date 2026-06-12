@@ -730,6 +730,9 @@ body.menu-open .site-header .brand img {
   .split--narrow.split--reverse { grid-template-columns: 1.3fr 0.7fr; }
   .split--wide { grid-template-columns: 1.2fr 0.8fr; }
   .split--reverse > :first-child { order: 2; }
+  .rv-img--compact { max-width: 420px; }
+  .rv-img--compact .atmos { margin-left: auto; }
+  .split--reverse .rv-img--compact .atmos { margin-left: 0; margin-right: auto; }
 }
 
 .split-text > * + * { margin-top: clamp(1.5rem, 2.5vw, 2rem); }
@@ -744,6 +747,7 @@ body.menu-open .site-header .brand img {
 }
 .atmos--tall  { aspect-ratio: 4 / 5; }
 .atmos--wide  { aspect-ratio: 5 / 4; }
+.atmos--landscape { aspect-ratio: 16 / 10; }
 .atmos--full  { aspect-ratio: 21 / 9; }
 .atmos--square{ aspect-ratio: 1 / 1; }
 
