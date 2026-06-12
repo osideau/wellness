@@ -730,9 +730,10 @@ body.menu-open .site-header .brand img {
   .split--narrow.split--reverse { grid-template-columns: 1.3fr 0.7fr; }
   .split--wide { grid-template-columns: 1.2fr 0.8fr; }
   .split--reverse > :first-child { order: 2; }
-  .rv-img--compact { max-width: 420px; }
-  .rv-img--compact .atmos { margin-left: auto; }
-  .split--reverse .rv-img--compact .atmos { margin-left: 0; margin-right: auto; }
+  .split--narrow:has(.rv-img--compact) { grid-template-columns: 420px 1fr; }
+  .split--narrow.split--reverse:has(.rv-img--compact) { grid-template-columns: 1fr 420px; }
+  .rv-img--compact { max-width: 420px; width: 100%; }
+  .rv-img--compact .atmos { margin: 0; }
 }
 
 .split-text > * + * { margin-top: clamp(1.5rem, 2.5vw, 2rem); }
