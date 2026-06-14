@@ -519,13 +519,7 @@
       </button>
     </div>
 
-    <div class="sidebar-section">
-      <div class="sidebar-heading">Settings</div>
-      <button class="sidebar-item" onclick="switchPanel('config')">
-        <svg class="sidebar-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="2"/><path d="M8 2v1M8 13v1M2 8h1M13 8h1M3.5 3.5l.7.7M11.8 11.8l.7.7M3.5 12.5l.7-.7M11.8 4.2l.7-.7"/></svg>
-        GitHub settings
-      </button>
-    </div>
+
 
   </nav>
 
@@ -698,7 +692,7 @@
       </div>
     </div>
 
-    <!-- CONFIG PANEL -->
+    <!-- CONFIG PANEL (hidden — URL hardcoded) -->
     <div class="panel" id="panel-config">
       <div class="panel-header">
         <div class="panel-eyebrow">— Settings</div>
@@ -735,6 +729,7 @@
 <script>
 // ── Config & state ────────────────────────────────────────────────────────────
 const ADMIN_PASSWORD = 'isorropia2026'; // Change this
+const WORKER_URL = 'https://isorropia-cms.kiarnovar.workers.dev'; // ← update this before deploying
 
 const PRACTITIONERS = [
   { id: 'liza',    name: 'Liza Pinili',           role: 'Registered Massage Therapist',  file: 'team.html' },
@@ -787,7 +782,6 @@ function doLogin() {
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 function init() {
-  loadConfig();
   buildPractitioners();
   buildHours();
   buildFAQ();
@@ -924,7 +918,7 @@ async function testConnection() {
   if (!cfg.worker) { toast('Enter the Worker URL first', true); return; }
   setStatus('saving', 'Testing...');
   try {
-    const res = await fetch(`${cfg.worker}/ping`, {
+    const res = await fetch(`${WORKER_URL}/ping`, {
       headers: { 'X-CMS-Password': ADMIN_PASSWORD }
     });
     const data = await res.json();
@@ -944,7 +938,7 @@ async function testConnection() {
 
 // ── GitHub publish ────────────────────────────────────────────────────────────
 async function getFile(filename) {
-  const res = await fetch(`${cfg.worker}/file?name=${encodeURIComponent(filename)}`, {
+  const res = await fetch(`${WORKER_URL}/file?name=${encodeURIComponent(filename)}`, {
     headers: { 'X-CMS-Password': ADMIN_PASSWORD }
   });
   const data = await res.json();
@@ -953,7 +947,7 @@ async function getFile(filename) {
 }
 
 async function putFile(filePath, content, sha, message) {
-  const res = await fetch(`${cfg.worker}/publish`, {
+  const res = await fetch(`${WORKER_URL}/publish`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'X-CMS-Password': ADMIN_PASSWORD },
     body: JSON.stringify({ filename: filePath, content, sha, message })
