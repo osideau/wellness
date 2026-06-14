@@ -393,8 +393,10 @@ body.menu-open .site-header .brand img {
   .nav.is-open .rv,
   .nav.is-open .rv-img { opacity: 1; transform: none; }
   .site-header .nav.is-open a { color: var(--olive-ink); }
+  .site-header .nav.is-open a:hover { color: var(--tan); }
   .site-header .nav.is-open a.active { color: var(--tan); }
   .site-header .nav.is-open .nav-cta { color: var(--olive-ink) !important; border-bottom-color: var(--olive-ink) !important; }
+  .site-header .nav.is-open .nav-cta:hover { color: var(--tan) !important; border-bottom-color: var(--tan) !important; }
   .nav-item { display: contents; }
   .nav-dropdown { display: none !important; }
   .nav a {
