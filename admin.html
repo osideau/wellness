@@ -977,12 +977,26 @@ async function getFile(filename) {
     `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${path}?ref=${cfg.branch}`,
     { headers: { Authorization: `token ${cfg.token}`, Accept: 'application/vnd.github.v3+json' } }
   );
-  if (!res.ok) throw new Error(`Could not fetch ${filename}: ${res.status}`);
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(`GitHub: ${err.message || res.status} (fetching ${filename})`);
+  }
   const data = await res.json();
-  return { content: atob(data.content.replace(/\n/g,'')), sha: data.sha, path };
+  // Decode base64 safely
+  const binary = atob(data.content.replace(/\n/g,''));
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  const content = new TextDecoder('utf-8').decode(bytes);
+  return { content, sha: data.sha, path };
 }
 
 async function putFile(filePath, content, sha, message) {
+  // Encode utf-8 → base64 safely
+  const bytes = new TextEncoder().encode(content);
+  let binary = '';
+  for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+  const encoded = btoa(binary);
+
   const res = await fetch(
     `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${filePath}`,
     {
@@ -994,15 +1008,15 @@ async function putFile(filePath, content, sha, message) {
       },
       body: JSON.stringify({
         message,
-        content: btoa(unescape(encodeURIComponent(content))),
+        content: encoded,
         sha,
         branch: cfg.branch,
       })
     }
   );
   if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.message || res.status);
+    const err = await res.json().catch(() => ({}));
+    throw new Error(`GitHub: ${err.message || res.status} (writing ${filePath})`);
   }
   return res.json();
 }
@@ -1030,7 +1044,8 @@ async function publishSection(section) {
       : 'faq-last-saved').textContent = `Last published at ${now}`;
     toast('Published — site will update in ~30s ✓');
   } catch(e) {
-    setStatus('error', 'Error');
+    setStatus('error', 'Failed');
+    console.error('Publish error:', e);
     toast('Publish failed: ' + e.message, true);
   }
 }
