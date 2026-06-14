@@ -1059,8 +1059,9 @@ async function publishHours() {
     } else {
       const fmt = t => {
         if (!t) return '';
-        const [h] = t.split(':');
-        return String(parseInt(h));
+        const [h, m] = t.split(':');
+        const hr12 = parseInt(h) % 12 || 12;
+        return m && m !== '00' ? `${hr12}:${m}` : String(hr12);
       };
       display = `${fmt(open)} — ${fmt(close)}`;
     }
@@ -1091,8 +1092,9 @@ async function publishContact() {
   // Address — find and replace exact strings
   html = html.replace(/#201 \/ 202 — 12894 16th Avenue/, `${unit} — ${street}`);
   html = html.replace(/Surrey, BC V4A 1N7/g, `${city}, ${province}`);
-  html = html.replace(/info@isorropia\.ca/g, email);
-  html = html.replace(/hello@isoroppia\.ca/g, email);
+  // Email — replace both href and visible text regardless of current value
+  html = html.replace(/href="mailto:[^"]*"/g, `href="mailto:${email}"`);
+  html = html.replace(/(<a[^>]+mailto:[^>]+>)[^<]*/g, `$1${email}`);
   html = html.replace(/\(604\) 417-1434/g, phone);
 
   await putFile(path, html, sha, 'CMS: update contact info');
