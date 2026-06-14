@@ -704,11 +704,385 @@ function init() {
 }
 
 // ── Panel switching ───────────────────────────────────────────────────────────
+// Track which panels have been loaded from live site
+const loadedPanels = new Set();
+
 function switchPanel(id, btn) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
   document.getElementById('panel-' + id).classList.add('active');
   if (btn) btn.classList.add('active');
+  // Load live data the first time this panel is opened
+  if (!loadedPanels.has(id)) {
+    loadedPanels.add(id);
+    loadPanel(id);
+  }
+}
+
+async function loadPanel(id) {
+  setStatus('saving', 'Loading...');
+  try {
+    if (id === 'home')          await hydrateHome();
+    else if (id === 'about')    await hydrateAbout();
+    else if (id === 'services') await hydrateServices();
+    else if (id === 'massage')  await hydrateMassage();
+    else if (id === 'acupuncture') await hydrateAcupuncture();
+    else if (id === 'practitioners') await hydratePractitioners();
+    else if (id === 'hours')    await hydrateHours();
+    else if (id === 'contact')  await hydrateContact();
+    else if (id === 'faq')      await hydrateFAQ();
+    setStatus('', 'Ready');
+  } catch(e) {
+    setStatus('error', 'Load failed');
+    console.warn('Hydration failed for panel', id, e);
+    // Non-fatal — fields stay at defaults
+  }
+}
+
+// ── Hydration helpers ─────────────────────────────────────────────────────────
+
+function setField(id, value) {
+  const el = document.getElementById(id);
+  if (el && value !== null && value !== undefined) el.value = value.trim();
+}
+
+// Extract text content of the first element matching a simple pattern
+function extractText(html, marker) {
+  const idx = html.indexOf(marker);
+  if (idx === -1) return null;
+  const end = html.indexOf('</span>', idx + marker.length);
+  if (end !== -1) return html.slice(idx + marker.length, end).trim();
+  const endP = html.indexOf('</p>', idx + marker.length);
+  if (endP !== -1) return html.slice(idx + marker.length, endP).trim();
+  return null;
+}
+
+// Extract content between two markers
+function extractBetween(html, startMarker, endMarker, offset = 0) {
+  const idx = html.indexOf(startMarker, offset);
+  if (idx === -1) return null;
+  const contentStart = idx + startMarker.length;
+  const endIdx = html.indexOf(endMarker, contentStart);
+  if (endIdx === -1) return null;
+  return html.slice(contentStart, endIdx).trim();
+}
+
+// Extract a paragraph's text that contains a known search string
+function extractParagraph(html, searchStr, offset = 0) {
+  const idx = html.indexOf(searchStr, offset);
+  if (idx === -1) return null;
+  const pStart = html.lastIndexOf('<p', idx);
+  if (pStart === -1) return null;
+  const contentStart = html.indexOf('>', pStart) + 1;
+  const contentEnd = html.indexOf('</p>', contentStart);
+  if (contentEnd === -1) return null;
+  return html.slice(contentStart, contentEnd).trim();
+}
+
+// ── Panel hydrators ───────────────────────────────────────────────────────────
+
+async function hydrateHome() {
+  const { content: html } = await getFile('index.html');
+
+  // h1 — find it between the h1 tag and </h1>
+  const h1raw = extractBetween(html, '<h1 class="rv" data-delay="1"', '</h1>');
+  if (h1raw) setField('home-h1', h1raw.replace(/^[^>]*>/, '').replace(/<[^>]+>/g, '').trim());
+
+  // Eyebrow
+  const eyebrow = extractBetween(html, '<span class="label">Isorropia', '</span>');
+  if (eyebrow !== null) setField('home-eyebrow', 'Isorropia' + eyebrow);
+
+  // Services h2
+  const svcH2 = extractBetween(html, '<h2 class="rv" data-delay="1" style="max-width: 18ch;">', '</h2>');
+  if (svcH2) setField('home-services-h2', svcH2.trim());
+
+  // Services label
+  const svcLabel = extractBetween(html, '<span class="label text-mid rv" data-delay="1">', '</span>');
+  if (svcLabel) setField('home-services-label', svcLabel.trim());
+
+  // Pull quote
+  const pq = extractBetween(html, '<p class="pullquote-text rv">', '</p>');
+  if (pq) setField('home-pullquote', pq.trim());
+
+  // Team teaser p
+  const teamP = extractParagraph(html, 'Each member of the practice has been chosen');
+  if (teamP) setField('home-team-p', teamP);
+
+  // Closing h2
+  const closing = extractBetween(html, '<section class="closing">', '</section>');
+  if (closing) {
+    const closingH2 = extractBetween(closing, '<h2 class="rv" data-delay="1">', '</h2>');
+    if (closingH2) setField('home-closing', closingH2.replace(/<br>/g, ' ').trim());
+  }
+}
+
+async function hydrateAbout() {
+  const { content: html } = await getFile('about.html');
+
+  // Hero h1
+  const h1 = extractBetween(html, '<h1 class="rv" data-delay="1">', '</h1>');
+  if (h1) setField('about-h1', h1.replace(/<br>/g, ' ').trim());
+
+  // Hero subtext
+  const heroPRaw = extractParagraph(html, 'A regulated wellness practice committed');
+  if (heroPRaw) setField('about-hero-p', heroPRaw);
+
+  // Philosophy h2
+  const philH2 = extractBetween(html, '<span class="eyebrow rv">— Our philosophy</span>', '</h2>');
+  if (philH2) {
+    const h2clean = philH2.replace(/.*<h2[^>]*>/s, '').replace(/<br>/g, ' ').trim();
+    setField('about-phil-h2', h2clean);
+  }
+
+  // Philosophy paragraphs
+  const p1 = extractParagraph(html, 'Our philosophy is grounded');
+  if (p1) setField('about-phil-p1', p1);
+  const p2 = extractParagraph(html, 'Our work is guided');
+  if (p2) setField('about-phil-p2', p2);
+
+  // Pause
+  const pause = extractBetween(html, '<p class="pause-line rv">', '</p>');
+  if (pause) setField('about-pause', pause.replace(/<br>/g, ' ').trim());
+
+  // Principles
+  DEFAULT_PRINCIPLES.forEach((p, i) => {
+    const nameEl = document.getElementById('principle-name-' + i);
+    const descEl = document.getElementById('principle-desc-' + i);
+    if (!nameEl || !descEl) return;
+    // Find the principle by its current name in the HTML
+    const currentName = nameEl.value;
+    const descText = extractParagraph(html, currentName.slice(0, 20));
+    // Actually find the discipline-name span then its sibling discipline-desc
+    const nameIdx = html.indexOf(`>${currentName}<`);
+    if (nameIdx !== -1) {
+      const descIdx = html.indexOf('class="discipline-desc">', nameIdx);
+      if (descIdx !== -1) {
+        const descEnd = html.indexOf('</span>', descIdx);
+        if (descEnd !== -1) descEl.value = html.slice(descIdx + 'class="discipline-desc">'.length, descEnd).trim();
+      }
+    }
+  });
+
+  // Pull quote
+  const pq = extractBetween(html, '<p class="pullquote-text rv">', '</p>');
+  if (pq) setField('about-pullquote', pq.trim());
+
+  // Mission h2
+  const missionSection = html.indexOf('— Our mission');
+  if (missionSection !== -1) {
+    const mH2 = extractBetween(html, '<h2 class="rv" data-delay="1" style="margin-top: 1.5rem;">', '</h2>', missionSection);
+    if (mH2) setField('about-mission-h2', mH2.replace(/<br>/g, ' ').trim());
+  }
+
+  const mp1 = extractParagraph(html, 'At Isorropia Wellness Clinic our commitment');
+  if (mp1) setField('about-mission-p1', mp1);
+  const mp2 = extractParagraph(html, 'We strive to create a therapeutic environment');
+  if (mp2) setField('about-mission-p2', mp2);
+}
+
+async function hydrateServices() {
+  const { content: html } = await getFile('services.html');
+
+  const h1 = extractBetween(html, '<h1 class="rv" data-delay="1">', '</h1>');
+  if (h1) setField('svc-h1', h1.replace(/<br>/g, ' ').trim());
+
+  const heroP = extractParagraph(html, 'Registered massage therapy and acupuncture, under the');
+  if (heroP) setField('svc-hero-p', heroP);
+
+  const massageP = extractParagraph(html, 'Restore movement. Reduce pain. Improve function. Our RMTs');
+  if (massageP) setField('svc-massage-p', massageP);
+
+  const pause = extractBetween(html, '<p class="pause-line rv">', '</p>');
+  if (pause) setField('svc-pause', pause.replace(/<br>/g, ' ').trim());
+
+  const acuP = extractParagraph(html, 'Balance the body. Support healing. Reduce stress. A safe');
+  if (acuP) setField('svc-acu-p', acuP);
+
+  const ins1 = extractParagraph(html, 'We accept direct billing with most major');
+  if (ins1) setField('svc-ins-p1', ins1);
+
+  const ins2 = extractParagraph(html, 'If you are unsure whether your plan covers');
+  if (ins2) setField('svc-ins-p2', ins2.replace(/<a[^>]+>|<\/a>/g, '').trim());
+}
+
+async function hydrateMassage() {
+  const { content: html } = await getFile('service-massage.html');
+
+  const heroP = extractParagraph(html, 'Restore movement. Reduce pain. Improve function.');
+  if (heroP) setField('massage-hero-p', heroP);
+
+  const aboutH2 = extractBetween(html, '<span class="eyebrow rv">— About this service</span>', '</h2>');
+  if (aboutH2) setField('massage-about-h2', aboutH2.replace(/.*<h2[^>]*>/s, '').replace(/<br>/g, ' ').trim());
+
+  const p1 = extractParagraph(html, 'Registered Massage Therapy (RMT) addresses');
+  if (p1) setField('massage-about-p1', p1);
+
+  const p2 = extractParagraph(html, 'Our RMTs use orthopedic assessment, manual therapy, and targeted treatment techniques. Whether');
+  if (p2) setField('massage-about-p2', p2);
+
+  // Steps — find each step by its number eyebrow
+  ['01','02','03','04'].forEach((num, i) => {
+    const numIdx = html.indexOf(`<span class="eyebrow" style="color: var(--tan);">${num}</span>`);
+    if (numIdx === -1) return;
+    const titleH3 = extractBetween(html, 'letter-spacing: -0.01em;">', '</h3>', numIdx);
+    if (titleH3) setField('massage-step-title-' + i, titleH3.trim());
+    const bodyP = extractParagraph(html, titleH3 ? titleH3.slice(0, 15) : '', numIdx);
+    // actually get the <p> after the h3
+    const h3End = html.indexOf('</h3>', numIdx) + 5;
+    const pStart = html.indexOf('<p>', h3End);
+    const pEnd = html.indexOf('</p>', pStart);
+    if (pStart !== -1 && pEnd !== -1 && pStart < numIdx + 800) {
+      setField('massage-step-body-' + i, html.slice(pStart + 3, pEnd).trim());
+    }
+  });
+
+  const closingP = extractParagraph(html, 'Book online in minutes. First visits are 60 minutes');
+  if (closingP) setField('massage-closing-p', closingP);
+}
+
+async function hydrateAcupuncture() {
+  const { content: html } = await getFile('service-acupuncture.html');
+
+  const heroP = extractParagraph(html, 'Balance the body. Support healing. Reduce stress.');
+  if (heroP) setField('acu-hero-p', heroP);
+
+  const aboutH2 = extractBetween(html, '<span class="eyebrow rv">— About this service</span>', '</h2>');
+  if (aboutH2) setField('acu-about-h2', aboutH2.replace(/.*<h2[^>]*>/s, '').replace(/<br>/g, ' ').trim());
+
+  const p1 = extractParagraph(html, 'Acupuncture is a safe, evidence-supported therapy');
+  if (p1) setField('acu-about-p1', p1);
+
+  const p2 = extractParagraph(html, 'By targeting specific points along');
+  if (p2) setField('acu-about-p2', p2);
+
+  ['01','02','03','04'].forEach((num, i) => {
+    const numIdx = html.indexOf(`<span class="eyebrow" style="color: var(--tan);">${num}</span>`);
+    if (numIdx === -1) return;
+    const titleH3 = extractBetween(html, 'letter-spacing: -0.01em;">', '</h3>', numIdx);
+    if (titleH3) setField('acu-step-title-' + i, titleH3.trim());
+    const h3End = html.indexOf('</h3>', numIdx) + 5;
+    const pStart = html.indexOf('<p>', h3End);
+    const pEnd = html.indexOf('</p>', pStart);
+    if (pStart !== -1 && pEnd !== -1 && pStart < numIdx + 800) {
+      setField('acu-step-body-' + i, html.slice(pStart + 3, pEnd).trim());
+    }
+  });
+
+  const closingP = extractParagraph(html, 'Acupuncture is now available at Isorropia');
+  if (closingP) setField('acu-closing-p', closingP);
+}
+
+async function hydratePractitioners() {
+  const { content: html } = await getFile('team.html');
+  PRACTITIONERS.forEach(p => {
+    const marker = `>${p.name}</h3>`;
+    const idx = html.indexOf(marker);
+    if (idx === -1) return;
+    const bioStart = html.indexOf('<p class="practitioner-bio">', idx);
+    if (bioStart === -1) return;
+    const bioEnd = html.indexOf('</p>', bioStart);
+    if (bioEnd === -1) return;
+    const bio = html.slice(bioStart + '<p class="practitioner-bio">'.length, bioEnd).trim();
+    setField('bio-' + p.id, bio);
+  });
+}
+
+async function hydrateHours() {
+  const { content: html } = await getFile('contact.html');
+  DAYS.forEach(day => {
+    const marker = `<span class="day">${day}</span><span class="time">`;
+    const idx = html.indexOf(marker);
+    if (idx === -1) return;
+    const valStart = idx + marker.length;
+    const valEnd = html.indexOf('</span>', valStart);
+    const display = html.slice(valStart, valEnd).trim();
+
+    const closedEl = document.getElementById('hours-closed-' + day);
+    const openEl   = document.getElementById('hours-open-' + day);
+    const closeEl  = document.getElementById('hours-close-' + day);
+
+    if (display === 'Closed') {
+      closedEl.checked = true;
+      openEl.disabled = true;
+      closeEl.disabled = true;
+      openEl.value = '';
+      closeEl.value = '';
+    } else {
+      closedEl.checked = false;
+      openEl.disabled = false;
+      closeEl.disabled = false;
+      // Parse "9 — 6" or "9:30 — 5" back to 24h time inputs
+      const parts = display.split(' — ');
+      if (parts.length === 2) {
+        openEl.value  = to24h(parts[0].trim());
+        closeEl.value = to24h(parts[1].trim());
+      }
+    }
+  });
+}
+
+function to24h(str) {
+  // Converts "9", "10", "9:30" back to "09:00", "10:00", "09:30"
+  // Hours on the site are bare numbers with no AM/PM, assumed AM for < 12, PM for >= open time
+  // Simple heuristic: treat <=8 as PM (e.g. "6" = 18:00), >8 as AM (e.g. "9" = 09:00)
+  // This matches the clinic's typical hours range
+  const [hStr, mStr] = str.split(':');
+  let h = parseInt(hStr);
+  const m = mStr ? parseInt(mStr) : 0;
+  // If hour <= 8 it's likely afternoon (PM)
+  if (h <= 8) h += 12;
+  return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0');
+}
+
+async function hydrateContact() {
+  const { content: html } = await getFile('contact.html');
+
+  // Phone
+  const phoneMatch = html.match(/\(6\d\d\) \d\d\d-\d\d\d\d/);
+  if (phoneMatch) setField('contact-phone', phoneMatch[0]);
+
+  // Email — from mailto href
+  const emailMatch = html.match(/href="mailto:([^"]+)"/);
+  if (emailMatch) setField('contact-email', emailMatch[1]);
+
+  // Address from footer: "#201 / 202 — 12894 16th Ave" pattern
+  const addrMatch = html.match(/<li>([^<]+) — ([^<]+)<\/li>/);
+  if (addrMatch) {
+    setField('contact-unit', addrMatch[1].trim());
+    setField('contact-street', addrMatch[2].trim());
+  }
+
+  // City + province
+  const cityMatch = html.match(/<li>([^,<]+), ([^<]+)<\/li>/);
+  if (cityMatch) {
+    setField('contact-city', cityMatch[1].trim());
+    setField('contact-province', cityMatch[2].trim());
+  }
+}
+
+async function hydrateFAQ() {
+  const { content: html } = await getFile('faq.html');
+  const faqDiv = extractBetween(html, '<div class=\"faq\">', '\n        </div>');
+  if (!faqDiv) return;
+
+  const items = [];
+  let searchFrom = 0;
+  while (true) {
+    const summaryStart = faqDiv.indexOf('<summary>', searchFrom);
+    if (summaryStart === -1) break;
+    const summaryEnd = faqDiv.indexOf('</summary>', summaryStart);
+    const q = faqDiv.slice(summaryStart + 9, summaryEnd).trim();
+    const answerStart = faqDiv.indexOf('<p>', summaryEnd);
+    const answerEnd = faqDiv.indexOf('</p>', answerStart);
+    const a = answerStart !== -1 ? faqDiv.slice(answerStart + 3, answerEnd).trim() : '';
+    items.push({ q, a });
+    searchFrom = answerEnd !== -1 ? answerEnd : summaryEnd + 10;
+  }
+
+  if (items.length > 0) {
+    faqData = items;
+    renderFAQ();
+  }
 }
 
 // ── Principles ────────────────────────────────────────────────────────────────
