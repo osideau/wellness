@@ -702,39 +702,19 @@
     <div class="panel" id="panel-config">
       <div class="panel-header">
         <div class="panel-eyebrow">— Settings</div>
-        <h2 class="panel-title">GitHub settings</h2>
-        <p class="panel-desc">Configure your GitHub repository so changes can be published directly to your site.</p>
+        <h2 class="panel-title">Connection</h2>
+        <p class="panel-desc">Enter the CMS worker URL provided by your web developer.</p>
       </div>
 
       <div class="config-note">
-        <strong>One-time setup.</strong> You'll need a GitHub Personal Access Token with <code>contents:write</code> permission on your repository. Create one at <code>github.com → Settings → Developer settings → Personal access tokens</code>. These credentials are stored only in your browser.
+        This is a one-time setup. Your developer will give you a Worker URL to paste here. No GitHub account or token is needed.
       </div>
 
       <div class="field-group">
-        <div class="field-group-title">Repository</div>
-        <div class="field-row">
-          <div class="field">
-            <label>GitHub username / org</label>
-            <input type="text" id="cfg-owner" placeholder="e.g. kiarnovar">
-          </div>
-          <div class="field">
-            <label>Repository name</label>
-            <input type="text" id="cfg-repo" placeholder="e.g. isorropia-site">
-          </div>
-        </div>
-        <div class="field-row">
-          <div class="field">
-            <label>Branch</label>
-            <input type="text" id="cfg-branch" value="main" placeholder="main">
-          </div>
-          <div class="field">
-            <label>Folder path (leave blank if root)</label>
-            <input type="text" id="cfg-path" placeholder="e.g. public">
-          </div>
-        </div>
+        <div class="field-group-title">Worker URL</div>
         <div class="field">
-          <label>Personal access token</label>
-          <input type="password" id="cfg-token" placeholder="ghp_...">
+          <label>CMS Worker URL</label>
+          <input type="text" id="cfg-worker" placeholder="https://isorropia-cms.yourname.workers.dev">
         </div>
       </div>
 
@@ -742,7 +722,7 @@
         <span class="action-bar-left" id="cfg-status"></span>
         <div style="display:flex; gap:0.75rem;">
           <button class="btn btn-secondary" onclick="testConnection()">Test connection</button>
-          <button class="btn btn-primary" onclick="saveConfig()">Save settings</button>
+          <button class="btn btn-primary" onclick="saveConfig()">Save</button>
         </div>
       </div>
     </div>
@@ -923,102 +903,64 @@ function escHtml(s) {
 // ── Config ────────────────────────────────────────────────────────────────────
 function saveConfig() {
   cfg = {
-    owner: document.getElementById('cfg-owner').value.trim(),
-    repo: document.getElementById('cfg-repo').value.trim(),
-    branch: document.getElementById('cfg-branch').value.trim() || 'main',
-    path: document.getElementById('cfg-path').value.trim(),
-    token: document.getElementById('cfg-token').value.trim(),
+    worker: document.getElementById('cfg-worker').value.trim().replace(/\/$/, ''),
   };
   localStorage.setItem('isorropia_cfg', JSON.stringify(cfg));
   toast('Settings saved');
-  document.getElementById('cfg-status').textContent = 'Saved locally';
+  document.getElementById('cfg-status').textContent = 'Saved';
 }
 
 function loadConfig() {
   const saved = localStorage.getItem('isorropia_cfg');
   if (!saved) return;
   cfg = JSON.parse(saved);
-  document.getElementById('cfg-owner').value = cfg.owner || '';
-  document.getElementById('cfg-repo').value = cfg.repo || '';
-  document.getElementById('cfg-branch').value = cfg.branch || 'main';
-  document.getElementById('cfg-path').value = cfg.path || '';
-  document.getElementById('cfg-token').value = cfg.token || '';
+  if (document.getElementById('cfg-worker')) {
+    document.getElementById('cfg-worker').value = cfg.worker || '';
+  }
 }
 
 async function testConnection() {
   saveConfig();
-  if (!cfg.owner || !cfg.repo || !cfg.token) {
-    toast('Fill in all fields first', true); return;
-  }
+  if (!cfg.worker) { toast('Enter the Worker URL first', true); return; }
   setStatus('saving', 'Testing...');
   try {
-    const res = await fetch(`https://api.github.com/repos/${cfg.owner}/${cfg.repo}`, {
-      headers: { Authorization: `token ${cfg.token}`, Accept: 'application/vnd.github.v3+json' }
+    const res = await fetch(`${cfg.worker}/ping`, {
+      headers: { 'X-CMS-Password': ADMIN_PASSWORD }
     });
-    if (res.ok) {
-      const data = await res.json();
+    const data = await res.json();
+    if (res.ok && data.ok) {
       setStatus('', 'Ready');
-      document.getElementById('cfg-status').textContent = `Connected to ${data.full_name}`;
-      toast('Connected to GitHub ✓');
+      document.getElementById('cfg-status').textContent = `Connected to ${data.repo}`;
+      toast('Connected ✓');
     } else {
       setStatus('error', 'Error');
-      toast('Connection failed — check your token and repo name', true);
+      toast('Failed: ' + (data.error || res.status), true);
     }
   } catch(e) {
     setStatus('error', 'Error');
-    toast('Network error', true);
+    toast('Network error — check the Worker URL', true);
   }
 }
 
 // ── GitHub publish ────────────────────────────────────────────────────────────
 async function getFile(filename) {
-  const path = cfg.path ? `${cfg.path}/${filename}` : filename;
-  const res = await fetch(
-    `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${path}?ref=${cfg.branch}`,
-    { headers: { Authorization: `token ${cfg.token}`, Accept: 'application/vnd.github.v3+json' } }
-  );
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(`GitHub: ${err.message || res.status} (fetching ${filename})`);
-  }
+  const res = await fetch(`${cfg.worker}/file?name=${encodeURIComponent(filename)}`, {
+    headers: { 'X-CMS-Password': ADMIN_PASSWORD }
+  });
   const data = await res.json();
-  // Decode base64 safely
-  const binary = atob(data.content.replace(/\n/g,''));
-  const bytes = new Uint8Array(binary.length);
-  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-  const content = new TextDecoder('utf-8').decode(bytes);
-  return { content, sha: data.sha, path };
+  if (!res.ok) throw new Error(data.error || res.status);
+  return { content: data.content, sha: data.sha, path: filename };
 }
 
 async function putFile(filePath, content, sha, message) {
-  // Encode utf-8 → base64 safely
-  const bytes = new TextEncoder().encode(content);
-  let binary = '';
-  for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
-  const encoded = btoa(binary);
-
-  const res = await fetch(
-    `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${filePath}`,
-    {
-      method: 'PUT',
-      headers: {
-        Authorization: `token ${cfg.token}`,
-        Accept: 'application/vnd.github.v3+json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        message,
-        content: encoded,
-        sha,
-        branch: cfg.branch,
-      })
-    }
-  );
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(`GitHub: ${err.message || res.status} (writing ${filePath})`);
-  }
-  return res.json();
+  const res = await fetch(`${cfg.worker}/publish`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-CMS-Password': ADMIN_PASSWORD },
+    body: JSON.stringify({ filename: filePath, content, sha, message })
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || res.status);
+  return data;
 }
 
 // ── Publish sections ──────────────────────────────────────────────────────────
