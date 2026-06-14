@@ -913,7 +913,7 @@ body.menu-open .site-header .brand img {
   gap: clamp(1.5rem, 3vw, 2.5rem);
 }
 .practitioners--centered {
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(160px, 220px));
   justify-content: center;
 }
 @media (max-width: 900px) {
