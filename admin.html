@@ -1135,57 +1135,47 @@ function replaceBioAfterName(html, marker, bio) {
 }
 
 function regeneratePractitionerGrid(html, pracs, pageType) {
-  // Find the <div class="practitioners"> block and replace its contents
   const startMarker = '<div class="practitioners">';
   const startIdx = html.indexOf(startMarker);
   if (startIdx === -1) {
-    // Acupuncture page may not have the grid yet — inject it before the closing section
     if (pageType === 'acupuncture' && pracs.length > 0) {
       return injectAcupunctureGrid(html, pracs);
     }
     return html;
   }
   const contentStart = startIdx + startMarker.length;
-  const endMarker = '
-        </div>
-      </div>
-    </section>';
+  const endMarker = '\n        </div>\n      </div>\n    </section>';
   const endIdx = html.indexOf(endMarker, contentStart);
   if (endIdx === -1) return html;
 
-  const gridInner = pracs.map((p, i) => buildPractitionerCard(p, i)).join('
-');
-  return html.slice(0, contentStart) + '
-
-' + gridInner + '
-
-        ' + html.slice(endIdx + 1);
+  const gridInner = pracs.map((p, i) => buildPractitionerCard(p, i)).join('\n');
+  return html.slice(0, contentStart) + '\n\n' + gridInner + '\n\n        ' + html.slice(endIdx + 1);
 }
 
 function injectAcupunctureGrid(html, pracs) {
-  // Replace the "joining soon" split section with a full practitioner grid
   const sectionStart = html.indexOf('<!-- PRACTITIONERS (coming soon) -->');
   if (sectionStart === -1) return html;
   const sectionEnd = html.indexOf('</section>', sectionStart) + '</section>'.length;
 
-  const gridInner = pracs.map((p, i) => buildPractitionerCard(p, i)).join('
-');
-  const newSection = `    <!-- PRACTITIONERS -->
-    <section class="section">
-      <div class="wrap">
-        <div style="margin-bottom: clamp(2.5rem, 5vw, 4rem);">
-          <span class="eyebrow rv">— Your practitioners</span>
-          <h2 class="rv" data-delay="1" style="margin-top: 1.5rem; max-width: 22ch;">
-            The acupuncturists at<br>Isorropia.
-          </h2>
-        </div>
-        <div class="practitioners">
-
-${gridInner}
-
-        </div>
-      </div>
-    </section>`;
+  const gridInner = pracs.map((p, i) => buildPractitionerCard(p, i)).join('\n');
+  const newSection = [
+    '    <!-- PRACTITIONERS -->',
+    '    <section class="section">',
+    '      <div class="wrap">',
+    '        <div style="margin-bottom: clamp(2.5rem, 5vw, 4rem);">',
+    '          <span class="eyebrow rv">— Your practitioners</span>',
+    '          <h2 class="rv" data-delay="1" style="margin-top: 1.5rem; max-width: 22ch;">',
+    '            The acupuncturists at<br>Isorropia.',
+    '          </h2>',
+    '        </div>',
+    '        <div class="practitioners">',
+    '',
+    gridInner,
+    '',
+    '        </div>',
+    '      </div>',
+    '    </section>'
+  ].join('\n');
 
   return html.slice(0, sectionStart) + newSection + html.slice(sectionEnd);
 }
