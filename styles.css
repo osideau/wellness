@@ -911,7 +911,7 @@ body.menu-open .site-header .brand img {
 /* ---------- Team grid (editorial) ---------- */
 .practitioners {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: clamp(1.5rem, 3vw, 2.5rem);
 }
 .practitioners--centered {
@@ -921,7 +921,7 @@ body.menu-open .site-header .brand img {
   gap: clamp(1.5rem, 3vw, 2.5rem);
 }
 .practitioners--centered .practitioner {
-  flex: 0 1 clamp(160px, 18vw, 220px);
+  flex: 0 1 clamp(200px, 28vw, 360px);
 }
 @media (max-width: 900px) {
   .practitioners {
