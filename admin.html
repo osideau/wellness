@@ -1517,7 +1517,7 @@ function replaceBioAfterName(html, marker, bio) {
 }
 
 function regeneratePractitionerGrid(html, pracs, pageType) {
-  const startMarker = '<div class="practitioners">';
+  const startMarker = '<div class="practitioners practitioners--centered">';
   const startIdx = html.indexOf(startMarker);
   if (startIdx === -1) {
     if (pageType === 'acupuncture' && pracs.length > 0) {
@@ -1550,7 +1550,7 @@ function injectAcupunctureGrid(html, pracs) {
     '            The acupuncturists at<br>Isorropia.',
     '          </h2>',
     '        </div>',
-    '        <div class="practitioners">',
+    '        <div class="practitioners practitioners--centered">',
     '',
     gridInner,
     '',

@@ -912,6 +912,10 @@ body.menu-open .site-header .brand img {
   grid-template-columns: repeat(5, 1fr);
   gap: clamp(1.5rem, 3vw, 2.5rem);
 }
+.practitioners--centered {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  justify-content: center;
+}
 @media (max-width: 900px) {
   .practitioners {
     grid-template-columns: repeat(2, 1fr);
