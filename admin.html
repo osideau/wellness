@@ -41,7 +41,8 @@
       display: grid;
       grid-template-columns: 260px 1fr;
       grid-template-rows: 56px 1fr;
-      min-height: 100vh;
+      height: 100vh;
+      overflow: hidden;
     }
 
     .topbar {
@@ -62,7 +63,7 @@
     .status-dot.error { background: #f87171; }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
-    .sidebar { background: #f0e9da; border-right: var(--hairline); padding: 1.5rem 0; overflow-y: auto; }
+    .sidebar { background: #f0e9da; border-right: var(--hairline); padding: 1.5rem 0; overflow-y: auto; position: sticky; top: 0; height: calc(100vh - 56px); }
     .sidebar-section { margin-bottom: 0.5rem; }
     .sidebar-heading { font-family: var(--font-d); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--olive-mid); padding: 0.75rem 1.5rem 0.4rem; }
     .sidebar-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 1.5rem; cursor: pointer; font-size: 13px; font-weight: 400; color: var(--olive-soft); border: none; background: none; width: 100%; text-align: left; transition: background var(--med), color var(--med); position: relative; }
