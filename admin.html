@@ -232,9 +232,13 @@
 
     <div class="sidebar-section">
       <div class="sidebar-heading">Content</div>
+      <button class="sidebar-item" onclick="switchPanel('practitioners-page', this)">
+        <svg class="sidebar-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 14V4l6-2 6 2v10"/><rect x="6" y="9" width="4" height="5"/></svg>
+        Practitioners page
+      </button>
       <button class="sidebar-item" onclick="switchPanel('practitioners', this)">
         <svg class="sidebar-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="5" r="2.5"/><circle cx="11" cy="5" r="2"/><path d="M1 14c0-2.8 2.2-5 5-5s5 2.2 5 5"/><path d="M11 9c2 0 4 1 4 4"/></svg>
-        Practitioners
+        Practitioner bios
       </button>
       <button class="sidebar-item" onclick="switchPanel('hours', this)">
         <svg class="sidebar-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3.5l2 2"/></svg>
@@ -466,6 +470,49 @@
       <div class="action-bar">
         <span class="action-bar-left" id="acupuncture-last-saved"></span>
         <button class="btn btn-primary" onclick="publishSection('acupuncture')">Publish changes →</button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════ PRACTITIONERS PAGE ═══════════════════════════════ -->
+    <div class="panel" id="panel-practitioners-page">
+      <div class="panel-header">
+        <div class="panel-eyebrow">— Practitioners page</div>
+        <h2 class="panel-title">Practitioners page</h2>
+        <p class="panel-desc">Edit the hero, intro section, pause line, and closing call-to-action.</p>
+      </div>
+
+      <div class="field-group">
+        <div class="field-group-title">Hero</div>
+        <div class="field"><label>Headline</label><input type="text" id="tp-h1" value="The people who will care for you."></div>
+        <div class="field"><label>Subtext</label><textarea id="tp-hero-p" rows="3">Each member of the practice has been chosen for craft, for attention, and for the way they hold a room. Book directly with the practitioner whose work speaks to you.</textarea></div>
+      </div>
+
+      <div class="field-group">
+        <div class="field-group-title">Intro section</div>
+        <div class="field"><label>Headline</label><input type="text" id="tp-intro-h2" value="Chosen for craft."></div>
+        <div class="field"><label>Paragraph 1</label><textarea id="tp-intro-p1" rows="3">Every practitioner here has been brought into the practice for a specific reason. Not to fill a slot. Not to grow a roster. For the way they work, and the way they hold a room.</textarea></div>
+        <div class="field"><label>Paragraph 2</label><textarea id="tp-intro-p2" rows="3">You will find specialists in chronic pain, prenatal care, deep tissue, injury recovery, headache and TMJ, and relaxation. Book directly with the practitioner whose work speaks to you. We will help if you are not sure.</textarea></div>
+      </div>
+
+      <div class="field-group">
+        <div class="field-group-title">Pause line</div>
+        <div class="field"><label>Text</label><input type="text" id="tp-pause" value="Each treatment is a conversation between hands and body."></div>
+      </div>
+
+      <div class="field-group">
+        <div class="field-group-title">Team grid label</div>
+        <div class="field"><label>Right-side label</label><input type="text" id="tp-grid-label" value="Eight therapists, one acupuncturist."></div>
+      </div>
+
+      <div class="field-group">
+        <div class="field-group-title">Join us (closing section)</div>
+        <div class="field"><label>Headline</label><input type="text" id="tp-join-h2" value="Looking to join the team?"></div>
+        <div class="field"><label>Paragraph</label><textarea id="tp-join-p" rows="2">We are always interested in conversations with RMTs and acupuncturists who share this approach.</textarea></div>
+      </div>
+
+      <div class="action-bar">
+        <span class="action-bar-left" id="practitioners-page-last-saved"></span>
+        <button class="btn btn-primary" onclick="publishSection('practitioners-page')">Publish changes →</button>
       </div>
     </div>
 
@@ -728,6 +775,7 @@ async function loadPanel(id) {
     else if (id === 'services') await hydrateServices();
     else if (id === 'massage')  await hydrateMassage();
     else if (id === 'acupuncture') await hydrateAcupuncture();
+    else if (id === 'practitioners-page') await hydratePractitionersPage();
     else if (id === 'practitioners') await hydratePractitioners();
     else if (id === 'hours')    await hydrateHours();
     else if (id === 'contact')  await hydrateContact();
@@ -971,6 +1019,44 @@ async function hydrateAcupuncture() {
 
   const closingP = extractParagraph(html, 'Acupuncture is now available at Isorropia');
   if (closingP) setField('acu-closing-p', closingP);
+}
+
+async function hydratePractitionersPage() {
+  const { content: html } = await getFile('team.html');
+
+  // Hero h1
+  const h1 = extractBetween(html, '<h1 class="rv" data-delay="1">', '</h1>');
+  if (h1) setField('tp-h1', h1.replace(/<br>/g, ' ').replace(/<[^>]+>/g, '').trim());
+
+  // Hero subtext
+  const heroP = extractParagraph(html, 'Each member of the practice has been chosen for craft');
+  if (heroP) setField('tp-hero-p', heroP);
+
+  // Intro h2
+  const introH2 = extractBetween(html, '<span class="eyebrow rv">— The team</span>', '</h2>');
+  if (introH2) setField('tp-intro-h2', introH2.replace(/.*<h2[^>]*>/s, '').replace(/<br>/g, ' ').trim());
+
+  // Intro paragraphs
+  const p1 = extractParagraph(html, 'Every practitioner here has been brought into the practice');
+  if (p1) setField('tp-intro-p1', p1);
+  const p2 = extractParagraph(html, 'You will find specialists in chronic pain');
+  if (p2) setField('tp-intro-p2', p2);
+
+  // Pause line
+  const pause = extractBetween(html, '<p class="pause-line rv">', '</p>');
+  if (pause) setField('tp-pause', pause.replace(/<br>/g, ' ').trim());
+
+  // Grid label
+  const gridLabel = extractBetween(html, '<span class="label text-mid rv" data-delay="1">', '</span>');
+  if (gridLabel) setField('tp-grid-label', gridLabel.trim());
+
+  // Join us h2
+  const joinH2 = extractBetween(html, '<span class="eyebrow rv">— Practitioners welcome</span>', '</h2>');
+  if (joinH2) setField('tp-join-h2', joinH2.replace(/.*<h2[^>]*>/s, '').replace(/<br>/g, ' ').trim());
+
+  // Join us paragraph
+  const joinP = extractParagraph(html, 'We are always interested in conversations with RMTs');
+  if (joinP) setField('tp-join-p', joinP);
 }
 
 async function hydratePractitioners() {
@@ -1316,6 +1402,7 @@ async function publishSection(section) {
     else if (section === 'services') await publishServices();
     else if (section === 'massage')  await publishMassage();
     else if (section === 'acupuncture') await publishAcupuncture();
+    else if (section === 'practitioners-page') await publishPractitionersPage();
     else if (section === 'practitioners') await publishPractitioners();
     else if (section === 'hours')    await publishHours();
     else if (section === 'contact')  await publishContact();
@@ -1471,6 +1558,25 @@ async function publishAcupuncture() {
 
   await putFile(path, html, sha, 'CMS: update acupuncture page');
 }
+
+// ── PRACTITIONERS PAGE ────────────────────────────────────────────────────────
+async function publishPractitionersPage() {
+  const { content, sha, path } = await getFile('team.html');
+  let html = content;
+
+  html = replaceText(html, 'The people who<br>\n          will care for you.', val('tp-h1'));
+  html = replaceParagraphAfter(html, 'Each member of the practice has been chosen for craft', val('tp-hero-p'));
+  html = replaceText(html, 'Chosen for craft.', val('tp-intro-h2'));
+  html = replaceParagraphAfter(html, 'Every practitioner here has been brought into the practice', val('tp-intro-p1'));
+  html = replaceParagraphAfter(html, 'You will find specialists in chronic pain', val('tp-intro-p2'));
+  html = replaceText(html, 'Each treatment is a conversation<br>\n        between hands and body.', val('tp-pause').replace(' between ', '<br>\n        between '));
+  html = replaceText(html, 'Eight therapists, one acupuncturist.', val('tp-grid-label'));
+  html = replaceText(html, 'Looking to join the team?', val('tp-join-h2'));
+  html = replaceParagraphAfter(html, 'We are always interested in conversations with RMTs', val('tp-join-p'));
+
+  await putFile(path, html, sha, 'CMS: update practitioners page');
+}
+
 
 // ── PRACTITIONERS ─────────────────────────────────────────────────────────────
 async function publishPractitioners() {
