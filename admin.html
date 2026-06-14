@@ -993,20 +993,31 @@ async function publishHome() {
   const { content, sha, path } = await getFile('index.html');
   let html = content;
 
-  // Update hero h1
+  // Hero h1 — exact string
   html = html.replace(
-    /(<h1[^>]*>)\s*The art of returning to yourself\.\s*(<\/h1>)/,
-    `$1\n          ${h1}\n        $2`
+    '          The art of returning to yourself.',
+    `          ${h1}`
   );
-  // Update eyebrow
-  html = html.replace(/ISORROPIA WELLNESS CLINIC — ESTABLISHED \d+/, eyebrow);
-  // Update services h2
+  // Eyebrow label
   html = html.replace(
-    /Care that grows with\s*[\s\S]*?the practice\./,
+    'Isorropia Wellness Clinic — Established 2026',
+    eyebrow
+  );
+  // Services h2 — spans two lines
+  html = html.replace(
+    'Care that grows with the practice.',
     servicesH2
   );
-  // Update closing
-  html = html.replace(/Your recovery\s*[\s\S]*?starts here\./, closing);
+  // Services label
+  html = html.replace(
+    'Two modalities, one practice',
+    servicesLabel
+  );
+  // Closing — has a <br> in it
+  html = html.replace(
+    'Your recovery<br>starts here.',
+    closing
+  );
 
   await putFile(path, html, sha, 'CMS: update homepage content');
 }
@@ -1018,11 +1029,15 @@ async function publishPractitioners() {
   PRACTITIONERS.forEach(p => {
     const bio = document.getElementById('bio-' + p.id).value;
     if (!bio) return;
-    // Replace bio paragraph following practitioner name
-    const nameRegex = new RegExp(`(${escapeRegex(p.name)}</h3>[\\s\\S]*?<p class="practitioner-bio">)[\\s\\S]*?(<\\/p>)`);
-    if (nameRegex.test(html)) {
-      html = html.replace(nameRegex, `$1${bio}$2`);
-    }
+    // Match: name in h3, then skip atmos/booking divs, replace first practitioner-bio paragraph
+    const marker = `>${p.name}</h3>`;
+    const idx = html.indexOf(marker);
+    if (idx === -1) return;
+    const after = html.indexOf('<p class="practitioner-bio">', idx);
+    if (after === -1) return;
+    const end = html.indexOf('</p>', after);
+    if (end === -1) return;
+    html = html.slice(0, after) + `<p class="practitioner-bio">${bio}` + html.slice(end);
   });
 
   await putFile(path, html, sha, 'CMS: update practitioner bios');
@@ -1036,11 +1051,27 @@ async function publishHours() {
     const closed = document.getElementById('hours-closed-' + day).checked;
     const open = document.getElementById('hours-open-' + day).value;
     const close = document.getElementById('hours-close-' + day).value;
-    const display = closed ? 'Closed'
-      : `${fmtTime(open)} — ${fmtTime(close)}`;
 
-    const re = new RegExp(`(<span class="day">${day}<\\/span><span class="time">)[^<]*(</span>)`);
-    html = html.replace(re, `$1${display}$2`);
+    // Format like the site: "9 — 6" or "Closed"
+    let display;
+    if (closed) {
+      display = 'Closed';
+    } else {
+      const fmt = t => {
+        if (!t) return '';
+        const [h] = t.split(':');
+        return String(parseInt(h));
+      };
+      display = `${fmt(open)} — ${fmt(close)}`;
+    }
+
+    // Exact string match: <span class="day">Monday</span><span class="time">9 — 6</span>
+    const startMarker = `<span class="day">${day}</span><span class="time">`;
+    const startIdx = html.indexOf(startMarker);
+    if (startIdx === -1) return;
+    const valueStart = startIdx + startMarker.length;
+    const valueEnd = html.indexOf('</span>', valueStart);
+    html = html.slice(0, valueStart) + display + html.slice(valueEnd);
   });
 
   await putFile(path, html, sha, 'CMS: update clinic hours');
@@ -1054,20 +1085,20 @@ async function publishContact() {
   const phone = document.getElementById('contact-phone').value;
   const email = document.getElementById('contact-email').value;
 
-  // Update contact.html
   let { content, sha, path } = await getFile('contact.html');
   let html = content;
 
-  html = html.replace(/#\d+\s*\/\s*\d+\s*—\s*\d+[^<]+Avenue/, `${unit} — ${street}`);
-  html = html.replace(/Surrey, BC [A-Z]\d[A-Z] \d[A-Z]\d/, `${city}, ${province}`);
-  html = html.replace(/hello@isoroppia\.ca|info@isorropia\.ca/g, email);
-  html = html.replace(/\(604\)\s*417-1434/g, phone);
+  // Address — find and replace exact strings
+  html = html.replace(/#201 \/ 202 — 12894 16th Avenue/, `${unit} — ${street}`);
+  html = html.replace(/Surrey, BC V4A 1N7/g, `${city}, ${province}`);
+  html = html.replace(/info@isorropia\.ca/g, email);
+  html = html.replace(/hello@isoroppia\.ca/g, email);
+  html = html.replace(/\(604\) 417-1434/g, phone);
 
   await putFile(path, html, sha, 'CMS: update contact info');
 }
 
 async function publishFAQ() {
-  // Sync faqData from DOM
   faqData = faqData.map((_, i) => ({
     q: document.getElementById('faq-q-' + i)?.value || '',
     a: document.getElementById('faq-a-' + i)?.value || '',
@@ -1076,7 +1107,6 @@ async function publishFAQ() {
   const { content, sha, path } = await getFile('faq.html');
   let html = content;
 
-  // Replace the entire accordion block
   const accordionContent = faqData.map(f => `
           <details>
             <summary>${f.q}</summary>
@@ -1085,11 +1115,17 @@ async function publishFAQ() {
             </div>
           </details>`).join('\n');
 
-  // Find and replace the FAQ accordion section (between first <details> and last </details>)
-  html = html.replace(
-    /(<div class="faq">)([\s\S]*?)(<\/div>\s*<\/div>\s*<\/section>)/,
-    `$1\n${accordionContent}\n        $3`
-  );
+  // Replace between <div class="faq"> and </div> that closes it
+  const startMarker = '<div class="faq">';
+  const startIdx = html.indexOf(startMarker);
+  if (startIdx !== -1) {
+    const contentStart = startIdx + startMarker.length;
+    const endMarker = '\n        </div>';
+    const endIdx = html.indexOf(endMarker, contentStart);
+    if (endIdx !== -1) {
+      html = html.slice(0, contentStart) + '\n' + accordionContent + '\n        ' + html.slice(endIdx + 1);
+    }
+  }
 
   await putFile(path, html, sha, 'CMS: update FAQ');
 }
