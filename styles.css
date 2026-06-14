@@ -913,8 +913,13 @@ body.menu-open .site-header .brand img {
   gap: clamp(1.5rem, 3vw, 2.5rem);
 }
 .practitioners--centered {
-  grid-template-columns: repeat(auto-fit, minmax(160px, 220px));
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+.practitioners--centered .practitioner {
+  flex: 0 1 clamp(160px, 18vw, 220px);
 }
 @media (max-width: 900px) {
   .practitioners {
