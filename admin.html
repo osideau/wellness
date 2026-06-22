@@ -1543,32 +1543,29 @@ async function publishHome() {
   let html = content;
 
   html = replaceText(html, 'The art of returning to yourself.', val('home-h1'));
-  html = replaceText(html, 'Isorropia Wellness Clinic — Established 2026', val('home-eyebrow'));
+  html = replaceText(html, 'Isorropia Wellness Clinic \u2014 Established 2026', val('home-eyebrow'));
   html = replaceText(html, 'Care that grows with the practice.', val('home-services-h2'));
   html = replaceText(html, 'Two modalities, one practice', val('home-services-label'));
+
   // Pull quote
+  html = replaceBetween(html, '<p class="pullquote-text rv">', '</p>',
+    '\n          ' + val('home-pullquote') + '\n        ');
+
+  // Team teaser h2 — replace entire contents between the h2 tags
   html = replaceBetween(html,
-    '<p class="pullquote-text rv">',
-    '</p>',
-    '\n          ' + val('home-pullquote') + '\n        '
-  );
-  // Team teaser h2
-  html = replaceBetween(html,
-    '<h2 class="rv" data-delay="1">\n              A small,<br>',
+    '<h2 class="rv" data-delay="1">',
     '</h2>',
-    '\n              A small,<br>\n              ' + val('home-team-h2').replace('A small,', '').trim() + '\n            '
-  );
+    '\n              ' + val('home-team-h2') + '\n            ');
+
   // Team teaser p
-  html = replaceBetween(html,
-    '<p class="rv" data-delay="2">\n              Each member',
-    '</p>',
-    '\n              ' + val('home-team-p') + '\n            '
-  );
-  // Closing — simple text replace
+  html = replaceParagraphAfter(html, 'Each member of the practice has been chosen for craft', val('home-team-p'));
+
+  // Closing
   html = replaceText(html, 'Your recovery<br>starts here.', val('home-closing'));
 
   await putFile(path, html, sha, 'CMS: update homepage');
 }
+
 
 // ── ABOUT ─────────────────────────────────────────────────────────────────────
 async function publishAbout() {
