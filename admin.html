@@ -884,7 +884,29 @@ async function loadPanel(id) {
 
 function setField(id, value) {
   const el = document.getElementById(id);
-  if (el && value !== null && value !== undefined) el.value = value.trim();
+  if (el && value !== null && value !== undefined) el.value = decodeHtml(value.trim());
+}
+
+function decodeHtml(str) {
+  // Decode HTML entities so fields show plain text, not &amp; &mdash; etc.
+  const txt = document.createElement('textarea');
+  txt.innerHTML = str
+    .replace(/&amp;/g, '&')
+    .replace(/&mdash;/g, '—')
+    .replace(/&ndash;/g, '–')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&ldquo;/g, '“')
+    .replace(/&rdquo;/g, '”')
+    .replace(/&lsquo;/g, '‘')
+    .replace(/&rsquo;/g, '’')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&#8212;/g, '—')
+    .replace(/&#8216;/g, '‘')
+    .replace(/&#8217;/g, '’')
+    .replace(/&#8220;/g, '“')
+    .replace(/&#8221;/g, '”');
+  return txt.value || str;
 }
 
 // Extract text content of the first element matching a simple pattern
@@ -1466,10 +1488,12 @@ async function putFile(filePath, content, sha, message) {
 
 async function putImage(filePath, file, sha, message) {
   const base64 = await fileToBase64(file);
+  const body = { filename: filePath, content: base64, message, encoding: 'base64' };
+  if (sha) body.sha = sha; // omit sha for new files
   const res = await fetch(`${WORKER_URL}/publish`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'X-CMS-Password': ADMIN_PASSWORD },
-    body: JSON.stringify({ filename: filePath, content: base64, sha, message, encoding: 'base64' })
+    body: JSON.stringify(body)
   });
   const data = await res.json();
   if (!res.ok) throw new Error(data.error || res.status);
