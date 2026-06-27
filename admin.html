@@ -159,6 +159,20 @@
     #toast.show { opacity: 1; transform: translateY(0); }
     #toast.error { background: #7f1d1d; }
 
+    /* Publish progress bar */
+    #publish-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--ink); color: var(--bone); font-size: 13px; padding: 0.85rem 1.5rem; display: flex; align-items: center; gap: 1rem; z-index: 1000; transform: translateY(100%); transition: transform 0.3s ease; }
+    #publish-bar.show { transform: translateY(0); }
+    #publish-bar.success { background: #14532d; }
+    #publish-bar.error { background: #7f1d1d; }
+    .pb-icon { font-size: 15px; flex-shrink: 0; }
+    .pb-msg { flex: 1; }
+    .pb-track { flex: 0 0 160px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; overflow: hidden; }
+    .pb-fill { height: 100%; background: var(--tan); border-radius: 2px; width: 0%; transition: width 0.5s ease; }
+    .pb-close { background: none; border: none; color: inherit; opacity: 0.6; cursor: pointer; font-size: 18px; padding: 0 0 0 0.5rem; line-height: 1; }
+    .pb-close:hover { opacity: 1; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .pb-spinner { display: inline-block; width: 13px; height: 13px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 4px; }
+
     .info-note { background: #fff; border: var(--hairline); border-left: 3px solid var(--tan); border-radius: var(--radius); padding: 0.875rem 1.25rem; font-size: 12px; color: var(--olive-soft); margin-bottom: 1.5rem; line-height: 1.7; }
 
     /* Page assignment checkboxes */
@@ -846,11 +860,15 @@
 </div>
 
 <div id="toast"></div>
+<div id="publish-bar"><span class="pb-icon" id="pb-icon"></span><span class="pb-msg" id="pb-msg"></span><div class="pb-track" id="pb-track" style="display:none"><div class="pb-fill" id="pb-fill"></div></div><button class="pb-close" onclick="hidePublishBar()">&#215;</button></div>
 
 <script>
 // ── Config ────────────────────────────────────────────────────────────────────
 const ADMIN_PASSWORD = 'isorropia2026';
 const WORKER_URL = 'https://isorropia-cms.kiarnovar.workers.dev';
+const SITE_URL = 'https://isorropia.ca';
+const SECTION_FILE = { home:'index.html', about:'about.html', services:'services.html', massage:'service-massage.html', acupuncture:'service-acupuncture.html', 'practitioners-page':'team.html', practitioners:'team.html', hours:'index.html', contact:'contact.html', faq:'faq.html', privacy:'privacy.html', terms:'terms.html' };
+let _publishMarker = null, _publishPollFile = null;
 
 // ── Data ──────────────────────────────────────────────────────────────────────
 const PRACTITIONERS = [
@@ -1691,6 +1709,14 @@ async function getFile(filename) {
 }
 
 async function putFile(filePath, content, sha, message) {
+  // Inject a version marker so we can detect when the page goes live
+  const marker = 'cms-v:' + Date.now();
+  if (content.startsWith('<!DOCTYPE html>') || content.startsWith('<!doctype html>')) {
+    content = content.replace(/<!--\s*cms-v:\d+\s*-->/, '');
+    content = content.replace('<!DOCTYPE html>', '<!DOCTYPE html><!-- ' + marker + ' -->');
+    content = content.replace('<!doctype html>', '<!doctype html><!-- ' + marker + ' -->');
+  }
+  if (!_publishMarker) { _publishMarker = marker; _publishPollFile = filePath; }
   const res = await fetch(`${WORKER_URL}/publish`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'X-CMS-Password': ADMIN_PASSWORD },
@@ -1747,7 +1773,7 @@ async function publishSection(section) {
     const savedEl = document.getElementById(section + '-last-saved') ||
                     document.getElementById(section.replace('practitioners','prac') + '-last-saved');
     if (savedEl) savedEl.textContent = `Last published at ${now}`;
-    toast('Published — site will update in ~30s ✓');
+    startPublishPoll(section);
   } catch(e) {
     setStatus('error', 'Failed');
     console.error(e);
@@ -2090,18 +2116,22 @@ async function publishFAQ() {
   const { content, sha, path } = await getFile('faq.html');
   let html = content;
 
-  const accordionContent = faqData.map(f => `
+  const accordionContent = faqData.map(f => {
+    const paras = f.a.split(/\n\n+/).map(p => p.trim()).filter(Boolean);
+    const answerHtml = paras.length ? paras.map(p => `              <p>${encodeForHtml(p)}</p>`).join('\n') : '              <p></p>';
+    return `
           <details>
-            <summary>${f.q}</summary>
+            <summary>${encodeForHtml(f.q)}</summary>
             <div class="faq-answer">
-              <p>${f.a}</p>
+${answerHtml}
             </div>
-          </details>`).join('\n');
+          </details>`;
+  }).join('\n');
 
-  const startMarker = '<div class="faq">';
+  const startMarker = '<div class="faq';
   const startIdx = html.indexOf(startMarker);
   if (startIdx !== -1) {
-    const contentStart = startIdx + startMarker.length;
+    const contentStart = html.indexOf('>', startIdx) + 1;
     const endMarker = '\n        </div>';
     const endIdx = html.indexOf(endMarker, contentStart);
     if (endIdx !== -1) {
@@ -2499,6 +2529,70 @@ function toast(msg, isError = false) {
   t.className = 'show' + (isError ? ' error' : '');
   clearTimeout(t._timer);
   t._timer = setTimeout(() => t.className = '', 3500);
+}
+
+// ── Publish progress bar ───────────────────────────────────────────────────────
+function showPublishBar(state, msg, showProgress = false) {
+  const bar = document.getElementById('publish-bar');
+  const icon = document.getElementById('pb-icon');
+  const msgEl = document.getElementById('pb-msg');
+  const track = document.getElementById('pb-track');
+  bar.className = 'show' + (state === 'success' ? ' success' : state === 'error' ? ' error' : '');
+  icon.innerHTML = state === 'success' ? '&#10003;' : state === 'error' ? '&#9888;' : '';
+  msgEl.innerHTML = msg;
+  track.style.display = showProgress ? 'block' : 'none';
+}
+
+function hidePublishBar() {
+  document.getElementById('publish-bar').className = '';
+  clearTimeout(window._pollTimer);
+}
+
+async function startPublishPoll(section) {
+  const marker = _publishMarker;
+  const primaryFile = SECTION_FILE[section] || (_publishPollFile || 'index.html');
+  const pollUrl = SITE_URL + '/' + primaryFile;
+
+  // Show committed state with animated progress bar
+  showPublishBar('working', 'Committed to GitHub &mdash; waiting for site to update...', true);
+  const fill = document.getElementById('pb-fill');
+  fill.style.transition = 'none';
+  fill.style.width = '5%';
+  // Animate to 85% over 50 seconds
+  setTimeout(() => {
+    fill.style.transition = 'width 50s cubic-bezier(0.15,0,0.4,1)';
+    fill.style.width = '85%';
+  }, 100);
+
+  // Poll the live site every 6 seconds for up to 90 seconds
+  let elapsed = 0;
+  const maxWait = 90000;
+  const interval = 6000;
+
+  clearTimeout(window._pollTimer);
+  async function poll() {
+    try {
+      const res = await fetch(pollUrl + '?v=' + Date.now(), { cache: 'no-store' });
+      const text = await res.text();
+      if (marker && text.includes(marker)) {
+        fill.style.transition = 'width 0.4s ease';
+        fill.style.width = '100%';
+        setTimeout(() => {
+          showPublishBar('success', 'Changes are live on the site &#10003;');
+          setTimeout(() => hidePublishBar(), 5000);
+        }, 400);
+        return;
+      }
+    } catch (_) {}
+    elapsed += interval;
+    if (elapsed >= maxWait) {
+      showPublishBar('success', 'Published &#10003; &mdash; changes should be visible shortly');
+      setTimeout(() => hidePublishBar(), 6000);
+      return;
+    }
+    window._pollTimer = setTimeout(poll, interval);
+  }
+  window._pollTimer = setTimeout(poll, interval);
 }
 </script>
 </body>
