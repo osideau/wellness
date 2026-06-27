@@ -270,6 +270,18 @@
     </div>
 
     <div class="sidebar-section">
+      <div class="sidebar-heading">Legal</div>
+      <button class="sidebar-item" onclick="switchPanel('privacy', this)">
+        <svg class="sidebar-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2L3 4v4c0 3 2.5 5.5 5 6 2.5-.5 5-3 5-6V4L8 2z"/></svg>
+        Privacy Policy
+      </button>
+      <button class="sidebar-item" onclick="switchPanel('terms', this)">
+        <svg class="sidebar-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2h8a1 1 0 011 1v10a1 1 0 01-1 1H4a1 1 0 01-1-1V3a1 1 0 011-1z"/><line x1="5" y1="6" x2="11" y2="6"/><line x1="5" y1="9" x2="11" y2="9"/><line x1="5" y1="12" x2="8" y2="12"/></svg>
+        Terms &amp; Conditions
+      </button>
+    </div>
+
+    <div class="sidebar-section">
       <div class="sidebar-heading">Media</div>
       <button class="sidebar-item" onclick="switchPanel('images', this)">
         <svg class="sidebar-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="14" height="10" rx="1"/><circle cx="5.5" cy="7" r="1.5"/><path d="M1 12l4-4 3 3 2-2 5 5"/></svg>
@@ -640,6 +652,46 @@
       </div>
     </div>
 
+    <!-- ═══════════════════════════════ PRIVACY ═══════════════════════════════ -->
+    <div class="panel" id="panel-privacy">
+      <div class="panel-header">
+        <div class="panel-eyebrow">— Legal</div>
+        <h2 class="panel-title">Privacy Policy</h2>
+        <p class="panel-desc">Edit the privacy policy page content. Use standard HTML tags: &lt;h2&gt;, &lt;h3&gt;, &lt;p&gt;, &lt;a href="..."&gt;. Changes publish to privacy.html.</p>
+      </div>
+      <div class="field-group">
+        <div class="field-group-title">Page content</div>
+        <div class="field">
+          <label class="field-label" for="privacy-content">HTML content</label>
+          <textarea id="privacy-content" class="field-input" rows="28" style="font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.6;"></textarea>
+        </div>
+      </div>
+      <div class="action-bar">
+        <span class="action-bar-left" id="privacy-last-saved"></span>
+        <button class="btn btn-primary" onclick="publishSection('privacy')">Publish changes →</button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════ TERMS ═══════════════════════════════ -->
+    <div class="panel" id="panel-terms">
+      <div class="panel-header">
+        <div class="panel-eyebrow">— Legal</div>
+        <h2 class="panel-title">Terms &amp; Conditions</h2>
+        <p class="panel-desc">Edit the terms and conditions page content. Use standard HTML tags: &lt;h2&gt;, &lt;h3&gt;, &lt;p&gt;, &lt;a href="..."&gt;. Changes publish to terms.html.</p>
+      </div>
+      <div class="field-group">
+        <div class="field-group-title">Page content</div>
+        <div class="field">
+          <label class="field-label" for="terms-content">HTML content</label>
+          <textarea id="terms-content" class="field-input" rows="28" style="font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.6;"></textarea>
+        </div>
+      </div>
+      <div class="action-bar">
+        <span class="action-bar-left" id="terms-last-saved"></span>
+        <button class="btn btn-primary" onclick="publishSection('terms')">Publish changes →</button>
+      </div>
+    </div>
+
     <!-- ═══════════════════════════════ DOWNLOADS ═══════════════════════════════ -->
     <div class="panel" id="panel-downloads">
       <div class="panel-header">
@@ -872,6 +924,8 @@ async function loadPanel(id) {
     else if (id === 'hours')    await hydrateHours();
     else if (id === 'contact')  await hydrateContact();
     else if (id === 'faq')      await hydrateFAQ();
+    else if (id === 'privacy')  await hydratePrivacy();
+    else if (id === 'terms')    await hydrateTerms();
     setStatus('', 'Ready');
   } catch(e) {
     setStatus('error', 'Load failed');
@@ -1523,6 +1577,8 @@ async function publishSection(section) {
     else if (section === 'hours')    await publishHours();
     else if (section === 'contact')  await publishContact();
     else if (section === 'faq')      await publishFAQ();
+    else if (section === 'privacy')  await publishPrivacy();
+    else if (section === 'terms')    await publishTerms();
 
     setStatus('', 'Ready');
     const now = new Date().toLocaleTimeString('en-CA', { hour: '2-digit', minute: '2-digit' });
@@ -1892,6 +1948,62 @@ async function publishFAQ() {
   }
 
   await putFile(path, html, sha, 'CMS: update FAQ');
+}
+
+// ── PRIVACY ───────────────────────────────────────────────────────────────────
+async function hydratePrivacy() {
+  const { content: html } = await getFile('privacy.html');
+  const start = '<div class="prose rv">';
+  const end = '</div>';
+  const idx = html.indexOf(start);
+  if (idx === -1) return;
+  const contentStart = idx + start.length;
+  const contentEnd = html.indexOf(end, contentStart);
+  if (contentEnd === -1) return;
+  document.getElementById('privacy-content').value = html.slice(contentStart, contentEnd).trim();
+}
+
+async function publishPrivacy() {
+  const { content, sha, path } = await getFile('privacy.html');
+  const start = '<div class="prose rv">';
+  const end = '</div>';
+  const idx = content.indexOf(start);
+  if (idx === -1) throw new Error('prose block not found in privacy.html');
+  const contentStart = idx + start.length;
+  const contentEnd = content.indexOf(end, contentStart);
+  if (contentEnd === -1) throw new Error('prose block end not found in privacy.html');
+  const newContent = content.slice(0, contentStart) + '\n\n          ' +
+    document.getElementById('privacy-content').value.trim() +
+    '\n\n        ' + content.slice(contentEnd);
+  await putFile(path, newContent, sha, 'CMS: update Privacy Policy');
+}
+
+// ── TERMS ─────────────────────────────────────────────────────────────────────
+async function hydrateTerms() {
+  const { content: html } = await getFile('terms.html');
+  const start = '<div class="prose rv">';
+  const end = '</div>';
+  const idx = html.indexOf(start);
+  if (idx === -1) return;
+  const contentStart = idx + start.length;
+  const contentEnd = html.indexOf(end, contentStart);
+  if (contentEnd === -1) return;
+  document.getElementById('terms-content').value = html.slice(contentStart, contentEnd).trim();
+}
+
+async function publishTerms() {
+  const { content, sha, path } = await getFile('terms.html');
+  const start = '<div class="prose rv">';
+  const end = '</div>';
+  const idx = content.indexOf(start);
+  if (idx === -1) throw new Error('prose block not found in terms.html');
+  const contentStart = idx + start.length;
+  const contentEnd = content.indexOf(end, contentStart);
+  if (contentEnd === -1) throw new Error('prose block end not found in terms.html');
+  const newContent = content.slice(0, contentStart) + '\n\n          ' +
+    document.getElementById('terms-content').value.trim() +
+    '\n\n        ' + content.slice(contentEnd);
+  await putFile(path, newContent, sha, 'CMS: update Terms & Conditions');
 }
 
 // ── IMAGES ────────────────────────────────────────────────────────────────────
