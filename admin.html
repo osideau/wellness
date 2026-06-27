@@ -917,6 +917,7 @@ const WORKER_URL = 'https://isorropia-cms.kiarnovar.workers.dev';
 const SITE_URL = 'https://isorropia.ca';
 const SECTION_FILE = { home:'index.html', about:'about.html', services:'services.html', massage:'service-massage.html', acupuncture:'service-acupuncture.html', 'practitioners-page':'team.html', practitioners:'team.html', hours:'index.html', contact:'contact.html', faq:'faq.html', privacy:'privacy.html', terms:'terms.html' };
 let _publishMarker = null, _publishPollFile = null;
+let _batchQueue = null; // null = off, array = collecting files for one commit
 
 // ── Data ──────────────────────────────────────────────────────────────────────
 const PRACTITIONERS = [
@@ -1791,15 +1792,29 @@ async function getFile(filename) {
   return { content: data.content, sha: data.sha, path: filename };
 }
 
-async function putFile(filePath, content, sha, message) {
+function _injectMarker(content) {
   // Inject a version marker so we can detect when the page goes live
   const marker = 'cms-v:' + Date.now();
   if (content.startsWith('<!DOCTYPE html>') || content.startsWith('<!doctype html>')) {
     content = content.replace(/<!--\s*cms-v:\d+\s*-->/, '');
     content = content.replace('<!DOCTYPE html>', '<!DOCTYPE html><!-- ' + marker + ' -->');
     content = content.replace('<!doctype html>', '<!doctype html><!-- ' + marker + ' -->');
+    if (!_publishMarker) { _publishMarker = marker; }
   }
-  if (!_publishMarker) { _publishMarker = marker; _publishPollFile = filePath; }
+  return content;
+}
+
+async function putFile(filePath, content, sha, message) {
+  content = _injectMarker(content);
+  if (!_publishPollFile) _publishPollFile = filePath;
+
+  // If batching, queue it — the real commit happens in flushBatch()
+  if (_batchQueue !== null) {
+    _batchQueue.push({ filename: filePath, content });
+    return { ok: true };
+  }
+
+  // Single-file publish (fallback)
   const res = await fetch(`${WORKER_URL}/publish`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'X-CMS-Password': ADMIN_PASSWORD },
@@ -1808,10 +1823,24 @@ async function putFile(filePath, content, sha, message) {
   let data;
   try { data = await res.json(); } catch(_) { data = {}; }
   if (!res.ok) throw new Error(data.error || data.message || 'HTTP ' + res.status + ' from worker');
-  // Surface commit info for overlay
-  if (data && data.commit && data.commit.html_url) {
-    setOverlayCommitLink(data.commit.html_url, data.commit.sha);
-  }
+  if (data && data.commit) setOverlayCommitLink(data.commit.html_url, data.commit.sha);
+  return data;
+}
+
+async function flushBatch(message) {
+  if (!_batchQueue || _batchQueue.length === 0) return;
+  const files = _batchQueue;
+  _batchQueue = null;
+
+  const res = await fetch(`${WORKER_URL}/batch-publish`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-CMS-Password': ADMIN_PASSWORD },
+    body: JSON.stringify({ files, message })
+  });
+  let data;
+  try { data = await res.json(); } catch(_) { data = {}; }
+  if (!res.ok) throw new Error(data.error || data.message || 'HTTP ' + res.status + ' from worker');
+  if (data && data.commit) setOverlayCommitLink(data.commit.html_url, data.commit.sha);
   return data;
 }
 
@@ -1841,6 +1870,7 @@ function fileToBase64(file) {
 // ── Publish dispatcher ────────────────────────────────────────────────────────
 async function publishSection(section) {
   _publishMarker = null; _publishPollFile = null;
+  _batchQueue = []; // start collecting files
   openPublishOverlay();
   setStatus('saving', 'Publishing...');
   try {
@@ -1856,6 +1886,9 @@ async function publishSection(section) {
     else if (section === 'faq')      await publishFAQ();
     else if (section === 'privacy')  await publishPrivacy();
     else if (section === 'terms')    await publishTerms();
+
+    // Flush all queued files as ONE commit → ONE build
+    await flushBatch('CMS: update ' + section);
 
     dirtyPanels.delete(section);
     setStatus('', 'Ready');
