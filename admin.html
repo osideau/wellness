@@ -1054,7 +1054,6 @@ function init() {
 }
 
 // ── Panel switching ───────────────────────────────────────────────────────────
-const loadedPanels = new Set();
 const dirtyPanels  = new Set();
 let   currentPanel = 'home';
 
@@ -1081,12 +1080,9 @@ function switchPanel(id, btn) {
   if (btn) btn.classList.add('active');
   currentPanel = id;
 
-  if (!loadedPanels.has(id)) {
-    loadedPanels.add(id);
-    loadPanel(id);
-  } else {
-    watchPanel(id);
-  }
+  // Always reload from the server — ensures fields reflect live content,
+  // and discarded changes are gone if she navigates back to a tab.
+  loadPanel(id);
 }
 
 async function loadPanel(id) {
@@ -1496,8 +1492,13 @@ async function hydrateContact() {
 
 async function hydrateFAQ() {
   const { content: html } = await getFile('faq.html');
-  const faqDiv = extractBetween(html, '<div class=\"faq\">', '\n        </div>');
-  if (!faqDiv) return;
+  // Container is <div class="faq rv"> — match by prefix, not exact class
+  const containerStart = html.indexOf('<div class="faq');
+  if (containerStart === -1) return;
+  const faqDivStart = html.indexOf('>', containerStart) + 1;
+  const closingIdx = html.indexOf('\n        </div>', faqDivStart);
+  const faqDiv = closingIdx !== -1 ? html.slice(faqDivStart, closingIdx) : html.slice(faqDivStart);
+  if (!faqDiv.includes('<summary>')) return;
 
   const items = [];
   let searchFrom = 0;
@@ -1505,12 +1506,31 @@ async function hydrateFAQ() {
     const summaryStart = faqDiv.indexOf('<summary>', searchFrom);
     if (summaryStart === -1) break;
     const summaryEnd = faqDiv.indexOf('</summary>', summaryStart);
-    const q = faqDiv.slice(summaryStart + 9, summaryEnd).trim();
-    const answerStart = faqDiv.indexOf('<p>', summaryEnd);
-    const answerEnd = faqDiv.indexOf('</p>', answerStart);
-    const a = answerStart !== -1 ? faqDiv.slice(answerStart + 3, answerEnd).trim() : '';
-    items.push({ q, a });
-    searchFrom = answerEnd !== -1 ? answerEnd : summaryEnd + 10;
+    const q = stripToText(faqDiv.slice(summaryStart + 9, summaryEnd));
+
+    // Grab all <p> tags inside the faq-answer div for this item
+    const answerDivStart = faqDiv.indexOf('<div class="faq-answer">', summaryEnd);
+    const answerDivEnd = faqDiv.indexOf('</div>', answerDivStart);
+    let a = '';
+    if (answerDivStart !== -1 && answerDivEnd !== -1) {
+      const answerBlock = faqDiv.slice(answerDivStart, answerDivEnd);
+      const paras = [];
+      let pSearch = 0;
+      while (true) {
+        const ps = answerBlock.indexOf('<p', pSearch);
+        if (ps === -1) break;
+        const pBodyStart = answerBlock.indexOf('>', ps) + 1;
+        const pe = answerBlock.indexOf('</p>', pBodyStart);
+        if (pe === -1) break;
+        paras.push(stripToText(answerBlock.slice(pBodyStart, pe)));
+        pSearch = pe + 4;
+      }
+      a = paras.join('\n\n');
+      searchFrom = answerDivEnd;
+    } else {
+      searchFrom = summaryEnd + 10;
+    }
+    if (q) items.push({ q, a });
   }
 
   if (items.length > 0) {
