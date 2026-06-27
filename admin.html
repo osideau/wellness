@@ -175,6 +175,28 @@
     .pb-fill { height: 100%; background: var(--tan); border-radius: 2px; width: 0%; transition: width 0.5s ease; }
     .pb-close { background: none; border: none; color: inherit; opacity: 0.6; cursor: pointer; font-size: 18px; padding: 0 0 0 0.5rem; line-height: 1; }
     .pb-close:hover { opacity: 1; }
+    /* Publish overlay */
+    #publish-overlay { position: fixed; inset: 0; background: rgba(13,13,13,0.55); z-index: 2000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
+    #publish-overlay.active { display: flex; }
+    .po-card { background: #fff; border-radius: 8px; padding: 2.5rem 3rem; min-width: 340px; max-width: 460px; box-shadow: 0 24px 80px rgba(0,0,0,0.28); }
+    .po-title { font-family: var(--font-d); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--tan); margin-bottom: 1.75rem; }
+    .po-stage { display: flex; align-items: center; gap: 0.9rem; padding: 0.65rem 0; border-bottom: 1px solid #f0ece6; font-size: 13.5px; color: var(--ink); }
+    .po-stage:last-child { border-bottom: none; }
+    .po-stage.pending { color: var(--ash); }
+    .po-stage.done { color: var(--olive); }
+    .po-stage-icon { width: 22px; height: 22px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .po-spinner { width: 16px; height: 16px; border: 2px solid var(--ash); border-top-color: var(--tan); border-radius: 50%; animation: spin 0.75s linear infinite; }
+    .po-check { width: 18px; height: 18px; background: var(--tan); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 10px; }
+    .po-dot-idle { width: 8px; height: 8px; background: var(--ash); border-radius: 50%; margin: 0 auto; }
+    .po-commit-link { display: block; margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid #f0ece6; font-size: 11.5px; color: var(--olive-mid); }
+    .po-commit-link a { color: var(--tan); text-decoration: none; }
+    .po-commit-link a:hover { text-decoration: underline; }
+    .po-deploy-bar { height: 3px; background: #f0ece6; border-radius: 2px; margin-top: 1.5rem; overflow: hidden; }
+    .po-deploy-fill { height: 100%; background: var(--tan); border-radius: 2px; width: 0%; transition: width 0.5s ease; }
+    .po-error-msg { margin-top: 1.25rem; padding: 0.875rem 1rem; background: #fef2f2; border-left: 3px solid #dc2626; border-radius: 4px; font-size: 12.5px; color: #991b1b; line-height: 1.5; }
+    .po-close-btn { margin-top: 1.5rem; width: 100%; padding: 0.6rem; background: none; border: 1px solid var(--ash); border-radius: 4px; font-size: 12px; color: var(--olive-mid); cursor: pointer; }
+    .po-close-btn:hover { background: #f9f6f1; }
+
     @keyframes spin { to { transform: rotate(360deg); } }
     .pb-spinner { display: inline-block; width: 13px; height: 13px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 4px; }
 
@@ -865,6 +887,27 @@
 </div>
 
 <div id="toast"></div>
+<div id="publish-overlay">
+  <div class="po-card">
+    <div class="po-title">Publishing changes</div>
+    <div id="po-stage-commit" class="po-stage">
+      <div class="po-stage-icon"><div class="po-spinner"></div></div>
+      <span id="po-commit-label">Committing to GitHub...</span>
+    </div>
+    <div id="po-stage-deploy" class="po-stage pending">
+      <div class="po-stage-icon"><div class="po-dot-idle"></div></div>
+      <span id="po-deploy-label">Waiting to deploy</span>
+    </div>
+    <div id="po-stage-live" class="po-stage pending">
+      <div class="po-stage-icon"><div class="po-dot-idle"></div></div>
+      <span>Live on isorropia.ca</span>
+    </div>
+    <div class="po-deploy-bar" id="po-deploy-bar" style="display:none"><div class="po-deploy-fill" id="po-deploy-fill"></div></div>
+    <div id="po-commit-link" class="po-commit-link" style="display:none"></div>
+    <div id="po-error-msg" class="po-error-msg" style="display:none"></div>
+    <button class="po-close-btn" id="po-close-btn" onclick="closePublishOverlay()" style="display:none">Close</button>
+  </div>
+</div>
 <div id="publish-bar"><span class="pb-icon" id="pb-icon"></span><span class="pb-msg" id="pb-msg"></span><div class="pb-track" id="pb-track" style="display:none"><div class="pb-fill" id="pb-fill"></div></div><button class="pb-close" onclick="hidePublishBar()">&#215;</button></div>
 
 <script>
@@ -1738,11 +1781,13 @@ function handleImageSelect(filename, safeId, input) {
 
 // ── GitHub publish ────────────────────────────────────────────────────────────
 async function getFile(filename) {
-  const res = await fetch(`${WORKER_URL}/file?name=${encodeURIComponent(filename)}`, {
-    headers: { 'X-CMS-Password': ADMIN_PASSWORD }
+  // Add cache-busting timestamp so the worker always fetches fresh from GitHub
+  const res = await fetch(`${WORKER_URL}/file?name=${encodeURIComponent(filename)}&t=${Date.now()}`, {
+    headers: { 'X-CMS-Password': ADMIN_PASSWORD },
+    cache: 'no-store'
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.error || res.status);
+  if (!res.ok) throw new Error(data.error || data.message || `HTTP ${res.status} fetching ${filename}`);
   return { content: data.content, sha: data.sha, path: filename };
 }
 
@@ -1762,7 +1807,11 @@ async function putFile(filePath, content, sha, message) {
   });
   let data;
   try { data = await res.json(); } catch(_) { data = {}; }
-  if (!res.ok) throw new Error(data.error || data.message || `HTTP ${res.status} from worker`);
+  if (!res.ok) throw new Error(data.error || data.message || 'HTTP ' + res.status + ' from worker');
+  // Surface commit info for overlay
+  if (data && data.commit && data.commit.html_url) {
+    setOverlayCommitLink(data.commit.html_url, data.commit.sha);
+  }
   return data;
 }
 
@@ -1791,6 +1840,8 @@ function fileToBase64(file) {
 
 // ── Publish dispatcher ────────────────────────────────────────────────────────
 async function publishSection(section) {
+  _publishMarker = null; _publishPollFile = null;
+  openPublishOverlay();
   setStatus('saving', 'Publishing...');
   try {
     if (section === 'home')          await publishHome();
@@ -1811,12 +1862,13 @@ async function publishSection(section) {
     const now = new Date().toLocaleTimeString('en-CA', { hour: '2-digit', minute: '2-digit' });
     const savedEl = document.getElementById(section + '-last-saved') ||
                     document.getElementById(section.replace('practitioners','prac') + '-last-saved');
-    if (savedEl) savedEl.textContent = `Last published at ${now}`;
+    if (savedEl) savedEl.textContent = 'Last published at ' + now;
+    overlayCommitted();
     startPublishPoll(section);
   } catch(e) {
     setStatus('error', 'Failed');
     console.error(e);
-    showPublishBar('error', '&#9888; Publish failed &mdash; ' + e.message + '. Check your connection and try again.');
+    overlayError(e.message);
   }
 }
 
@@ -2570,21 +2622,80 @@ function toast(msg, isError = false) {
   t._timer = setTimeout(() => t.className = '', 3500);
 }
 
-// ── Publish progress bar ───────────────────────────────────────────────────────
-function showPublishBar(state, msg, showProgress = false) {
-  const bar = document.getElementById('publish-bar');
-  const icon = document.getElementById('pb-icon');
-  const msgEl = document.getElementById('pb-msg');
-  const track = document.getElementById('pb-track');
-  bar.className = 'show' + (state === 'success' ? ' success' : state === 'error' ? ' error' : '');
-  icon.innerHTML = state === 'success' ? '&#10003;' : state === 'error' ? '&#9888;' : '';
-  msgEl.innerHTML = msg;
-  track.style.display = showProgress ? 'block' : 'none';
+// ── Publish overlay ────────────────────────────────────────────────────────────
+function openPublishOverlay() {
+  const ov = document.getElementById('publish-overlay');
+  // Reset all stages
+  _setStage('po-stage-commit', 'active', 'Committing to GitHub...');
+  _setStage('po-stage-deploy', 'pending', 'Waiting to deploy');
+  _setStage('po-stage-live',   'pending', null);
+  document.getElementById('po-deploy-bar').style.display = 'none';
+  document.getElementById('po-commit-link').style.display = 'none';
+  document.getElementById('po-error-msg').style.display = 'none';
+  document.getElementById('po-close-btn').style.display = 'none';
+  ov.classList.add('active');
 }
 
-function hidePublishBar() {
-  document.getElementById('publish-bar').className = '';
+function closePublishOverlay() {
+  document.getElementById('publish-overlay').classList.remove('active');
   clearTimeout(window._pollTimer);
+}
+
+function _setStage(id, state, label) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.className = 'po-stage' + (state === 'pending' ? ' pending' : state === 'done' ? ' done' : '');
+  const iconEl = el.querySelector('.po-stage-icon');
+  if (iconEl) {
+    if (state === 'active')  iconEl.innerHTML = '<div class="po-spinner"></div>';
+    else if (state === 'done') iconEl.innerHTML = '<div class="po-check">&#10003;</div>';
+    else                       iconEl.innerHTML = '<div class="po-dot-idle"></div>';
+  }
+  if (label !== null) {
+    const span = el.querySelector('span:last-child');
+    if (span) span.textContent = label;
+  }
+}
+
+function setOverlayCommitLink(url, sha) {
+  const el = document.getElementById('po-commit-link');
+  if (!el) return;
+  const short = sha ? sha.slice(0, 7) : 'view';
+  el.innerHTML = 'Commit ' + short + ' &rarr; <a href="' + url + '" target="_blank" rel="noopener">View on GitHub</a>';
+  el.style.display = 'block';
+}
+
+function overlayCommitted() {
+  _setStage('po-stage-commit', 'done', 'Committed to GitHub');
+  _setStage('po-stage-deploy', 'active', 'Deploying to site...');
+  const bar = document.getElementById('po-deploy-bar');
+  const fill = document.getElementById('po-deploy-fill');
+  bar.style.display = 'block';
+  fill.style.transition = 'none';
+  fill.style.width = '5%';
+  setTimeout(() => {
+    fill.style.transition = 'width 50s cubic-bezier(0.15,0,0.4,1)';
+    fill.style.width = '85%';
+  }, 100);
+}
+
+function overlayLive() {
+  const fill = document.getElementById('po-deploy-fill');
+  fill.style.transition = 'width 0.4s ease';
+  fill.style.width = '100%';
+  setTimeout(() => {
+    _setStage('po-stage-deploy', 'done', 'Deployed');
+    _setStage('po-stage-live',   'done', null);
+    document.getElementById('po-close-btn').style.display = 'block';
+  }, 400);
+}
+
+function overlayError(msg) {
+  _setStage('po-stage-commit', 'done', 'Error during commit');
+  const errEl = document.getElementById('po-error-msg');
+  errEl.textContent = msg;
+  errEl.style.display = 'block';
+  document.getElementById('po-close-btn').style.display = 'block';
 }
 
 async function startPublishPoll(section) {
@@ -2592,18 +2703,6 @@ async function startPublishPoll(section) {
   const primaryFile = SECTION_FILE[section] || (_publishPollFile || 'index.html');
   const pollUrl = SITE_URL + '/' + primaryFile;
 
-  // Show committed state with animated progress bar
-  showPublishBar('working', 'Committed to GitHub &mdash; waiting for site to update...', true);
-  const fill = document.getElementById('pb-fill');
-  fill.style.transition = 'none';
-  fill.style.width = '5%';
-  // Animate to 85% over 50 seconds
-  setTimeout(() => {
-    fill.style.transition = 'width 50s cubic-bezier(0.15,0,0.4,1)';
-    fill.style.width = '85%';
-  }, 100);
-
-  // Poll the live site every 6 seconds for up to 90 seconds
   let elapsed = 0;
   const maxWait = 90000;
   const interval = 6000;
@@ -2614,19 +2713,15 @@ async function startPublishPoll(section) {
       const res = await fetch(pollUrl + '?v=' + Date.now(), { cache: 'no-store' });
       const text = await res.text();
       if (marker && text.includes(marker)) {
-        fill.style.transition = 'width 0.4s ease';
-        fill.style.width = '100%';
-        setTimeout(() => {
-          showPublishBar('success', 'Changes are live on the site &#10003;');
-          setTimeout(() => hidePublishBar(), 5000);
-        }, 400);
+        overlayLive();
         return;
       }
     } catch (_) {}
     elapsed += interval;
     if (elapsed >= maxWait) {
-      showPublishBar('success', 'Published &#10003; &mdash; changes should be visible shortly');
-      setTimeout(() => hidePublishBar(), 6000);
+      // Timed out - show close button anyway
+      _setStage('po-stage-deploy', 'done', 'Deployed (verify on site)');
+      document.getElementById('po-close-btn').style.display = 'block';
       return;
     }
     window._pollTimer = setTimeout(poll, interval);
