@@ -1107,20 +1107,20 @@ function decodeHtml(str) {
   const txt = document.createElement('textarea');
   txt.innerHTML = str
     .replace(/&amp;/g, '&')
-    .replace(/&mdash;/g, '—')
-    .replace(/&ndash;/g, '–')
+    .replace(/&mdash;/g, '\u2014')
+    .replace(/&ndash;/g, '\u2013')
     .replace(/&nbsp;/g, ' ')
-    .replace(/&ldquo;/g, '“')
-    .replace(/&rdquo;/g, '”')
-    .replace(/&lsquo;/g, '‘')
-    .replace(/&rsquo;/g, '’')
+    .replace(/&ldquo;/g, '\u201C')
+    .replace(/&rdquo;/g, '\u201D')
+    .replace(/&lsquo;/g, '\u2018')
+    .replace(/&rsquo;/g, '\u2019')
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
-    .replace(/&#8212;/g, '—')
-    .replace(/&#8216;/g, '‘')
-    .replace(/&#8217;/g, '’')
-    .replace(/&#8220;/g, '“')
-    .replace(/&#8221;/g, '”');
+    .replace(/&#8212;/g, '\u2014')
+    .replace(/&#8216;/g, '\u2018')
+    .replace(/&#8217;/g, '\u2019')
+    .replace(/&#8220;/g, '\u201C')
+    .replace(/&#8221;/g, '\u201D');
   return txt.value || str;
 }
 
@@ -2116,305 +2116,305 @@ async function publishFAQ() {
 
 // Strip HTML tags and decode entities → clean plain text for editing
 function stripToText(html) {
-  return decodeHtml(html.replace(/<[^>]+>/g, ‘’).replace(/\s+/g, ‘ ‘).trim());
+  return decodeHtml(html.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim());
 }
 
 // Re-encode plain text back to safe HTML for publishing
 function encodeForHtml(str) {
   return str
-    .replace(/&/g, ‘&amp;’)
-    .replace(/"/g, ‘&quot;’)
-    .replace(/</g, ‘&lt;’)
-    .replace(/>/g, ‘&gt;’)
-    .replace(/—/g, ‘&mdash;’)
-    .replace(/–/g, ‘&ndash;’)
-    .replace(/‘/g, ‘&lsquo;’)
-    .replace(/’/g, ‘&rsquo;’)
-    .replace(/“/g, ‘&ldquo;’)
-    .replace(/”/g, ‘&rdquo;’);
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/\u2014/g, '&mdash;')
+    .replace(/\u2013/g, '&ndash;')
+    .replace(/\u2018/g, '&lsquo;')
+    .replace(/\u2019/g, '&rsquo;')
+    .replace(/\u201C/g, '&ldquo;')
+    .replace(/\u201D/g, '&rdquo;');
 }
 
 function extractParaAfter(html, anchor) {
   const idx = html.indexOf(anchor);
-  if (idx === -1) return ‘’;
-  const pIdx = html.indexOf(‘<p’, idx);
-  if (pIdx === -1) return ‘’;
-  const contentStart = html.indexOf(‘>’, pIdx) + 1;
-  const contentEnd = html.indexOf(‘</p>’, contentStart);
-  if (contentEnd === -1) return ‘’;
+  if (idx === -1) return '';
+  const pIdx = html.indexOf('<p', idx);
+  if (pIdx === -1) return '';
+  const contentStart = html.indexOf('>', pIdx) + 1;
+  const contentEnd = html.indexOf('</p>', contentStart);
+  if (contentEnd === -1) return '';
   return stripToText(html.slice(contentStart, contentEnd));
 }
 
 function extractParaContaining(html, anchor) {
   const idx = html.indexOf(anchor);
-  if (idx === -1) return ‘’;
-  const pStart = html.lastIndexOf(‘<p’, idx);
-  if (pStart === -1) return ‘’;
-  const contentStart = html.indexOf(‘>’, pStart) + 1;
-  const contentEnd = html.indexOf(‘</p>’, contentStart);
-  if (contentEnd === -1) return ‘’;
+  if (idx === -1) return '';
+  const pStart = html.lastIndexOf('<p', idx);
+  if (pStart === -1) return '';
+  const contentStart = html.indexOf('>', pStart) + 1;
+  const contentEnd = html.indexOf('</p>', contentStart);
+  if (contentEnd === -1) return '';
   return stripToText(html.slice(contentStart, contentEnd));
 }
 
 function extractHeadingText(html, tag, anchor) {
   const idx = html.indexOf(anchor);
-  if (idx === -1) return ‘’;
-  const hStart = html.lastIndexOf(‘<’ + tag, idx);
-  if (hStart === -1) return ‘’;
-  const contentStart = html.indexOf(‘>’, hStart) + 1;
-  const contentEnd = html.indexOf(‘</’ + tag + ‘>’, contentStart);
-  if (contentEnd === -1) return ‘’;
+  if (idx === -1) return '';
+  const hStart = html.lastIndexOf('<' + tag, idx);
+  if (hStart === -1) return '';
+  const contentStart = html.indexOf('>', hStart) + 1;
+  const contentEnd = html.indexOf('</' + tag + '>', contentStart);
+  if (contentEnd === -1) return '';
   return stripToText(html.slice(contentStart, contentEnd));
 }
 
 function extractH1Text(html) {
-  const start = html.indexOf(‘<h1 ‘);
-  if (start === -1) return ‘’;
-  const contentStart = html.indexOf(‘>’, start) + 1;
-  const contentEnd = html.indexOf(‘</h1>’, contentStart);
-  if (contentEnd === -1) return ‘’;
+  const start = html.indexOf('<h1 ');
+  if (start === -1) return '';
+  const contentStart = html.indexOf('>', start) + 1;
+  const contentEnd = html.indexOf('</h1>', contentStart);
+  if (contentEnd === -1) return '';
   return stripToText(html.slice(contentStart, contentEnd));
 }
 
 function extractHeroP(html) {
-  const heroIdx = html.indexOf(‘class="page-hero"’);
-  if (heroIdx === -1) return ‘’;
-  const pIdx = html.indexOf(‘<p ‘, heroIdx);
-  if (pIdx === -1) return ‘’;
-  const contentStart = html.indexOf(‘>’, pIdx) + 1;
-  const contentEnd = html.indexOf(‘</p>’, contentStart);
-  if (contentEnd === -1) return ‘’;
+  const heroIdx = html.indexOf('class="page-hero"');
+  if (heroIdx === -1) return '';
+  const pIdx = html.indexOf('<p ', heroIdx);
+  if (pIdx === -1) return '';
+  const contentStart = html.indexOf('>', pIdx) + 1;
+  const contentEnd = html.indexOf('</p>', contentStart);
+  if (contentEnd === -1) return '';
   return stripToText(html.slice(contentStart, contentEnd));
 }
 
 function extractUpdated(html) {
   const m = html.match(/<p class="updated">([^<]+)<\/p>/);
-  return m ? m[1].trim() : ‘’;
+  return m ? m[1].trim() : '';
 }
 
 function sf(id, v) {
   const el = document.getElementById(id);
-  if (el && v !== undefined && v !== ‘’) el.value = v;
+  if (el && v !== undefined && v !== '') el.value = v;
 }
 
 // Encode a heading value with &amp; for & signs
 function encH(str) {
-  return str.replace(/&/g, ‘&amp;’);
+  return str.replace(/&/g, '&amp;');
 }
 
 // ── PRIVACY ───────────────────────────────────────────────────────────────────
 async function hydratePrivacy() {
-  const { content: html } = await getFile(‘privacy.html’);
+  const { content: html } = await getFile('privacy.html');
 
-  sf(‘priv-title’,    extractH1Text(html));
-  sf(‘priv-subtitle’, extractHeroP(html));
+  sf('priv-title',    extractH1Text(html));
+  sf('priv-subtitle', extractHeroP(html));
 
-  sf(‘priv-p1’, extractParaContaining(html, ‘This Policy applies’));
-  sf(‘priv-p2’, extractParaContaining(html, ‘We are committed to collecting’));
-  sf(‘priv-p3’, extractParaContaining(html, ‘By accessing our website or using any’));
-  sf(‘priv-p4’, extractParaContaining(html, "British Columbia"));
+  sf('priv-p1', extractParaContaining(html, 'This Policy applies'));
+  sf('priv-p2', extractParaContaining(html, 'We are committed to collecting'));
+  sf('priv-p3', extractParaContaining(html, 'By accessing our website or using any'));
+  sf('priv-p4', extractParaContaining(html, "British Columbia"));
 
-  sf(‘priv-h-collection’, extractHeadingText(html, ‘h2’, ‘Collection, use’));
-  sf(‘priv-collection’,   extractParaAfter(html, ‘<h2>Collection, use’));
-  sf(‘priv-h-healthcare’, extractHeadingText(html, ‘h3’, ‘Health care services’));
-  sf(‘priv-healthcare’,   extractParaAfter(html, ‘<h3>Health care services’));
+  sf('priv-h-collection', extractHeadingText(html, 'h2', 'Collection, use'));
+  sf('priv-collection',   extractParaAfter(html, '<h2>Collection, use'));
+  sf('priv-h-healthcare', extractHeadingText(html, 'h3', 'Health care services'));
+  sf('priv-healthcare',   extractParaAfter(html, '<h3>Health care services'));
 
-  sf(‘priv-h-consent’, extractHeadingText(html, ‘h2’, ‘Consent’));
-  sf(‘priv-consent’,   extractParaAfter(html, ‘<h2>Consent’));
+  sf('priv-h-consent', extractHeadingText(html, 'h2', 'Consent'));
+  sf('priv-consent',   extractParaAfter(html, '<h2>Consent'));
 
-  sf(‘priv-h-safeguards’,  extractHeadingText(html, ‘h2’, ‘Safeguards’));
-  sf(‘priv-safeguards1’,   extractParaAfter(html, ‘<h2>Safeguards’));
-  sf(‘priv-safeguards2’,   extractParaContaining(html, ‘You play an important role’));
+  sf('priv-h-safeguards',  extractHeadingText(html, 'h2', 'Safeguards'));
+  sf('priv-safeguards1',   extractParaAfter(html, '<h2>Safeguards'));
+  sf('priv-safeguards2',   extractParaContaining(html, 'You play an important role'));
 
-  sf(‘priv-h-payment’, extractHeadingText(html, ‘h2’, ‘Payment’));
-  sf(‘priv-payment’,   extractParaAfter(html, ‘<h2>Payment’));
+  sf('priv-h-payment', extractHeadingText(html, 'h2', 'Payment'));
+  sf('priv-payment',   extractParaAfter(html, '<h2>Payment'));
 
-  sf(‘priv-h-cookies’, extractHeadingText(html, ‘h2’, ‘Cookies’));
-  sf(‘priv-cookies’,   extractParaAfter(html, ‘<h2>Cookies’));
+  sf('priv-h-cookies', extractHeadingText(html, 'h2', 'Cookies'));
+  sf('priv-cookies',   extractParaAfter(html, '<h2>Cookies'));
 
-  sf(‘priv-h-marketing’, extractHeadingText(html, ‘h2’, ‘Marketing’));
-  sf(‘priv-marketing’,   extractParaAfter(html, ‘<h2>Marketing’));
+  sf('priv-h-marketing', extractHeadingText(html, 'h2', 'Marketing'));
+  sf('priv-marketing',   extractParaAfter(html, '<h2>Marketing'));
 
-  sf(‘priv-h-storage’, extractHeadingText(html, ‘h2’, ‘Storage’));
-  sf(‘priv-storage’,   extractParaAfter(html, ‘<h2>Storage’));
+  sf('priv-h-storage', extractHeadingText(html, 'h2', 'Storage'));
+  sf('priv-storage',   extractParaAfter(html, '<h2>Storage'));
 
-  sf(‘priv-h-access’, extractHeadingText(html, ‘h2’, ‘Access, correction’));
-  sf(‘priv-access’,   extractParaAfter(html, ‘<h2>Access, correction’));
+  sf('priv-h-access', extractHeadingText(html, 'h2', 'Access, correction'));
+  sf('priv-access',   extractParaAfter(html, '<h2>Access, correction'));
 
-  sf(‘priv-h-changes’, extractHeadingText(html, ‘h2’, ‘Changes to this policy’));
-  sf(‘priv-changes’,   extractParaAfter(html, ‘<h2>Changes to this policy’));
+  sf('priv-h-changes', extractHeadingText(html, 'h2', 'Changes to this policy'));
+  sf('priv-changes',   extractParaAfter(html, '<h2>Changes to this policy'));
 
-  sf(‘priv-updated’, extractUpdated(html));
+  sf('priv-updated', extractUpdated(html));
 }
 
 async function publishPrivacy() {
-  const { content, sha, path } = await getFile(‘privacy.html’);
+  const { content, sha, path } = await getFile('privacy.html');
 
   // Reconstruct known internal links that appear in specific paragraphs
-  const p3 = encodeForHtml(val(‘priv-p3’))
-    .replace(‘Terms &amp; Conditions’, ‘<a href="terms.html">Terms &amp; Conditions</a>’);
-  const pChanges = encodeForHtml(val(‘priv-changes’))
-    .replace(‘contacting us’, ‘<a href="contact.html">contacting us</a>’);
+  const p3 = encodeForHtml(val('priv-p3'))
+    .replace('Terms &amp; Conditions', '<a href="terms.html">Terms &amp; Conditions</a>');
+  const pChanges = encodeForHtml(val('priv-changes'))
+    .replace('contacting us', '<a href="contact.html">contacting us</a>');
 
   // Update hero section
   let updated = replaceBetween(content,
-    ‘<h1 class="rv" data-delay="1">’,
-    ‘</h1>’,
-    ‘\n          ‘ + encodeForHtml(val(‘priv-title’)) + ‘\n        ‘);
+    '<h1 class="rv" data-delay="1">',
+    '</h1>',
+    '\n          ' + encodeForHtml(val('priv-title')) + '\n        ');
   updated = replaceBetween(updated,
-    ‘<p class="rv" data-delay="2">’,
-    ‘</p>’,
-    ‘\n          ‘ + encodeForHtml(val(‘priv-subtitle’)) + ‘\n        ‘);
+    '<p class="rv" data-delay="2">',
+    '</p>',
+    '\n          ' + encodeForHtml(val('priv-subtitle')) + '\n        ');
 
   // Rebuild the prose block
   const prose = `
-          <p>${encodeForHtml(val(‘priv-p1’))}</p>
+          <p>${encodeForHtml(val('priv-p1'))}</p>
 
-          <p>${encodeForHtml(val(‘priv-p2’))}</p>
+          <p>${encodeForHtml(val('priv-p2'))}</p>
 
           <p>${p3}</p>
 
-          <p>${encodeForHtml(val(‘priv-p4’))}</p>
+          <p>${encodeForHtml(val('priv-p4'))}</p>
 
-          <h2>${encH(val(‘priv-h-collection’))}</h2>
-          <p>${encodeForHtml(val(‘priv-collection’))}</p>
-          <h3>${encH(val(‘priv-h-healthcare’))}</h3>
-          <p>${encodeForHtml(val(‘priv-healthcare’))}</p>
+          <h2>${encH(val('priv-h-collection'))}</h2>
+          <p>${encodeForHtml(val('priv-collection'))}</p>
+          <h3>${encH(val('priv-h-healthcare'))}</h3>
+          <p>${encodeForHtml(val('priv-healthcare'))}</p>
 
-          <h2>${encH(val(‘priv-h-consent’))}</h2>
-          <p>${encodeForHtml(val(‘priv-consent’))}</p>
+          <h2>${encH(val('priv-h-consent'))}</h2>
+          <p>${encodeForHtml(val('priv-consent'))}</p>
 
-          <h2>${encH(val(‘priv-h-safeguards’))}</h2>
-          <p>${encodeForHtml(val(‘priv-safeguards1’))}</p>
-          <p>${encodeForHtml(val(‘priv-safeguards2’))}</p>
+          <h2>${encH(val('priv-h-safeguards'))}</h2>
+          <p>${encodeForHtml(val('priv-safeguards1'))}</p>
+          <p>${encodeForHtml(val('priv-safeguards2'))}</p>
 
-          <h2>${encH(val(‘priv-h-payment’))}</h2>
-          <p>${encodeForHtml(val(‘priv-payment’))}</p>
+          <h2>${encH(val('priv-h-payment'))}</h2>
+          <p>${encodeForHtml(val('priv-payment'))}</p>
 
-          <h2>${encH(val(‘priv-h-cookies’))}</h2>
-          <p>${encodeForHtml(val(‘priv-cookies’))}</p>
+          <h2>${encH(val('priv-h-cookies'))}</h2>
+          <p>${encodeForHtml(val('priv-cookies'))}</p>
 
-          <h2>${encH(val(‘priv-h-marketing’))}</h2>
-          <p>${encodeForHtml(val(‘priv-marketing’))}</p>
+          <h2>${encH(val('priv-h-marketing'))}</h2>
+          <p>${encodeForHtml(val('priv-marketing'))}</p>
 
-          <h2>${encH(val(‘priv-h-storage’))}</h2>
-          <p>${encodeForHtml(val(‘priv-storage’))}</p>
+          <h2>${encH(val('priv-h-storage'))}</h2>
+          <p>${encodeForHtml(val('priv-storage'))}</p>
 
-          <h2>${encH(val(‘priv-h-access’))}</h2>
-          <p>${encodeForHtml(val(‘priv-access’))}</p>
+          <h2>${encH(val('priv-h-access'))}</h2>
+          <p>${encodeForHtml(val('priv-access'))}</p>
 
-          <h2>${encH(val(‘priv-h-changes’))}</h2>
+          <h2>${encH(val('priv-h-changes'))}</h2>
           <p>${pChanges}</p>
 
-          <p class="updated">${val(‘priv-updated’)}</p>
+          <p class="updated">${val('priv-updated')}</p>
 
         `;
-  updated = replaceBetween(updated, ‘<div class="prose rv">’, ‘</div>’, prose);
-  await putFile(path, updated, sha, ‘CMS: update Privacy Policy’);
+  updated = replaceBetween(updated, '<div class="prose rv">', '</div>', prose);
+  await putFile(path, updated, sha, 'CMS: update Privacy Policy');
 }
 
 // ── TERMS ─────────────────────────────────────────────────────────────────────
 async function hydrateTerms() {
-  const { content: html } = await getFile(‘terms.html’);
+  const { content: html } = await getFile('terms.html');
 
-  sf(‘terms-title’,    extractH1Text(html));
-  sf(‘terms-subtitle’, extractHeroP(html));
+  sf('terms-title',    extractH1Text(html));
+  sf('terms-subtitle', extractHeroP(html));
 
-  sf(‘terms-intro’, extractParaContaining(html, ‘These Terms’));
+  sf('terms-intro', extractParaContaining(html, 'These Terms'));
 
-  sf(‘terms-h-services’,     extractHeadingText(html, ‘h2’, ‘Our services’));
-  sf(‘terms-services’,       extractParaAfter(html, ‘<h2>Our services’));
+  sf('terms-h-services',     extractHeadingText(html, 'h2', 'Our services'));
+  sf('terms-services',       extractParaAfter(html, '<h2>Our services'));
 
-  sf(‘terms-h-medical’,      extractHeadingText(html, ‘h2’, ‘No substitute’));
-  sf(‘terms-medical’,        extractParaAfter(html, ‘<h2>No substitute’));
+  sf('terms-h-medical',      extractHeadingText(html, 'h2', 'No substitute'));
+  sf('terms-medical',        extractParaAfter(html, '<h2>No substitute'));
 
-  sf(‘terms-h-appointments’, extractHeadingText(html, ‘h2’, ‘Appointments, cancellations’));
-  sf(‘terms-appointments’,   extractParaAfter(html, ‘<h2>Appointments, cancellations’));
+  sf('terms-h-appointments', extractHeadingText(html, 'h2', 'Appointments, cancellations'));
+  sf('terms-appointments',   extractParaAfter(html, '<h2>Appointments, cancellations'));
 
-  sf(‘terms-h-billing’,      extractHeadingText(html, ‘h2’, ‘Billing’));
-  sf(‘terms-billing’,        extractParaAfter(html, ‘<h2>Billing’));
+  sf('terms-h-billing',      extractHeadingText(html, 'h2', 'Billing'));
+  sf('terms-billing',        extractParaAfter(html, '<h2>Billing'));
 
-  sf(‘terms-h-booking’,      extractHeadingText(html, ‘h2’, ‘Booking platform’));
-  sf(‘terms-booking’,        extractParaAfter(html, ‘<h2>Booking platform’));
+  sf('terms-h-booking',      extractHeadingText(html, 'h2', 'Booking platform'));
+  sf('terms-booking',        extractParaAfter(html, '<h2>Booking platform'));
 
-  sf(‘terms-h-ip’,           extractHeadingText(html, ‘h2’, ‘Intellectual property’));
-  sf(‘terms-ip’,             extractParaAfter(html, ‘<h2>Intellectual property’));
+  sf('terms-h-ip',           extractHeadingText(html, 'h2', 'Intellectual property'));
+  sf('terms-ip',             extractParaAfter(html, '<h2>Intellectual property'));
 
-  sf(‘terms-h-disclaimer’,   extractHeadingText(html, ‘h2’, ‘Disclaimer’));
-  sf(‘terms-disclaimer’,     extractParaAfter(html, ‘<h2>Disclaimer’));
+  sf('terms-h-disclaimer',   extractHeadingText(html, 'h2', 'Disclaimer'));
+  sf('terms-disclaimer',     extractParaAfter(html, '<h2>Disclaimer'));
 
-  sf(‘terms-h-law’,          extractHeadingText(html, ‘h2’, ‘Governing law’));
-  sf(‘terms-law’,            extractParaAfter(html, ‘<h2>Governing law’));
+  sf('terms-h-law',          extractHeadingText(html, 'h2', 'Governing law'));
+  sf('terms-law',            extractParaAfter(html, '<h2>Governing law'));
 
-  sf(‘terms-h-changes’,      extractHeadingText(html, ‘h2’, ‘Changes to these terms’));
-  sf(‘terms-changes’,        extractParaAfter(html, ‘<h2>Changes to these terms’));
+  sf('terms-h-changes',      extractHeadingText(html, 'h2', 'Changes to these terms'));
+  sf('terms-changes',        extractParaAfter(html, '<h2>Changes to these terms'));
 
-  sf(‘terms-h-contact’,      extractHeadingText(html, ‘h2’, ‘Contact’));
-  sf(‘terms-contact’,        extractParaAfter(html, ‘<h2>Contact’));
+  sf('terms-h-contact',      extractHeadingText(html, 'h2', 'Contact'));
+  sf('terms-contact',        extractParaAfter(html, '<h2>Contact'));
 
-  sf(‘terms-updated’, extractUpdated(html));
+  sf('terms-updated', extractUpdated(html));
 }
 
 async function publishTerms() {
-  const { content, sha, path } = await getFile(‘terms.html’);
+  const { content, sha, path } = await getFile('terms.html');
 
   // Reconstruct known internal links
-  const intro = encodeForHtml(val(‘terms-intro’))
-    .replace(‘Privacy Policy’, ‘<a href="privacy.html">Privacy Policy</a>’);
-  const appointments = encodeForHtml(val(‘terms-appointments’))
-    .replace(‘FAQ &amp; policies’, ‘<a href="faq.html">FAQ &amp; policies</a>’);
-  const contact = encodeForHtml(val(‘terms-contact’))
-    .replace(‘contact page’, ‘<a href="contact.html">contact page</a>’);
+  const intro = encodeForHtml(val('terms-intro'))
+    .replace('Privacy Policy', '<a href="privacy.html">Privacy Policy</a>');
+  const appointments = encodeForHtml(val('terms-appointments'))
+    .replace('FAQ &amp; policies', '<a href="faq.html">FAQ &amp; policies</a>');
+  const contact = encodeForHtml(val('terms-contact'))
+    .replace('contact page', '<a href="contact.html">contact page</a>');
 
   // Update hero section
   let updated = replaceBetween(content,
-    ‘<h1 class="rv" data-delay="1">’,
-    ‘</h1>’,
-    ‘\n          ‘ + encodeForHtml(val(‘terms-title’)) + ‘\n        ‘);
+    '<h1 class="rv" data-delay="1">',
+    '</h1>',
+    '\n          ' + encodeForHtml(val('terms-title')) + '\n        ');
   updated = replaceBetween(updated,
-    ‘<p class="rv" data-delay="2">’,
-    ‘</p>’,
-    ‘\n          ‘ + encodeForHtml(val(‘terms-subtitle’)) + ‘\n        ‘);
+    '<p class="rv" data-delay="2">',
+    '</p>',
+    '\n          ' + encodeForHtml(val('terms-subtitle')) + '\n        ');
 
   // Rebuild prose block
   const prose = `
           <p>${intro}</p>
 
-          <h2>${encH(val(‘terms-h-services’))}</h2>
-          <p>${encodeForHtml(val(‘terms-services’))}</p>
+          <h2>${encH(val('terms-h-services'))}</h2>
+          <p>${encodeForHtml(val('terms-services'))}</p>
 
-          <h2>${encH(val(‘terms-h-medical’))}</h2>
-          <p>${encodeForHtml(val(‘terms-medical’))}</p>
+          <h2>${encH(val('terms-h-medical'))}</h2>
+          <p>${encodeForHtml(val('terms-medical'))}</p>
 
-          <h2>${encH(val(‘terms-h-appointments’))}</h2>
+          <h2>${encH(val('terms-h-appointments'))}</h2>
           <p>${appointments}</p>
 
-          <h2>${encH(val(‘terms-h-billing’))}</h2>
-          <p>${encodeForHtml(val(‘terms-billing’))}</p>
+          <h2>${encH(val('terms-h-billing'))}</h2>
+          <p>${encodeForHtml(val('terms-billing'))}</p>
 
-          <h2>${encH(val(‘terms-h-booking’))}</h2>
-          <p>${encodeForHtml(val(‘terms-booking’))}</p>
+          <h2>${encH(val('terms-h-booking'))}</h2>
+          <p>${encodeForHtml(val('terms-booking'))}</p>
 
-          <h2>${encH(val(‘terms-h-ip’))}</h2>
-          <p>${encodeForHtml(val(‘terms-ip’))}</p>
+          <h2>${encH(val('terms-h-ip'))}</h2>
+          <p>${encodeForHtml(val('terms-ip'))}</p>
 
-          <h2>${encH(val(‘terms-h-disclaimer’))}</h2>
-          <p>${encodeForHtml(val(‘terms-disclaimer’))}</p>
+          <h2>${encH(val('terms-h-disclaimer'))}</h2>
+          <p>${encodeForHtml(val('terms-disclaimer'))}</p>
 
-          <h2>${encH(val(‘terms-h-law’))}</h2>
-          <p>${encodeForHtml(val(‘terms-law’))}</p>
+          <h2>${encH(val('terms-h-law'))}</h2>
+          <p>${encodeForHtml(val('terms-law'))}</p>
 
-          <h2>${encH(val(‘terms-h-changes’))}</h2>
-          <p>${encodeForHtml(val(‘terms-changes’))}</p>
+          <h2>${encH(val('terms-h-changes'))}</h2>
+          <p>${encodeForHtml(val('terms-changes'))}</p>
 
-          <h2>${encH(val(‘terms-h-contact’))}</h2>
+          <h2>${encH(val('terms-h-contact'))}</h2>
           <p>${contact}</p>
 
-          <p class="updated">${val(‘terms-updated’)}</p>
+          <p class="updated">${val('terms-updated')}</p>
 
         `;
-  updated = replaceBetween(updated, ‘<div class="prose rv">’, ‘</div>’, prose);
-  await putFile(path, updated, sha, ‘CMS: update Terms & Conditions’);
+  updated = replaceBetween(updated, '<div class="prose rv">', '</div>', prose);
+  await putFile(path, updated, sha, 'CMS: update Terms & Conditions');
 }
 
 // ── IMAGES ────────────────────────────────────────────────────────────────────
