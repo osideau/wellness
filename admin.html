@@ -657,61 +657,77 @@
       <div class="panel-header">
         <div class="panel-eyebrow">— Legal</div>
         <h2 class="panel-title">Privacy Policy</h2>
-        <p class="panel-desc">Edit each section of the privacy policy. Links (e.g. to Terms page) are preserved automatically.</p>
+        <p class="panel-desc">Edit the privacy policy. All fields show plain text — links to other pages are preserved automatically when published.</p>
       </div>
 
       <div class="field-group">
-        <div class="field-group-title">Introduction</div>
-        <div class="field"><label>Paragraph 1 — scope</label><textarea id="priv-p1" rows="3"></textarea></div>
-        <div class="field"><label>Paragraph 2 — commitment</label><textarea id="priv-p2" rows="2"></textarea></div>
-        <div class="field"><label>Paragraph 3 — agreement</label><textarea id="priv-p3" rows="2"></textarea></div>
+        <div class="field-group-title">Page header</div>
+        <div class="field"><label>Page title</label><input type="text" id="priv-title" value="Privacy policy."></div>
+        <div class="field"><label>Subtitle / intro blurb</label><textarea id="priv-subtitle" rows="2"></textarea></div>
+      </div>
+
+      <div class="field-group">
+        <div class="field-group-title">Introduction paragraphs</div>
+        <div class="field"><label>Paragraph 1 — who this applies to</label><textarea id="priv-p1" rows="3"></textarea></div>
+        <div class="field"><label>Paragraph 2 — commitment to responsible handling</label><textarea id="priv-p2" rows="2"></textarea></div>
+        <div class="field"><label>Paragraph 3 — agreement to policy</label><textarea id="priv-p3" rows="2"></textarea></div>
         <div class="field"><label>Paragraph 4 — legislation (PIPA / FIPPA)</label><textarea id="priv-p4" rows="2"></textarea></div>
       </div>
 
       <div class="field-group">
-        <div class="field-group-title">Collection, use &amp; disclosure</div>
-        <div class="field"><label>Main paragraph</label><textarea id="priv-collection" rows="3"></textarea></div>
-        <div class="field"><label>Health care services (sub-section)</label><textarea id="priv-healthcare" rows="3"></textarea></div>
+        <div class="field-group-title">Section — Collection, use &amp; disclosure</div>
+        <div class="field"><label>Section heading</label><input type="text" id="priv-h-collection" value="Collection, use & disclosure"></div>
+        <div class="field"><label>Paragraph</label><textarea id="priv-collection" rows="3"></textarea></div>
+        <div class="field"><label>Sub-section heading</label><input type="text" id="priv-h-healthcare" value="Health care services"></div>
+        <div class="field"><label>Paragraph</label><textarea id="priv-healthcare" rows="3"></textarea></div>
       </div>
 
       <div class="field-group">
-        <div class="field-group-title">Consent</div>
+        <div class="field-group-title">Section — Consent</div>
+        <div class="field"><label>Section heading</label><input type="text" id="priv-h-consent" value="Consent"></div>
         <div class="field"><label>Paragraph</label><textarea id="priv-consent" rows="3"></textarea></div>
       </div>
 
       <div class="field-group">
-        <div class="field-group-title">Safeguards &amp; personnel access</div>
+        <div class="field-group-title">Section — Safeguards &amp; personnel access</div>
+        <div class="field"><label>Section heading</label><input type="text" id="priv-h-safeguards" value="Safeguards & personnel access"></div>
         <div class="field"><label>Paragraph 1</label><textarea id="priv-safeguards1" rows="3"></textarea></div>
         <div class="field"><label>Paragraph 2</label><textarea id="priv-safeguards2" rows="2"></textarea></div>
       </div>
 
       <div class="field-group">
-        <div class="field-group-title">Payment</div>
+        <div class="field-group-title">Section — Payment</div>
+        <div class="field"><label>Section heading</label><input type="text" id="priv-h-payment" value="Payment"></div>
         <div class="field"><label>Paragraph</label><textarea id="priv-payment" rows="2"></textarea></div>
       </div>
 
       <div class="field-group">
-        <div class="field-group-title">Cookies &amp; analytics</div>
+        <div class="field-group-title">Section — Cookies &amp; analytics</div>
+        <div class="field"><label>Section heading</label><input type="text" id="priv-h-cookies" value="Cookies & analytics"></div>
         <div class="field"><label>Paragraph</label><textarea id="priv-cookies" rows="3"></textarea></div>
       </div>
 
       <div class="field-group">
-        <div class="field-group-title">Marketing</div>
+        <div class="field-group-title">Section — Marketing</div>
+        <div class="field"><label>Section heading</label><input type="text" id="priv-h-marketing" value="Marketing"></div>
         <div class="field"><label>Paragraph</label><textarea id="priv-marketing" rows="3"></textarea></div>
       </div>
 
       <div class="field-group">
-        <div class="field-group-title">Storage of personal information</div>
+        <div class="field-group-title">Section — Storage of personal information</div>
+        <div class="field"><label>Section heading</label><input type="text" id="priv-h-storage" value="Storage of personal information"></div>
         <div class="field"><label>Paragraph</label><textarea id="priv-storage" rows="3"></textarea></div>
       </div>
 
       <div class="field-group">
-        <div class="field-group-title">Access, correction &amp; complaints</div>
+        <div class="field-group-title">Section — Access, correction &amp; complaints</div>
+        <div class="field"><label>Section heading</label><input type="text" id="priv-h-access" value="Access, correction & complaints"></div>
         <div class="field"><label>Paragraph</label><textarea id="priv-access" rows="3"></textarea></div>
       </div>
 
       <div class="field-group">
-        <div class="field-group-title">Changes to this policy</div>
+        <div class="field-group-title">Section — Changes to this policy</div>
+        <div class="field"><label>Section heading</label><input type="text" id="priv-h-changes" value="Changes to this policy"></div>
         <div class="field"><label>Paragraph</label><textarea id="priv-changes" rows="2"></textarea></div>
       </div>
 
@@ -731,7 +747,13 @@
       <div class="panel-header">
         <div class="panel-eyebrow">— Legal</div>
         <h2 class="panel-title">Terms &amp; Conditions</h2>
-        <p class="panel-desc">Edit each section of the terms and conditions. Links (e.g. to FAQ or contact page) are preserved automatically.</p>
+        <p class="panel-desc">Edit the terms and conditions. All fields show plain text — links to other pages are preserved automatically when published.</p>
+      </div>
+
+      <div class="field-group">
+        <div class="field-group-title">Page header</div>
+        <div class="field"><label>Page title</label><input type="text" id="terms-title" value="Terms & conditions."></div>
+        <div class="field"><label>Subtitle / intro blurb</label><textarea id="terms-subtitle" rows="2"></textarea></div>
       </div>
 
       <div class="field-group">
@@ -740,52 +762,62 @@
       </div>
 
       <div class="field-group">
-        <div class="field-group-title">Our services</div>
+        <div class="field-group-title">Section — Our services</div>
+        <div class="field"><label>Section heading</label><input type="text" id="terms-h-services" value="Our services"></div>
         <div class="field"><label>Paragraph</label><textarea id="terms-services" rows="2"></textarea></div>
       </div>
 
       <div class="field-group">
-        <div class="field-group-title">No substitute for medical advice</div>
+        <div class="field-group-title">Section — No substitute for medical advice</div>
+        <div class="field"><label>Section heading</label><input type="text" id="terms-h-medical" value="No substitute for medical advice"></div>
         <div class="field"><label>Paragraph</label><textarea id="terms-medical" rows="3"></textarea></div>
       </div>
 
       <div class="field-group">
-        <div class="field-group-title">Appointments, cancellations &amp; fees</div>
+        <div class="field-group-title">Section — Appointments, cancellations &amp; fees</div>
+        <div class="field"><label>Section heading</label><input type="text" id="terms-h-appointments" value="Appointments, cancellations & fees"></div>
         <div class="field"><label>Paragraph</label><textarea id="terms-appointments" rows="3"></textarea></div>
       </div>
 
       <div class="field-group">
-        <div class="field-group-title">Billing &amp; insurance</div>
+        <div class="field-group-title">Section — Billing &amp; insurance</div>
+        <div class="field"><label>Section heading</label><input type="text" id="terms-h-billing" value="Billing & insurance"></div>
         <div class="field"><label>Paragraph</label><textarea id="terms-billing" rows="3"></textarea></div>
       </div>
 
       <div class="field-group">
-        <div class="field-group-title">Booking platform &amp; third-party links</div>
+        <div class="field-group-title">Section — Booking platform &amp; third-party links</div>
+        <div class="field"><label>Section heading</label><input type="text" id="terms-h-booking" value="Booking platform & third-party links"></div>
         <div class="field"><label>Paragraph</label><textarea id="terms-booking" rows="3"></textarea></div>
       </div>
 
       <div class="field-group">
-        <div class="field-group-title">Intellectual property</div>
+        <div class="field-group-title">Section — Intellectual property</div>
+        <div class="field"><label>Section heading</label><input type="text" id="terms-h-ip" value="Intellectual property"></div>
         <div class="field"><label>Paragraph</label><textarea id="terms-ip" rows="2"></textarea></div>
       </div>
 
       <div class="field-group">
-        <div class="field-group-title">Disclaimer &amp; limitation of liability</div>
+        <div class="field-group-title">Section — Disclaimer &amp; limitation of liability</div>
+        <div class="field"><label>Section heading</label><input type="text" id="terms-h-disclaimer" value="Disclaimer & limitation of liability"></div>
         <div class="field"><label>Paragraph</label><textarea id="terms-disclaimer" rows="2"></textarea></div>
       </div>
 
       <div class="field-group">
-        <div class="field-group-title">Governing law</div>
+        <div class="field-group-title">Section — Governing law</div>
+        <div class="field"><label>Section heading</label><input type="text" id="terms-h-law" value="Governing law"></div>
         <div class="field"><label>Paragraph</label><textarea id="terms-law" rows="2"></textarea></div>
       </div>
 
       <div class="field-group">
-        <div class="field-group-title">Changes to these terms</div>
+        <div class="field-group-title">Section — Changes to these terms</div>
+        <div class="field"><label>Section heading</label><input type="text" id="terms-h-changes" value="Changes to these terms"></div>
         <div class="field"><label>Paragraph</label><textarea id="terms-changes" rows="2"></textarea></div>
       </div>
 
       <div class="field-group">
-        <div class="field-group-title">Contact</div>
+        <div class="field-group-title">Section — Contact</div>
+        <div class="field"><label>Section heading</label><input type="text" id="terms-h-contact" value="Contact"></div>
         <div class="field"><label>Paragraph</label><textarea id="terms-contact" rows="2"></textarea></div>
       </div>
 
@@ -1004,18 +1036,38 @@ function init() {
 }
 
 // ── Panel switching ───────────────────────────────────────────────────────────
-// Track which panels have been loaded from live site
 const loadedPanels = new Set();
+const dirtyPanels  = new Set();
+let   currentPanel = 'home';
+
+// Use event delegation on each panel so dynamically-built fields are caught too
+function watchPanel(id) {
+  const panel = document.getElementById('panel-' + id);
+  if (!panel || panel._watched) return;
+  panel._watched = true;
+  panel.addEventListener('input',  () => dirtyPanels.add(id));
+  panel.addEventListener('change', () => dirtyPanels.add(id));
+}
 
 function switchPanel(id, btn) {
+  // Guard: warn if current panel has unsaved changes
+  if (currentPanel && dirtyPanels.has(currentPanel) && currentPanel !== id) {
+    const ok = confirm('You have unpublished changes on this tab.\n\nDiscard them and switch anyway?');
+    if (!ok) return;
+    dirtyPanels.delete(currentPanel);
+  }
+
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
   document.getElementById('panel-' + id).classList.add('active');
   if (btn) btn.classList.add('active');
-  // Load live data the first time this panel is opened
+  currentPanel = id;
+
   if (!loadedPanels.has(id)) {
     loadedPanels.add(id);
     loadPanel(id);
+  } else {
+    watchPanel(id);
   }
 }
 
@@ -1035,10 +1087,11 @@ async function loadPanel(id) {
     else if (id === 'privacy')  await hydratePrivacy();
     else if (id === 'terms')    await hydrateTerms();
     setStatus('', 'Ready');
+    // Start watching for changes only after fields are populated
+    watchPanel(id);
   } catch(e) {
     setStatus('error', 'Load failed');
     console.warn('Hydration failed for panel', id, e);
-    // Non-fatal — fields stay at defaults
   }
 }
 
@@ -1688,6 +1741,7 @@ async function publishSection(section) {
     else if (section === 'privacy')  await publishPrivacy();
     else if (section === 'terms')    await publishTerms();
 
+    dirtyPanels.delete(section);
     setStatus('', 'Ready');
     const now = new Date().toLocaleTimeString('en-CA', { hour: '2-digit', minute: '2-digit' });
     const savedEl = document.getElementById(section + '-last-saved') ||
@@ -2058,165 +2112,309 @@ async function publishFAQ() {
   await putFile(path, html, sha, 'CMS: update FAQ');
 }
 
-// ── PRIVACY ───────────────────────────────────────────────────────────────────
-function extractParaAfter(html, anchor, offset = 0) {
-  const idx = html.indexOf(anchor, offset);
-  if (idx === -1) return '';
-  const pIdx = html.indexOf('<p', idx);
-  if (pIdx === -1) return '';
-  const contentStart = html.indexOf('>', pIdx) + 1;
-  const contentEnd = html.indexOf('</p>', contentStart);
-  if (contentEnd === -1) return '';
-  return html.slice(contentStart, contentEnd).trim();
+// ── PRIVACY & TERMS helpers ───────────────────────────────────────────────────
+
+// Strip HTML tags and decode entities → clean plain text for editing
+function stripToText(html) {
+  return decodeHtml(html.replace(/<[^>]+>/g, ‘’).replace(/\s+/g, ‘ ‘).trim());
 }
 
-function extractParaContaining(html, anchor, offset = 0) {
-  const idx = html.indexOf(anchor, offset);
-  if (idx === -1) return '';
-  const pStart = html.lastIndexOf('<p', idx);
-  if (pStart === -1) return '';
-  const contentStart = html.indexOf('>', pStart) + 1;
-  const contentEnd = html.indexOf('</p>', contentStart);
-  if (contentEnd === -1) return '';
-  return html.slice(contentStart, contentEnd).trim();
+// Re-encode plain text back to safe HTML for publishing
+function encodeForHtml(str) {
+  return str
+    .replace(/&/g, ‘&amp;’)
+    .replace(/"/g, ‘&quot;’)
+    .replace(/</g, ‘&lt;’)
+    .replace(/>/g, ‘&gt;’)
+    .replace(/—/g, ‘&mdash;’)
+    .replace(/–/g, ‘&ndash;’)
+    .replace(/‘/g, ‘&lsquo;’)
+    .replace(/’/g, ‘&rsquo;’)
+    .replace(/“/g, ‘&ldquo;’)
+    .replace(/”/g, ‘&rdquo;’);
+}
+
+function extractParaAfter(html, anchor) {
+  const idx = html.indexOf(anchor);
+  if (idx === -1) return ‘’;
+  const pIdx = html.indexOf(‘<p’, idx);
+  if (pIdx === -1) return ‘’;
+  const contentStart = html.indexOf(‘>’, pIdx) + 1;
+  const contentEnd = html.indexOf(‘</p>’, contentStart);
+  if (contentEnd === -1) return ‘’;
+  return stripToText(html.slice(contentStart, contentEnd));
+}
+
+function extractParaContaining(html, anchor) {
+  const idx = html.indexOf(anchor);
+  if (idx === -1) return ‘’;
+  const pStart = html.lastIndexOf(‘<p’, idx);
+  if (pStart === -1) return ‘’;
+  const contentStart = html.indexOf(‘>’, pStart) + 1;
+  const contentEnd = html.indexOf(‘</p>’, contentStart);
+  if (contentEnd === -1) return ‘’;
+  return stripToText(html.slice(contentStart, contentEnd));
+}
+
+function extractHeadingText(html, tag, anchor) {
+  const idx = html.indexOf(anchor);
+  if (idx === -1) return ‘’;
+  const hStart = html.lastIndexOf(‘<’ + tag, idx);
+  if (hStart === -1) return ‘’;
+  const contentStart = html.indexOf(‘>’, hStart) + 1;
+  const contentEnd = html.indexOf(‘</’ + tag + ‘>’, contentStart);
+  if (contentEnd === -1) return ‘’;
+  return stripToText(html.slice(contentStart, contentEnd));
+}
+
+function extractH1Text(html) {
+  const start = html.indexOf(‘<h1 ‘);
+  if (start === -1) return ‘’;
+  const contentStart = html.indexOf(‘>’, start) + 1;
+  const contentEnd = html.indexOf(‘</h1>’, contentStart);
+  if (contentEnd === -1) return ‘’;
+  return stripToText(html.slice(contentStart, contentEnd));
+}
+
+function extractHeroP(html) {
+  const heroIdx = html.indexOf(‘class="page-hero"’);
+  if (heroIdx === -1) return ‘’;
+  const pIdx = html.indexOf(‘<p ‘, heroIdx);
+  if (pIdx === -1) return ‘’;
+  const contentStart = html.indexOf(‘>’, pIdx) + 1;
+  const contentEnd = html.indexOf(‘</p>’, contentStart);
+  if (contentEnd === -1) return ‘’;
+  return stripToText(html.slice(contentStart, contentEnd));
 }
 
 function extractUpdated(html) {
   const m = html.match(/<p class="updated">([^<]+)<\/p>/);
-  return m ? m[1].trim() : '';
+  return m ? m[1].trim() : ‘’;
 }
 
-async function hydratePrivacy() {
-  const { content: html } = await getFile('privacy.html');
-  const sf = (id, v) => { const el = document.getElementById(id); if (el && v) el.value = v; };
+function sf(id, v) {
+  const el = document.getElementById(id);
+  if (el && v !== undefined && v !== ‘’) el.value = v;
+}
 
-  sf('priv-p1',       extractParaContaining(html, 'This Policy applies'));
-  sf('priv-p2',       extractParaContaining(html, 'We are committed to collecting'));
-  sf('priv-p3',       extractParaContaining(html, 'By accessing our website or using any'));
-  sf('priv-p4',       extractParaContaining(html, "British Columbia’s Personal Information Protection"));
-  sf('priv-collection', extractParaAfter(html, '<h2>Collection, use'));
-  sf('priv-healthcare', extractParaAfter(html, '<h3>Health care services'));
-  sf('priv-consent',  extractParaAfter(html, '<h2>Consent'));
-  const safStart = html.indexOf('<h2>Safeguards');
-  sf('priv-safeguards1', extractParaAfter(html, '<h2>Safeguards'));
-  const sf1End = html.indexOf('</p>', html.indexOf('<h2>Safeguards') + 1) + 4;
-  sf('priv-safeguards2', extractParaContaining(html, 'You play an important role'));
-  sf('priv-payment',  extractParaAfter(html, '<h2>Payment'));
-  sf('priv-cookies',  extractParaAfter(html, '<h2>Cookies'));
-  sf('priv-marketing', extractParaAfter(html, '<h2>Marketing'));
-  sf('priv-storage',  extractParaAfter(html, '<h2>Storage'));
-  sf('priv-access',   extractParaAfter(html, '<h2>Access, correction'));
-  sf('priv-changes',  extractParaAfter(html, '<h2>Changes to this policy'));
-  sf('priv-updated',  extractUpdated(html));
+// Encode a heading value with &amp; for & signs
+function encH(str) {
+  return str.replace(/&/g, ‘&amp;’);
+}
+
+// ── PRIVACY ───────────────────────────────────────────────────────────────────
+async function hydratePrivacy() {
+  const { content: html } = await getFile(‘privacy.html’);
+
+  sf(‘priv-title’,    extractH1Text(html));
+  sf(‘priv-subtitle’, extractHeroP(html));
+
+  sf(‘priv-p1’, extractParaContaining(html, ‘This Policy applies’));
+  sf(‘priv-p2’, extractParaContaining(html, ‘We are committed to collecting’));
+  sf(‘priv-p3’, extractParaContaining(html, ‘By accessing our website or using any’));
+  sf(‘priv-p4’, extractParaContaining(html, "British Columbia"));
+
+  sf(‘priv-h-collection’, extractHeadingText(html, ‘h2’, ‘Collection, use’));
+  sf(‘priv-collection’,   extractParaAfter(html, ‘<h2>Collection, use’));
+  sf(‘priv-h-healthcare’, extractHeadingText(html, ‘h3’, ‘Health care services’));
+  sf(‘priv-healthcare’,   extractParaAfter(html, ‘<h3>Health care services’));
+
+  sf(‘priv-h-consent’, extractHeadingText(html, ‘h2’, ‘Consent’));
+  sf(‘priv-consent’,   extractParaAfter(html, ‘<h2>Consent’));
+
+  sf(‘priv-h-safeguards’,  extractHeadingText(html, ‘h2’, ‘Safeguards’));
+  sf(‘priv-safeguards1’,   extractParaAfter(html, ‘<h2>Safeguards’));
+  sf(‘priv-safeguards2’,   extractParaContaining(html, ‘You play an important role’));
+
+  sf(‘priv-h-payment’, extractHeadingText(html, ‘h2’, ‘Payment’));
+  sf(‘priv-payment’,   extractParaAfter(html, ‘<h2>Payment’));
+
+  sf(‘priv-h-cookies’, extractHeadingText(html, ‘h2’, ‘Cookies’));
+  sf(‘priv-cookies’,   extractParaAfter(html, ‘<h2>Cookies’));
+
+  sf(‘priv-h-marketing’, extractHeadingText(html, ‘h2’, ‘Marketing’));
+  sf(‘priv-marketing’,   extractParaAfter(html, ‘<h2>Marketing’));
+
+  sf(‘priv-h-storage’, extractHeadingText(html, ‘h2’, ‘Storage’));
+  sf(‘priv-storage’,   extractParaAfter(html, ‘<h2>Storage’));
+
+  sf(‘priv-h-access’, extractHeadingText(html, ‘h2’, ‘Access, correction’));
+  sf(‘priv-access’,   extractParaAfter(html, ‘<h2>Access, correction’));
+
+  sf(‘priv-h-changes’, extractHeadingText(html, ‘h2’, ‘Changes to this policy’));
+  sf(‘priv-changes’,   extractParaAfter(html, ‘<h2>Changes to this policy’));
+
+  sf(‘priv-updated’, extractUpdated(html));
 }
 
 async function publishPrivacy() {
-  const { content, sha, path } = await getFile('privacy.html');
+  const { content, sha, path } = await getFile(‘privacy.html’);
+
+  // Reconstruct known internal links that appear in specific paragraphs
+  const p3 = encodeForHtml(val(‘priv-p3’))
+    .replace(‘Terms &amp; Conditions’, ‘<a href="terms.html">Terms &amp; Conditions</a>’);
+  const pChanges = encodeForHtml(val(‘priv-changes’))
+    .replace(‘contacting us’, ‘<a href="contact.html">contacting us</a>’);
+
+  // Update hero section
+  let updated = replaceBetween(content,
+    ‘<h1 class="rv" data-delay="1">’,
+    ‘</h1>’,
+    ‘\n          ‘ + encodeForHtml(val(‘priv-title’)) + ‘\n        ‘);
+  updated = replaceBetween(updated,
+    ‘<p class="rv" data-delay="2">’,
+    ‘</p>’,
+    ‘\n          ‘ + encodeForHtml(val(‘priv-subtitle’)) + ‘\n        ‘);
+
+  // Rebuild the prose block
   const prose = `
-          <p>${val('priv-p1')}</p>
+          <p>${encodeForHtml(val(‘priv-p1’))}</p>
 
-          <p>${val('priv-p2')}</p>
+          <p>${encodeForHtml(val(‘priv-p2’))}</p>
 
-          <p>${val('priv-p3')}</p>
+          <p>${p3}</p>
 
-          <p>${val('priv-p4')}</p>
+          <p>${encodeForHtml(val(‘priv-p4’))}</p>
 
-          <h2>Collection, use &amp; disclosure</h2>
-          <p>${val('priv-collection')}</p>
-          <h3>Health care services</h3>
-          <p>${val('priv-healthcare')}</p>
+          <h2>${encH(val(‘priv-h-collection’))}</h2>
+          <p>${encodeForHtml(val(‘priv-collection’))}</p>
+          <h3>${encH(val(‘priv-h-healthcare’))}</h3>
+          <p>${encodeForHtml(val(‘priv-healthcare’))}</p>
 
-          <h2>Consent</h2>
-          <p>${val('priv-consent')}</p>
+          <h2>${encH(val(‘priv-h-consent’))}</h2>
+          <p>${encodeForHtml(val(‘priv-consent’))}</p>
 
-          <h2>Safeguards &amp; personnel access</h2>
-          <p>${val('priv-safeguards1')}</p>
-          <p>${val('priv-safeguards2')}</p>
+          <h2>${encH(val(‘priv-h-safeguards’))}</h2>
+          <p>${encodeForHtml(val(‘priv-safeguards1’))}</p>
+          <p>${encodeForHtml(val(‘priv-safeguards2’))}</p>
 
-          <h2>Payment</h2>
-          <p>${val('priv-payment')}</p>
+          <h2>${encH(val(‘priv-h-payment’))}</h2>
+          <p>${encodeForHtml(val(‘priv-payment’))}</p>
 
-          <h2>Cookies &amp; analytics</h2>
-          <p>${val('priv-cookies')}</p>
+          <h2>${encH(val(‘priv-h-cookies’))}</h2>
+          <p>${encodeForHtml(val(‘priv-cookies’))}</p>
 
-          <h2>Marketing</h2>
-          <p>${val('priv-marketing')}</p>
+          <h2>${encH(val(‘priv-h-marketing’))}</h2>
+          <p>${encodeForHtml(val(‘priv-marketing’))}</p>
 
-          <h2>Storage of personal information</h2>
-          <p>${val('priv-storage')}</p>
+          <h2>${encH(val(‘priv-h-storage’))}</h2>
+          <p>${encodeForHtml(val(‘priv-storage’))}</p>
 
-          <h2>Access, correction &amp; complaints</h2>
-          <p>${val('priv-access')}</p>
+          <h2>${encH(val(‘priv-h-access’))}</h2>
+          <p>${encodeForHtml(val(‘priv-access’))}</p>
 
-          <h2>Changes to this policy</h2>
-          <p>${val('priv-changes')}</p>
+          <h2>${encH(val(‘priv-h-changes’))}</h2>
+          <p>${pChanges}</p>
 
-          <p class="updated">${val('priv-updated')}</p>
+          <p class="updated">${val(‘priv-updated’)}</p>
 
         `;
-  const newContent = replaceBetween(content, '<div class="prose rv">', '</div>', prose);
-  await putFile(path, newContent, sha, 'CMS: update Privacy Policy');
+  updated = replaceBetween(updated, ‘<div class="prose rv">’, ‘</div>’, prose);
+  await putFile(path, updated, sha, ‘CMS: update Privacy Policy’);
 }
 
 // ── TERMS ─────────────────────────────────────────────────────────────────────
 async function hydrateTerms() {
-  const { content: html } = await getFile('terms.html');
-  const sf = (id, v) => { const el = document.getElementById(id); if (el && v) el.value = v; };
+  const { content: html } = await getFile(‘terms.html’);
 
-  sf('terms-intro',        extractParaContaining(html, 'These Terms &amp; Conditions'));
-  sf('terms-services',     extractParaAfter(html, '<h2>Our services'));
-  sf('terms-medical',      extractParaAfter(html, '<h2>No substitute'));
-  sf('terms-appointments', extractParaAfter(html, '<h2>Appointments, cancellations'));
-  sf('terms-billing',      extractParaAfter(html, '<h2>Billing'));
-  sf('terms-booking',      extractParaAfter(html, '<h2>Booking platform'));
-  sf('terms-ip',           extractParaAfter(html, '<h2>Intellectual property'));
-  sf('terms-disclaimer',   extractParaAfter(html, '<h2>Disclaimer'));
-  sf('terms-law',          extractParaAfter(html, '<h2>Governing law'));
-  sf('terms-changes',      extractParaAfter(html, '<h2>Changes to these terms'));
-  sf('terms-contact',      extractParaAfter(html, '<h2>Contact'));
-  sf('terms-updated',      extractUpdated(html));
+  sf(‘terms-title’,    extractH1Text(html));
+  sf(‘terms-subtitle’, extractHeroP(html));
+
+  sf(‘terms-intro’, extractParaContaining(html, ‘These Terms’));
+
+  sf(‘terms-h-services’,     extractHeadingText(html, ‘h2’, ‘Our services’));
+  sf(‘terms-services’,       extractParaAfter(html, ‘<h2>Our services’));
+
+  sf(‘terms-h-medical’,      extractHeadingText(html, ‘h2’, ‘No substitute’));
+  sf(‘terms-medical’,        extractParaAfter(html, ‘<h2>No substitute’));
+
+  sf(‘terms-h-appointments’, extractHeadingText(html, ‘h2’, ‘Appointments, cancellations’));
+  sf(‘terms-appointments’,   extractParaAfter(html, ‘<h2>Appointments, cancellations’));
+
+  sf(‘terms-h-billing’,      extractHeadingText(html, ‘h2’, ‘Billing’));
+  sf(‘terms-billing’,        extractParaAfter(html, ‘<h2>Billing’));
+
+  sf(‘terms-h-booking’,      extractHeadingText(html, ‘h2’, ‘Booking platform’));
+  sf(‘terms-booking’,        extractParaAfter(html, ‘<h2>Booking platform’));
+
+  sf(‘terms-h-ip’,           extractHeadingText(html, ‘h2’, ‘Intellectual property’));
+  sf(‘terms-ip’,             extractParaAfter(html, ‘<h2>Intellectual property’));
+
+  sf(‘terms-h-disclaimer’,   extractHeadingText(html, ‘h2’, ‘Disclaimer’));
+  sf(‘terms-disclaimer’,     extractParaAfter(html, ‘<h2>Disclaimer’));
+
+  sf(‘terms-h-law’,          extractHeadingText(html, ‘h2’, ‘Governing law’));
+  sf(‘terms-law’,            extractParaAfter(html, ‘<h2>Governing law’));
+
+  sf(‘terms-h-changes’,      extractHeadingText(html, ‘h2’, ‘Changes to these terms’));
+  sf(‘terms-changes’,        extractParaAfter(html, ‘<h2>Changes to these terms’));
+
+  sf(‘terms-h-contact’,      extractHeadingText(html, ‘h2’, ‘Contact’));
+  sf(‘terms-contact’,        extractParaAfter(html, ‘<h2>Contact’));
+
+  sf(‘terms-updated’, extractUpdated(html));
 }
 
 async function publishTerms() {
-  const { content, sha, path } = await getFile('terms.html');
+  const { content, sha, path } = await getFile(‘terms.html’);
+
+  // Reconstruct known internal links
+  const intro = encodeForHtml(val(‘terms-intro’))
+    .replace(‘Privacy Policy’, ‘<a href="privacy.html">Privacy Policy</a>’);
+  const appointments = encodeForHtml(val(‘terms-appointments’))
+    .replace(‘FAQ &amp; policies’, ‘<a href="faq.html">FAQ &amp; policies</a>’);
+  const contact = encodeForHtml(val(‘terms-contact’))
+    .replace(‘contact page’, ‘<a href="contact.html">contact page</a>’);
+
+  // Update hero section
+  let updated = replaceBetween(content,
+    ‘<h1 class="rv" data-delay="1">’,
+    ‘</h1>’,
+    ‘\n          ‘ + encodeForHtml(val(‘terms-title’)) + ‘\n        ‘);
+  updated = replaceBetween(updated,
+    ‘<p class="rv" data-delay="2">’,
+    ‘</p>’,
+    ‘\n          ‘ + encodeForHtml(val(‘terms-subtitle’)) + ‘\n        ‘);
+
+  // Rebuild prose block
   const prose = `
-          <p>${val('terms-intro')}</p>
+          <p>${intro}</p>
 
-          <h2>Our services</h2>
-          <p>${val('terms-services')}</p>
+          <h2>${encH(val(‘terms-h-services’))}</h2>
+          <p>${encodeForHtml(val(‘terms-services’))}</p>
 
-          <h2>No substitute for medical advice</h2>
-          <p>${val('terms-medical')}</p>
+          <h2>${encH(val(‘terms-h-medical’))}</h2>
+          <p>${encodeForHtml(val(‘terms-medical’))}</p>
 
-          <h2>Appointments, cancellations &amp; fees</h2>
-          <p>${val('terms-appointments')}</p>
+          <h2>${encH(val(‘terms-h-appointments’))}</h2>
+          <p>${appointments}</p>
 
-          <h2>Billing &amp; insurance</h2>
-          <p>${val('terms-billing')}</p>
+          <h2>${encH(val(‘terms-h-billing’))}</h2>
+          <p>${encodeForHtml(val(‘terms-billing’))}</p>
 
-          <h2>Booking platform &amp; third-party links</h2>
-          <p>${val('terms-booking')}</p>
+          <h2>${encH(val(‘terms-h-booking’))}</h2>
+          <p>${encodeForHtml(val(‘terms-booking’))}</p>
 
-          <h2>Intellectual property</h2>
-          <p>${val('terms-ip')}</p>
+          <h2>${encH(val(‘terms-h-ip’))}</h2>
+          <p>${encodeForHtml(val(‘terms-ip’))}</p>
 
-          <h2>Disclaimer &amp; limitation of liability</h2>
-          <p>${val('terms-disclaimer')}</p>
+          <h2>${encH(val(‘terms-h-disclaimer’))}</h2>
+          <p>${encodeForHtml(val(‘terms-disclaimer’))}</p>
 
-          <h2>Governing law</h2>
-          <p>${val('terms-law')}</p>
+          <h2>${encH(val(‘terms-h-law’))}</h2>
+          <p>${encodeForHtml(val(‘terms-law’))}</p>
 
-          <h2>Changes to these terms</h2>
-          <p>${val('terms-changes')}</p>
+          <h2>${encH(val(‘terms-h-changes’))}</h2>
+          <p>${encodeForHtml(val(‘terms-changes’))}</p>
 
-          <h2>Contact</h2>
-          <p>${val('terms-contact')}</p>
+          <h2>${encH(val(‘terms-h-contact’))}</h2>
+          <p>${contact}</p>
 
-          <p class="updated">${val('terms-updated')}</p>
+          <p class="updated">${val(‘terms-updated’)}</p>
 
         `;
-  const newContent = replaceBetween(content, '<div class="prose rv">', '</div>', prose);
-  await putFile(path, newContent, sha, 'CMS: update Terms & Conditions');
+  updated = replaceBetween(updated, ‘<div class="prose rv">’, ‘</div>’, prose);
+  await putFile(path, updated, sha, ‘CMS: update Terms & Conditions’);
 }
 
 // ── IMAGES ────────────────────────────────────────────────────────────────────
