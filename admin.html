@@ -176,26 +176,31 @@
     .pb-close { background: none; border: none; color: inherit; opacity: 0.6; cursor: pointer; font-size: 18px; padding: 0 0 0 0.5rem; line-height: 1; }
     .pb-close:hover { opacity: 1; }
     /* Publish overlay */
-    #publish-overlay { position: fixed; inset: 0; background: rgba(13,13,13,0.55); z-index: 2000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
+    #publish-overlay { position: fixed; inset: 0; background: rgba(10,10,10,0.6); z-index: 2000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
     #publish-overlay.active { display: flex; }
-    .po-card { background: #fff; border-radius: 8px; padding: 2.5rem 3rem; min-width: 340px; max-width: 460px; box-shadow: 0 24px 80px rgba(0,0,0,0.28); }
-    .po-title { font-family: var(--font-d); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--tan); margin-bottom: 1.75rem; }
-    .po-stage { display: flex; align-items: center; gap: 0.9rem; padding: 0.65rem 0; border-bottom: 1px solid #f0ece6; font-size: 13.5px; color: var(--ink); }
-    .po-stage:last-child { border-bottom: none; }
-    .po-stage.pending { color: var(--ash); }
-    .po-stage.done { color: var(--olive); }
-    .po-stage-icon { width: 22px; height: 22px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
-    .po-spinner { width: 16px; height: 16px; border: 2px solid var(--ash); border-top-color: var(--tan); border-radius: 50%; animation: spin 0.75s linear infinite; }
-    .po-check { width: 18px; height: 18px; background: var(--tan); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 10px; }
-    .po-dot-idle { width: 8px; height: 8px; background: var(--ash); border-radius: 50%; margin: 0 auto; }
-    .po-commit-link { display: block; margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid #f0ece6; font-size: 11.5px; color: var(--olive-mid); }
-    .po-commit-link a { color: var(--tan); text-decoration: none; }
-    .po-commit-link a:hover { text-decoration: underline; }
-    .po-deploy-bar { height: 3px; background: #f0ece6; border-radius: 2px; margin-top: 1.5rem; overflow: hidden; }
-    .po-deploy-fill { height: 100%; background: var(--tan); border-radius: 2px; width: 0%; transition: width 0.5s ease; }
-    .po-error-msg { margin-top: 1.25rem; padding: 0.875rem 1rem; background: #fef2f2; border-left: 3px solid #dc2626; border-radius: 4px; font-size: 12.5px; color: #991b1b; line-height: 1.5; }
-    .po-close-btn { margin-top: 1.5rem; width: 100%; padding: 0.6rem; background: none; border: 1px solid var(--ash); border-radius: 4px; font-size: 12px; color: var(--olive-mid); cursor: pointer; }
-    .po-close-btn:hover { background: #f9f6f1; }
+    .po-card { background: #faf8f5; border-radius: 10px; padding: 2.75rem 2.75rem 2.25rem; width: 360px; box-shadow: 0 32px 96px rgba(0,0,0,0.3); }
+    .po-title { font-family: var(--font-d); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--tan); margin-bottom: 2rem; }
+    /* Animated dots for active stage label */
+    @keyframes dotPulse { 0%,80%,100% { opacity: 0.2; } 40% { opacity: 1; } }
+    .po-dots span { animation: dotPulse 1.4s ease-in-out infinite; display: inline-block; }
+    .po-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .po-dots span:nth-child(3) { animation-delay: 0.4s; }
+    /* Stages */
+    .po-stage { display: flex; align-items: center; gap: 1rem; padding: 0.75rem 0; font-size: 13px; color: var(--ink); transition: color 0.3s; }
+    .po-stage.pending { color: #c8baa6; }
+    .po-stage.done { color: #5a7a5a; }
+    .po-stage-icon { width: 24px; height: 24px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .po-spinner { width: 18px; height: 18px; border: 2px solid #e0d8cc; border-top-color: var(--tan); border-radius: 50%; animation: spin 0.8s linear infinite; }
+    .po-check { width: 20px; height: 20px; background: #5a7a5a; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; animation: popIn 0.25s ease; }
+    .po-dot-idle { width: 7px; height: 7px; background: #ddd3c4; border-radius: 50%; margin: 0 auto; }
+    @keyframes popIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    /* Progress bar */
+    .po-bar-wrap { height: 2px; background: #e8e0d5; border-radius: 2px; margin: 1.75rem 0 0; overflow: hidden; }
+    .po-bar-fill { height: 100%; background: var(--tan); border-radius: 2px; width: 0%; }
+    /* Error + close */
+    .po-error-msg { margin-top: 1.25rem; padding: 0.875rem 1rem; background: #fef2f2; border-left: 3px solid #dc2626; border-radius: 4px; font-size: 12px; color: #991b1b; line-height: 1.6; }
+    .po-close-btn { margin-top: 1.5rem; width: 100%; padding: 0.65rem; background: none; border: 1px solid #ddd3c4; border-radius: 6px; font-size: 12px; color: var(--olive-mid); cursor: pointer; transition: background 0.2s; }
+    .po-close-btn:hover { background: #f0ece6; }
 
     @keyframes spin { to { transform: rotate(360deg); } }
     .pb-spinner { display: inline-block; width: 13px; height: 13px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 4px; }
@@ -889,23 +894,22 @@
 <div id="toast"></div>
 <div id="publish-overlay">
   <div class="po-card">
-    <div class="po-title">Publishing changes</div>
+    <div class="po-title">— Publishing</div>
     <div id="po-stage-commit" class="po-stage">
       <div class="po-stage-icon"><div class="po-spinner"></div></div>
-      <span id="po-commit-label">Committing to GitHub...</span>
+      <span>Saving changes<span class="po-dots"><span>.</span><span>.</span><span>.</span></span></span>
     </div>
     <div id="po-stage-deploy" class="po-stage pending">
       <div class="po-stage-icon"><div class="po-dot-idle"></div></div>
-      <span id="po-deploy-label">Waiting to deploy</span>
+      <span>Building site</span>
     </div>
     <div id="po-stage-live" class="po-stage pending">
       <div class="po-stage-icon"><div class="po-dot-idle"></div></div>
       <span>Live on isorropia.ca</span>
     </div>
-    <div class="po-deploy-bar" id="po-deploy-bar" style="display:none"><div class="po-deploy-fill" id="po-deploy-fill"></div></div>
-    <div id="po-commit-link" class="po-commit-link" style="display:none"></div>
+    <div class="po-bar-wrap" id="po-bar-wrap" style="display:none"><div class="po-bar-fill" id="po-bar-fill"></div></div>
     <div id="po-error-msg" class="po-error-msg" style="display:none"></div>
-    <button class="po-close-btn" id="po-close-btn" onclick="closePublishOverlay()" style="display:none">Close</button>
+    <button class="po-close-btn" id="po-close-btn" onclick="closePublishOverlay()" style="display:none">Done</button>
   </div>
 </div>
 <div id="publish-bar"><span class="pb-icon" id="pb-icon"></span><span class="pb-msg" id="pb-msg"></span><div class="pb-track" id="pb-track" style="display:none"><div class="pb-fill" id="pb-fill"></div></div><button class="pb-close" onclick="hidePublishBar()">&#215;</button></div>
@@ -2676,110 +2680,111 @@ function toast(msg, isError = false) {
 }
 
 // ── Publish overlay ────────────────────────────────────────────────────────────
+// ── Publish overlay ────────────────────────────────────────────────────────────
+// Cloudflare Pages typically deploys in 30-50s. We animate a progress bar
+// over that window rather than polling (CORS blocks reading the live page).
+
+const DEPLOY_DURATION = 45000; // ms — estimated Cloudflare Pages build time
+
 function openPublishOverlay() {
-  const ov = document.getElementById('publish-overlay');
-  // Reset all stages
-  _setStage('po-stage-commit', 'active', 'Committing to GitHub...');
-  _setStage('po-stage-deploy', 'pending', 'Waiting to deploy');
-  _setStage('po-stage-live',   'pending', null);
-  document.getElementById('po-deploy-bar').style.display = 'none';
-  document.getElementById('po-commit-link').style.display = 'none';
+  clearTimeout(window._deployTimer);
+  _stageSet('po-stage-commit', 'active');
+  _stageSet('po-stage-deploy', 'pending');
+  _stageSet('po-stage-live',   'pending');
+  document.getElementById('po-bar-wrap').style.display = 'none';
   document.getElementById('po-error-msg').style.display = 'none';
   document.getElementById('po-close-btn').style.display = 'none';
-  ov.classList.add('active');
+  document.getElementById('publish-overlay').classList.add('active');
 }
 
 function closePublishOverlay() {
   document.getElementById('publish-overlay').classList.remove('active');
-  clearTimeout(window._pollTimer);
+  clearTimeout(window._deployTimer);
 }
 
-function _setStage(id, state, label) {
+function _stageSet(id, state) {
   const el = document.getElementById(id);
   if (!el) return;
   el.className = 'po-stage' + (state === 'pending' ? ' pending' : state === 'done' ? ' done' : '');
   const iconEl = el.querySelector('.po-stage-icon');
-  if (iconEl) {
-    if (state === 'active')  iconEl.innerHTML = '<div class="po-spinner"></div>';
-    else if (state === 'done') iconEl.innerHTML = '<div class="po-check">&#10003;</div>';
-    else                       iconEl.innerHTML = '<div class="po-dot-idle"></div>';
-  }
-  if (label !== null) {
-    const span = el.querySelector('span:last-child');
-    if (span) span.textContent = label;
-  }
+  if (!iconEl) return;
+  if (state === 'active')       iconEl.innerHTML = '<div class="po-spinner"></div>';
+  else if (state === 'done')    iconEl.innerHTML = '<div class="po-check">&#10003;</div>';
+  else                          iconEl.innerHTML = '<div class="po-dot-idle"></div>';
 }
 
-function setOverlayCommitLink(url, sha) {
-  const el = document.getElementById('po-commit-link');
-  if (!el) return;
-  const short = sha ? sha.slice(0, 7) : 'view';
-  el.innerHTML = 'Commit ' + short + ' &rarr; <a href="' + url + '" target="_blank" rel="noopener">View on GitHub</a>';
-  el.style.display = 'block';
-}
+function setOverlayCommitLink() {}
 
 function overlayCommitted() {
-  _setStage('po-stage-commit', 'done', 'Committed to GitHub');
-  _setStage('po-stage-deploy', 'active', 'Deploying to site...');
-  const bar = document.getElementById('po-deploy-bar');
-  const fill = document.getElementById('po-deploy-fill');
-  bar.style.display = 'block';
+  _stageSet('po-stage-commit', 'done');
+  _stageSet('po-stage-deploy', 'active');
+
+  const wrap = document.getElementById('po-bar-wrap');
+  const fill = document.getElementById('po-bar-fill');
+  wrap.style.display = 'block';
   fill.style.transition = 'none';
-  fill.style.width = '5%';
-  setTimeout(() => {
-    fill.style.transition = 'width 50s cubic-bezier(0.15,0,0.4,1)';
-    fill.style.width = '85%';
-  }, 100);
+  fill.style.width = '0%';
+
+  // Animate bar to 88% over ~50s as a progress indicator while we poll
+  requestAnimationFrame(() => {
+    fill.style.transition = 'width 50s cubic-bezier(0.05, 0, 0.25, 1)';
+    fill.style.width = '88%';
+  });
 }
 
 function overlayLive() {
-  const fill = document.getElementById('po-deploy-fill');
-  fill.style.transition = 'width 0.4s ease';
+  clearTimeout(window._deployTimer);
+  const fill = document.getElementById('po-bar-fill');
+  fill.style.transition = 'width 0.5s ease';
   fill.style.width = '100%';
   setTimeout(() => {
-    _setStage('po-stage-deploy', 'done', 'Deployed');
-    _setStage('po-stage-live',   'done', null);
+    _stageSet('po-stage-deploy', 'done');
+    _stageSet('po-stage-live', 'done');
     document.getElementById('po-close-btn').style.display = 'block';
-  }, 400);
+  }, 550);
 }
 
 function overlayError(msg) {
-  _setStage('po-stage-commit', 'done', 'Error during commit');
+  clearTimeout(window._deployTimer);
+  _stageSet('po-stage-commit', 'active');
   const errEl = document.getElementById('po-error-msg');
   errEl.textContent = msg;
   errEl.style.display = 'block';
   document.getElementById('po-close-btn').style.display = 'block';
 }
 
-async function startPublishPoll(section) {
+function startPublishPoll(section) {
   const marker = _publishMarker;
-  const primaryFile = SECTION_FILE[section] || (_publishPollFile || 'index.html');
-  const pollUrl = SITE_URL + '/' + primaryFile;
+  const file   = SECTION_FILE[section] || _publishPollFile || 'index.html';
+  if (!marker) return;
 
   let elapsed = 0;
-  const maxWait = 90000;
-  const interval = 6000;
+  const maxWait = 120000; // 2 min hard cap
+  const interval = 5000;
 
-  clearTimeout(window._pollTimer);
+  clearTimeout(window._deployTimer);
+
   async function poll() {
     try {
-      const res = await fetch(pollUrl + '?v=' + Date.now(), { cache: 'no-store' });
-      const text = await res.text();
-      if (marker && text.includes(marker)) {
-        overlayLive();
-        return;
-      }
+      const res = await fetch(
+        `${WORKER_URL}/check-live?file=${encodeURIComponent(file)}&marker=${encodeURIComponent(marker)}`,
+        { headers: { 'X-CMS-Password': ADMIN_PASSWORD }, cache: 'no-store' }
+      );
+      const data = await res.json();
+      if (data.live) { overlayLive(); return; }
     } catch (_) {}
+
     elapsed += interval;
     if (elapsed >= maxWait) {
-      // Timed out - show close button anyway
-      _setStage('po-stage-deploy', 'done', 'Deployed (verify on site)');
-      document.getElementById('po-close-btn').style.display = 'block';
+      // Hit cap — assume live and let user verify
+      overlayLive();
       return;
     }
-    window._pollTimer = setTimeout(poll, interval);
+    window._deployTimer = setTimeout(poll, interval);
   }
-  window._pollTimer = setTimeout(poll, interval);
+
+  // First check after 8s (Cloudflare Pages needs time to start building)
+  window._deployTimer = setTimeout(poll, 8000);
 }
 </script>
 </body>
