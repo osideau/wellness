@@ -1144,6 +1144,7 @@ function doLogin() {
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('shell').style.display = 'grid';
     init();
+    loadPanel('home');
   } else {
     document.getElementById('login-error').style.display = 'block';
     document.getElementById('login-pw').value = '';
@@ -1309,7 +1310,7 @@ function extractParagraph(html, searchStr, offset = 0) {
   const contentStart = html.indexOf('>', pStart) + 1;
   const contentEnd = html.indexOf('</p>', contentStart);
   if (contentEnd === -1) return null;
-  return html.slice(contentStart, contentEnd).trim();
+  return html.slice(contentStart, contentEnd).replace(/<br\s*\/?>/gi, '\n').replace(/\n[ \t]+/g, '\n').replace(/\n{2,}/g, '\n').trim();
 }
 
 // ── Panel hydrators ───────────────────────────────────────────────────────────
@@ -1319,7 +1320,7 @@ async function hydrateHome() {
 
   // h1 — find it between the h1 tag and </h1>
   const h1raw = extractBetween(html, '<h1 class="rv" data-delay="1"', '</h1>');
-  if (h1raw) setField('home-h1', h1raw.replace(/^[^>]*>/, '').replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '').replace(/\n[ \t]+/g, '\n').trim());
+  if (h1raw) setField('home-h1', h1raw.replace(/^[^>]*>/, '').replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '').replace(/\n[ \t]+/g, '\n').replace(/\n{2,}/g, '\n').trim());
 
   // Eyebrow
   const eyebrow = extractBetween(html, '<span class="label">Isorropia', '</span>');
@@ -1345,7 +1346,7 @@ async function hydrateHome() {
   const closing = extractBetween(html, '<section class="closing">', '</section>');
   if (closing) {
     const closingH2 = extractBetween(closing, '<h2 class="rv" data-delay="1">', '</h2>');
-    if (closingH2) setField('home-closing', closingH2.replace(/<br\s*\/?>/gi, '\n').replace(/\n[ \t]+/g, '\n').trim());
+    if (closingH2) setField('home-closing', closingH2.replace(/<br\s*\/?>/gi, '\n').replace(/\n[ \t]+/g, '\n').replace(/\n{2,}/g, '\n').trim());
   }
 }
 
@@ -1354,7 +1355,7 @@ async function hydrateAbout() {
 
   // Hero h1
   const h1 = extractBetween(html, '<h1 class="rv" data-delay="1">', '</h1>');
-  if (h1) setField('about-h1', h1.replace(/<br\s*\/?>/gi, '\n').replace(/\n[ \t]+/g, '\n').trim());
+  if (h1) setField('about-h1', h1.replace(/<br\s*\/?>/gi, '\n').replace(/\n[ \t]+/g, '\n').replace(/\n{2,}/g, '\n').trim());
 
   // Hero subtext
   const heroPRaw = extractParagraph(html, 'A regulated wellness practice committed');
@@ -1363,7 +1364,7 @@ async function hydrateAbout() {
   // Philosophy h2
   const philH2 = extractBetween(html, '<span class="eyebrow rv">— Our philosophy</span>', '</h2>');
   if (philH2) {
-    const h2clean = philH2.replace(/.*<h2[^>]*>/s, '').replace(/<br\s*\/?>/gi, '\n').replace(/\n[ \t]+/g, '\n').trim();
+    const h2clean = philH2.replace(/.*<h2[^>]*>/s, '').replace(/<br\s*\/?>/gi, '\n').replace(/\n[ \t]+/g, '\n').replace(/\n{2,}/g, '\n').trim();
     setField('about-phil-h2', h2clean);
   }
 
@@ -1417,7 +1418,7 @@ async function hydrateServices() {
   const { content: html } = await getFile('services.html');
 
   const h1 = extractBetween(html, '<h1 class="rv" data-delay="1">', '</h1>');
-  if (h1) setField('svc-h1', h1.replace(/<br\s*\/?>/gi, '\n').replace(/\n[ \t]+/g, '\n').trim());
+  if (h1) setField('svc-h1', h1.replace(/<br\s*\/?>/gi, '\n').replace(/\n[ \t]+/g, '\n').replace(/\n{2,}/g, '\n').trim());
 
   const heroP = extractParagraph(html, 'Registered massage therapy and acupuncture, under the');
   if (heroP) setField('svc-hero-p', heroP);
@@ -1445,7 +1446,7 @@ async function hydrateMassage() {
   if (heroP) setField('massage-hero-p', heroP);
 
   const aboutH2 = extractBetween(html, '<span class="eyebrow rv">— About this service</span>', '</h2>');
-  if (aboutH2) setField('massage-about-h2', aboutH2.replace(/.*<h2[^>]*>/s, '').replace(/<br\s*\/?>/gi, '\n').replace(/\n[ \t]+/g, '\n').trim());
+  if (aboutH2) setField('massage-about-h2', aboutH2.replace(/.*<h2[^>]*>/s, '').replace(/<br\s*\/?>/gi, '\n').replace(/\n[ \t]+/g, '\n').replace(/\n{2,}/g, '\n').trim());
 
   const p1 = extractParagraph(html, 'Registered Massage Therapy (RMT) addresses');
   if (p1) setField('massage-about-p1', p1);
@@ -1480,7 +1481,7 @@ async function hydrateAcupuncture() {
   if (heroP) setField('acu-hero-p', heroP);
 
   const aboutH2 = extractBetween(html, '<span class="eyebrow rv">— About this service</span>', '</h2>');
-  if (aboutH2) setField('acu-about-h2', aboutH2.replace(/.*<h2[^>]*>/s, '').replace(/<br\s*\/?>/gi, '\n').replace(/\n[ \t]+/g, '\n').trim());
+  if (aboutH2) setField('acu-about-h2', aboutH2.replace(/.*<h2[^>]*>/s, '').replace(/<br\s*\/?>/gi, '\n').replace(/\n[ \t]+/g, '\n').replace(/\n{2,}/g, '\n').trim());
 
   const p1 = extractParagraph(html, 'Acupuncture is a safe, evidence-supported therapy');
   if (p1) setField('acu-about-p1', p1);
@@ -1510,7 +1511,7 @@ async function hydratePractitionersPage() {
 
   // Hero h1
   const h1 = extractBetween(html, '<h1 class="rv" data-delay="1">', '</h1>');
-  if (h1) setField('tp-h1', h1.replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '').replace(/\n[ \t]+/g, '\n').trim());
+  if (h1) setField('tp-h1', h1.replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '').replace(/\n[ \t]+/g, '\n').replace(/\n{2,}/g, '\n').trim());
 
   // Hero subtext
   const heroP = extractParagraph(html, 'Each member of the practice has been chosen for craft');
@@ -2901,7 +2902,8 @@ function replaceParagraphAfter(html, searchStr, newText) {
   if (pStart === -1) return html;
   const pEnd = html.indexOf('</p>', pStart) + 4;
   const tag = html.slice(pStart, html.indexOf('>', pStart) + 1);
-  return html.slice(0, pStart) + tag + newText + '</p>' + html.slice(pEnd);
+  const htmlText = newText.replace(/\n/g, '<br>\n');
+  return html.slice(0, pStart) + tag + htmlText + '</p>' + html.slice(pEnd);
 }
 
 function replaceParagraphAfterNth(html, searchStr, newText, _n) {
