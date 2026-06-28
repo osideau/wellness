@@ -1323,8 +1323,8 @@ async function hydrateHome() {
   if (h1raw) setField('home-h1', h1raw.replace(/^[^>]*>/, '').replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '').replace(/\n[ \t]+/g, '\n').replace(/\n{2,}/g, '\n').trim());
 
   // Eyebrow
-  const eyebrow = extractBetween(html, '<span class="label">Isorropia', '</span>');
-  if (eyebrow !== null) setField('home-eyebrow', 'Isorropia' + eyebrow);
+  const eyebrow = extractBetween(html, '<span class="label">', '</span>');
+  if (eyebrow !== null) setField('home-eyebrow', eyebrow);
 
   // Services h2
   const svcH2 = extractBetween(html, '<h2 class="rv" data-delay="1" style="max-width: 18ch;">', '</h2>');
