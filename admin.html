@@ -1542,7 +1542,7 @@ async function hydrateContact() {
   const { content: html } = await getFile('contact.html');
 
   // Phone
-  const phoneMatch = html.match(/\(6\d\d\) \d\d\d-\d\d\d\d/);
+  const phoneMatch = html.match(/\(\d{3}\) \d{3}-\d{4}/);
   if (phoneMatch) setField('contact-phone', phoneMatch[0]);
 
   // Email — from mailto href
@@ -1928,6 +1928,17 @@ async function publishSection(section) {
     const savedEl = document.getElementById(section + '-last-saved') ||
                     document.getElementById(section.replace('practitioners','prac') + '-last-saved');
     if (savedEl) savedEl.textContent = 'Last published at ' + now;
+
+    // Snapshot all field values as the new "original" so repeated publishes
+    // from the same tab always find the right text, even if re-hydration
+    // can't locate changed paragraphs by their old content.
+    const panelEl = document.getElementById('panel-' + section);
+    if (panelEl) {
+      panelEl.querySelectorAll('input[type="text"], input[type="time"], textarea').forEach(el => {
+        el.dataset.original = el.value;
+      });
+    }
+
     overlayCommitted();
     startPublishPoll(section);
   } catch(e) {
@@ -2244,7 +2255,13 @@ async function publishContact() {
   const phone    = val('contact-phone');
   const email    = val('contact-email');
 
-  // Files that contain address/contact info
+  // Use the values that were loaded when the panel opened (not hardcoded originals)
+  const oldUnit     = valOriginal('contact-unit')     || '#201 / 202';
+  const oldStreet   = valOriginal('contact-street')   || '12894 16th Ave';
+  const oldCity     = valOriginal('contact-city')     || 'Surrey';
+  const oldProvince = valOriginal('contact-province') || 'BC V4A 1N7';
+  const oldPhone    = valOriginal('contact-phone')    || '(604) 417-1434';
+
   const files = ['contact.html', 'index.html', 'about.html', 'services.html',
                   'service-massage.html', 'service-acupuncture.html', 'team.html', 'faq.html'];
 
@@ -2252,13 +2269,13 @@ async function publishContact() {
     const { content, sha, path } = await getFile(filename);
     let html = content;
 
-    // Address unit + street (in footer: "#201 / 202 — 12894 16th Ave")
-    html = html.replace(/#201 \/ 202 — 12894 16th Ave/g, `${unit} — ${street}`);
-    // Address city + province (in footer: "Surrey, BC V4A 1N7")
-    html = html.replace(/Surrey, BC V4A 1N7/g, `${city}, ${province}`);
+    // Address unit + street — replace all occurrences using loaded original
+    html = html.split(`${oldUnit} — ${oldStreet}`).join(`${unit} — ${street}`);
+    // City + province
+    html = html.split(`${oldCity}, ${oldProvince}`).join(`${city}, ${province}`);
     // Phone
-    html = html.replace(/\(604\) 417-1434/g, phone);
-    // Email — href
+    html = html.split(oldPhone).join(phone);
+    // Email — href (structural, always safe)
     html = html.replace(/href="mailto:[^"]*"/g, `href="mailto:${email}"`);
     // Email — visible link text inside <a ...mailto...>...</a>
     html = html.replace(/(<a[^>]+mailto:[^>]+>)[^<]*/g, `$1${email}`);
