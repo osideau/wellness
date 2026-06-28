@@ -203,6 +203,11 @@
     .po-error-msg { margin-top: 1.25rem; padding: 0.875rem 1rem; background: #fef2f2; border-left: 3px solid #dc2626; border-radius: 4px; font-size: 12px; color: #991b1b; line-height: 1.6; }
     .po-close-btn { margin-top: 1.5rem; width: 100%; padding: 0.65rem; background: none; border: 1px solid #ddd3c4; border-radius: 6px; font-size: 12px; color: var(--olive-mid); cursor: pointer; transition: background 0.2s; }
     .po-close-btn:hover { background: #f0ece6; }
+    .po-patience { font-size: 11px; color: #a89880; text-align: center; margin-top: 0.6rem; line-height: 1.5; }
+    .prac-thumb { width: 38px; height: 38px; border-radius: 3px; object-fit: cover; background: #ede8e0; flex-shrink: 0; }
+    .extra-section-item { background: #fff; border: var(--hairline); border-radius: var(--radius); padding: 1rem 1.25rem; margin-bottom: 1rem; }
+    .extra-section-item .field { margin-bottom: 0.75rem; }
+    .extra-section-remove { float: right; background: none; border: none; font-size: 18px; color: #c8baa6; cursor: pointer; line-height: 1; padding: 0; } .extra-section-remove:hover { color: #b91c1c; }
 
     @keyframes spin { to { transform: rotate(360deg); } }
     .pb-spinner { display: inline-block; width: 13px; height: 13px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 4px; }
@@ -603,6 +608,9 @@
         <p class="panel-desc">Edit each practitioner's bio. Changes publish to the Practitioners page and Massage Therapy page.</p>
       </div>
       <div class="practitioner-cards" id="practitioner-list"></div>
+      <div style="margin-top:1.5rem">
+        <button class="btn btn-secondary" onclick="addPractitioner()">+ Add practitioner</button>
+      </div>
       <div class="action-bar">
         <span class="action-bar-left" id="prac-last-saved"></span>
         <button class="btn btn-primary" onclick="publishSection('practitioners')">Publish changes →</button>
@@ -784,6 +792,12 @@
         <div class="field"><label>Date</label><input type="text" id="priv-updated"></div>
       </div>
 
+      <div class="field-group">
+        <div class="field-group-title">Additional sections</div>
+        <div id="priv-extra-list"></div>
+        <button class="btn btn-secondary" style="margin-top:0.5rem" onclick="addExtraSection('priv')">+ Add section</button>
+      </div>
+
       <div class="action-bar">
         <span class="action-bar-left" id="privacy-last-saved"></span>
         <button class="btn btn-primary" onclick="publishSection('privacy')">Publish changes →</button>
@@ -874,6 +888,12 @@
         <div class="field"><label>Date</label><input type="text" id="terms-updated"></div>
       </div>
 
+      <div class="field-group">
+        <div class="field-group-title">Additional sections</div>
+        <div id="terms-extra-list"></div>
+        <button class="btn btn-secondary" style="margin-top:0.5rem" onclick="addExtraSection('terms')">+ Add section</button>
+      </div>
+
       <div class="action-bar">
         <span class="action-bar-left" id="terms-last-saved"></span>
         <button class="btn btn-primary" onclick="publishSection('terms')">Publish changes →</button>
@@ -911,6 +931,7 @@
     </div>
     <div class="po-bar-wrap" id="po-bar-wrap" style="display:none"><div class="po-bar-fill" id="po-bar-fill"></div></div>
     <div id="po-timer" style="display:none"></div>
+    <p class="po-patience">Publishing can take up to 2 minutes, please be patient.</p>
     <div id="po-error-msg" class="po-error-msg" style="display:none"></div>
     <button class="po-close-btn" id="po-close-btn" onclick="closePublishOverlay()" style="display:none">Done</button>
   </div>
@@ -1075,7 +1096,42 @@ function downloadAsset(filename, mime, b64) {
 }
 
 let faqData = [...DEFAULT_FAQ];
-const pendingImages = {}; // filename → File
+const pendingImages = {};
+
+// ── Extra policy sections ─────────────────────────────────────────────────────
+let _extraSections = { priv: [], terms: [] };
+
+function addExtraSection(type) {
+  _extraSections[type].push({ h: '', p: '' });
+  renderExtraSections(type);
+  document.getElementById(type + '-extra-list').lastElementChild?.scrollIntoView({ behavior: 'smooth' });
+}
+
+function removeExtraSection(type, idx) {
+  _extraSections[type].splice(idx, 1);
+  renderExtraSections(type);
+}
+
+function renderExtraSections(type) {
+  const list = document.getElementById(type + '-extra-list');
+  if (!list) return;
+  list.innerHTML = _extraSections[type].map((s, i) => `
+    <div class="extra-section-item">
+      <button class="extra-section-remove" onclick="removeExtraSection('${type}',${i})" title="Remove">&times;</button>
+      <div class="field"><label>Section heading</label><input type="text" id="${type}-extra-h-${i}" value="${escHtml(s.h)}" placeholder="Heading"></div>
+      <div class="field" style="margin-bottom:0"><label>Paragraph</label><textarea id="${type}-extra-p-${i}" rows="3" placeholder="Body text">${escHtml(s.p)}</textarea></div>
+    </div>`).join('');
+}
+
+function collectExtraSections(type) {
+  return _extraSections[type].map((_, i) => ({
+    h: document.getElementById(type + '-extra-h-' + i)?.value || '',
+    p: document.getElementById(type + '-extra-p-' + i)?.value || '',
+  })).filter(s => s.h || s.p);
+}
+
+// ── New practitioners ─────────────────────────────────────────────────────────
+let _newPracs = []; // filename → File
 
 // ── Login ─────────────────────────────────────────────────────────────────────
 document.getElementById('login-pw').addEventListener('keydown', e => {
@@ -1175,6 +1231,8 @@ async function loadPanel(id) {
   } finally {
     panel.classList.remove('loading');
     overlay.style.display = 'none';
+    // Re-run heading auto-resize now that panel is guaranteed visible
+    panel.querySelectorAll('.heading-field').forEach(el => _autoResizeHeading(el));
   }
 }
 
@@ -1486,6 +1544,8 @@ async function hydratePractitionersPage() {
 }
 
 async function hydratePractitioners() {
+  _newPracs = [];
+  renderPractitioners();
   const { content: html } = await getFile('team.html');
   PRACTITIONERS.forEach(p => {
     const marker = `>${p.name}</h3>`;
@@ -1497,6 +1557,13 @@ async function hydratePractitioners() {
     if (bioEnd === -1) return;
     const bio = html.slice(bioStart + '<p class="practitioner-bio">'.length, bioEnd).trim();
     setField('bio-' + p.id, bio);
+    // Load booking URL from the team page
+    const segment = html.slice(idx, idx + 600);
+    const bookingMatch = segment.match(/href="(https?:\/\/[^"]+)"/);
+    if (bookingMatch) {
+      const el = document.getElementById('booking-' + p.id);
+      if (el) el.value = bookingMatch[1];
+    }
   });
 }
 
@@ -1660,44 +1727,89 @@ function buildSteps(containerId, steps, prefix) {
 }
 
 // ── Practitioners ─────────────────────────────────────────────────────────────
-function buildPractitioners() {
+function renderPractitioners() {
   const list = document.getElementById('practitioner-list');
-  list.innerHTML = PRACTITIONERS.map(p => {
-    // Determine which page checkboxes are relevant
-    const isMassageRole = p.role.includes('Massage');
-    const isAcuRole = p.role.includes('Acupuncturist');
-    // Both checkboxes always shown, but non-applicable ones are disabled with a note
-    return `
-    <div class="prac-card" id="prac-${p.id}">
-      <div class="prac-card-header" onclick="toggleCard('${p.id}')">
+  if (!list) return;
+  list.innerHTML = [...PRACTITIONERS, ..._newPracs].map(p => buildPracAdminCard(p)).join('');
+}
+
+// Keep old name as alias (called from hydratePractitioners)
+function buildPractitioners() { renderPractitioners(); }
+
+function buildPracAdminCard(p) {
+  const isNew = !!p.isNew;
+  const photoUrl = `https://isorropia.ca/images/practitioner-${p.id}.jpg`;
+  const nameDisplay = isNew ? (p.name || 'New practitioner') : p.name;
+  return `
+  <div class="prac-card" id="prac-${p.id}">
+    <div class="prac-card-header" onclick="toggleCard('${p.id}')">
+      <div style="display:flex;align-items:center;gap:0.75rem">
+        <img src="${photoUrl}" class="prac-thumb" onerror="this.style.display='none'">
         <div>
-          <div class="prac-card-name">${p.name}</div>
+          <div class="prac-card-name" id="prac-label-${p.id}">${nameDisplay}</div>
           <div class="prac-card-role">${p.role}</div>
         </div>
-        <span class="prac-card-chevron">▼</span>
       </div>
-      <div class="prac-card-body">
-        <div class="field">
-          <label>Bio</label>
-          <textarea id="bio-${p.id}" rows="5" placeholder="Write ${p.name.split(' ')[0]}'s professional bio here...">${p.bio || ''}</textarea>
-        </div>
-        <div class="field">
-          <label>Booking link (optional override)</label>
-          <input type="text" id="booking-${p.id}" placeholder="https://isorropiawellnessclinic.janeapp.com/">
-        </div>
-        <div class="page-assign">
-          <label class="page-assign-label" title="${!isMassageRole ? 'Not applicable for this practitioner type' : ''}">
-            <input type="checkbox" id="assign-massage-${p.id}" ${p.onMassage ? 'checked' : ''} ${!isMassageRole ? 'disabled' : ''}>
-            Show on <span class="page-assign-tag tag-massage">Massage</span>
-          </label>
-          <label class="page-assign-label" title="${!isAcuRole ? 'Not applicable for this practitioner type' : ''}">
-            <input type="checkbox" id="assign-acu-${p.id}" ${p.onAcu ? 'checked' : ''} ${!isAcuRole ? 'disabled' : ''}>
-            Show on <span class="page-assign-tag tag-acu">Acupuncture</span>
-          </label>
+      <span class="prac-card-chevron">&#9660;</span>
+    </div>
+    <div class="prac-card-body">
+      ${isNew ? `<div class="field-row">
+        <div class="field"><label>Full name</label><input type="text" id="prac-name-${p.id}" value="${escHtml(p.name||'')}" placeholder="Full name" oninput="var l=document.getElementById('prac-label-${p.id}');if(l)l.textContent=this.value||'New practitioner'"></div>
+        <div class="field"><label>Role type</label><select id="prac-role-${p.id}">
+          <option value="Registered Massage Therapist">Registered Massage Therapist</option>
+          <option value="Registered Acupuncturist">Registered Acupuncturist</option>
+        </select></div>
+      </div>` : ''}
+      <div class="field">
+        <label>Photo${isNew ? ' <span style="color:#b91c1c;font-weight:500">*</span>' : ''}</label>
+        <div class="img-upload-wrap">
+          <div class="img-preview"><img id="photo-preview-${p.id}" src="${photoUrl}" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML='<div class=&quot;img-preview-placeholder&quot;>No photo yet</div>'"></div>
+          <div class="img-upload-right">
+            <label></label>
+            <label class="btn-upload" for="photo-input-${p.id}">&#8593; ${isNew ? 'Upload photo' : 'Change photo'}</label>
+            <input type="file" id="photo-input-${p.id}" accept="image/jpeg,image/png,image/webp" onchange="handlePracPhoto('${p.id}',this)">
+            <span class="img-filename" id="photo-fname-${p.id}"></span>
+          </div>
         </div>
       </div>
-    </div>`;
-  }).join('');
+      <div class="field"><label>Bio</label><textarea id="bio-${p.id}" rows="5" placeholder="Write ${p.name ? p.name.split(' ')[0] + '\'s' : 'their'} professional bio here...">${escHtml(p.bio||'')}</textarea></div>
+      <div class="field"><label>Booking link (optional override)</label><input type="text" id="booking-${p.id}" value="${escHtml(p.booking||'')}" placeholder="https://isorropiawellnessclinic.janeapp.com/"></div>
+      <div class="page-assign">
+        <label class="page-assign-label">
+          <input type="checkbox" id="assign-massage-${p.id}" ${p.onMassage ? 'checked' : ''}>
+          Show on <span class="page-assign-tag tag-massage">Massage</span>
+        </label>
+        <label class="page-assign-label">
+          <input type="checkbox" id="assign-acu-${p.id}" ${p.onAcu ? 'checked' : ''}>
+          Show on <span class="page-assign-tag tag-acu">Acupuncture</span>
+        </label>
+      </div>
+    </div>
+  </div>`;
+}
+
+function handlePracPhoto(id, input) {
+  const file = input.files[0];
+  if (!file) return;
+  pendingImages['images/practitioner-' + id + '.jpg'] = file;
+  const preview = document.getElementById('photo-preview-' + id);
+  if (preview) {
+    const reader = new FileReader();
+    reader.onload = e => { preview.src = e.target.result; preview.style.display = 'block'; };
+    reader.readAsDataURL(file);
+  }
+  const fnEl = document.getElementById('photo-fname-' + id);
+  if (fnEl) fnEl.textContent = file.name;
+}
+
+function addPractitioner() {
+  const id = 'new' + Date.now();
+  _newPracs.push({ id, name: '', role: 'Registered Massage Therapist', bio: '', booking: '', onMassage: true, onAcu: false, isNew: true });
+  renderPractitioners();
+  setTimeout(() => {
+    const card = document.getElementById('prac-' + id);
+    if (card) { card.classList.add('open'); card.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+  }, 50);
 }
 
 function toggleCard(id) {
@@ -2146,36 +2258,105 @@ async function publishPractitionersPage() {
 
 // ── PRACTITIONERS ─────────────────────────────────────────────────────────────
 async function publishPractitioners() {
-  // Collect current field values
-  const data = PRACTITIONERS.map(p => ({
+  // 1. Upload any pending practitioner photos (existing or new)
+  const pracPhotoEntries = Object.entries(pendingImages).filter(([k]) => k.startsWith('images/practitioner-'));
+  for (const [filename, file] of pracPhotoEntries) {
+    let sha = null;
+    try { const ex = await getFile(filename); sha = ex.sha; } catch(_) {}
+    await putImage(filename, file, sha, 'CMS: upload practitioner photo');
+    delete pendingImages[filename];
+  }
+
+  // 2. Collect all form data
+  const existingData = PRACTITIONERS.map(p => ({
     ...p,
-    bio:       document.getElementById('bio-' + p.id)?.value || '',
+    bio:       document.getElementById('bio-' + p.id)?.value || p.bio || '',
     booking:   document.getElementById('booking-' + p.id)?.value || 'https://isorropiawellnessclinic.janeapp.com/',
     onMassage: document.getElementById('assign-massage-' + p.id)?.checked ?? p.onMassage,
     onAcu:     document.getElementById('assign-acu-' + p.id)?.checked ?? p.onAcu,
   }));
 
-  // ── team.html: surgical bio replacement ──────────────────────────────────
+  const atmosCycle = ['atmos-2','atmos-3','atmos-4','atmos-5','atmos-6'];
+  const newData = _newPracs.map((p, ni) => {
+    const name    = document.getElementById('prac-name-' + p.id)?.value?.trim() || '';
+    if (!name) return null;
+    const role    = document.getElementById('prac-role-' + p.id)?.value || 'Registered Massage Therapist';
+    const rawId   = name.split(' ')[0].toLowerCase().replace(/[^a-z]/g, '') || ('new' + ni);
+    // Rename any uploaded photo to use the real ID
+    const tempKey = 'images/practitioner-' + p.id + '.jpg';
+    const realKey = 'images/practitioner-' + rawId + '.jpg';
+    if (pendingImages[tempKey]) { pendingImages[realKey] = pendingImages[tempKey]; delete pendingImages[tempKey]; }
+    return {
+      id: rawId, name, role,
+      bio:       document.getElementById('bio-' + p.id)?.value || '',
+      booking:   document.getElementById('booking-' + p.id)?.value || 'https://isorropiawellnessclinic.janeapp.com/',
+      onMassage: document.getElementById('assign-massage-' + p.id)?.checked ?? false,
+      onAcu:     document.getElementById('assign-acu-' + p.id)?.checked ?? false,
+      atmos:     atmosCycle[(PRACTITIONERS.length + ni) % atmosCycle.length],
+      isNew: false,
+    };
+  }).filter(Boolean);
+
+  // Upload photos for new pracs (now with real IDs)
+  for (const p of newData) {
+    const key = 'images/practitioner-' + p.id + '.jpg';
+    if (pendingImages[key]) {
+      let sha = null;
+      try { const ex = await getFile(key); sha = ex.sha; } catch(_) {}
+      await putImage(key, pendingImages[key], sha, 'CMS: add practitioner photo ' + p.id);
+      delete pendingImages[key];
+    }
+  }
+
+  const allData = [...existingData, ...newData];
+
+  // 3. team.html: surgical bio update for existing + append new
   const team = await getFile('team.html');
   let teamHtml = team.content;
-  data.forEach(p => {
+  existingData.forEach(p => {
     if (!p.bio) return;
     teamHtml = replaceBioAfterName(teamHtml, `>${p.name}</h3>`, p.bio);
+    // Update booking link too
+    const nameIdx = teamHtml.indexOf(`>${p.name}</h3>`);
+    if (nameIdx !== -1) {
+      const seg = teamHtml.slice(nameIdx, nameIdx + 600);
+      const lm = seg.match(/(<a href=")([^"]+)(")/);
+      if (lm) teamHtml = teamHtml.slice(0, nameIdx) + seg.replace(lm[0], lm[1] + p.booking + lm[3]) + teamHtml.slice(nameIdx + seg.length);
+    }
   });
+  // Append new practitioners
+  if (newData.length) {
+    const teamEndMarker = '\n        </div>\n      </div>\n    </section>';
+    const insertAt = teamHtml.indexOf(teamEndMarker);
+    if (insertAt !== -1) {
+      const newCards = newData.map((p, i) => {
+        const delay = PRACTITIONERS.length + i;
+        const fn = p.name.split(' ')[0];
+        return `\n\n          <div class="practitioner rv" data-delay="${delay}">
+            <div class="atmos atmos--tall ${p.atmos} atmos-wrap"><img src="images/practitioner-${p.id}.jpg" alt="${p.name}" loading="lazy" decoding="async" class="atmos-img"></div>
+            <h3 class="practitioner-name" style="margin-top: 1.5rem;">${p.name}</h3>
+            <p class="practitioner-role">${p.role}</p>
+            <p class="practitioner-bio">${p.bio}</p>
+            <a href="${p.booking}" target="_blank" rel="noopener" class="link link-arrow">Booking</a>
+          </div>`;
+      }).join('');
+      teamHtml = teamHtml.slice(0, insertAt) + newCards + teamHtml.slice(insertAt);
+    }
+    // Persist to runtime PRACTITIONERS array
+    newData.forEach(p => PRACTITIONERS.push(p));
+    _newPracs = [];
+  }
   await putFile(team.path, teamHtml, team.sha, 'CMS: update practitioner bios (team)');
 
-  // ── service-massage.html: regenerate practitioners grid ──────────────────
+  // 4. Service pages
+  const massagePracs = allData.filter(p => p.onMassage);
   const massage = await getFile('service-massage.html');
-  let massageHtml = massage.content;
-  const massagePracs = data.filter(p => p.onMassage);
-  massageHtml = regeneratePractitionerGrid(massageHtml, massagePracs, 'massage');
+  let massageHtml = regeneratePractitionerGrid(massage.content, massagePracs, 'massage');
   await putFile(massage.path, massageHtml, massage.sha, 'CMS: update practitioners on massage page');
 
-  // ── service-acupuncture.html: regenerate practitioners grid ─────────────
+  const acuPracs = allData.filter(p => p.onAcu);
   const acu = await getFile('service-acupuncture.html');
-  let acuHtml = acu.content;
-  const acuPracs = data.filter(p => p.onAcu);
-  acuHtml = regeneratePractitionerGrid(acuHtml, acuPracs, 'acupuncture');
+  let acuHtml = regeneratePractitionerGrid(acu.content, acuPracs, 'acupuncture');
   await putFile(acu.path, acuHtml, acu.sha, 'CMS: update practitioners on acupuncture page');
 }
 
@@ -2449,6 +2630,7 @@ function encH(str) {
 
 // ── PRIVACY ───────────────────────────────────────────────────────────────────
 async function hydratePrivacy() {
+  _extraSections.priv = []; renderExtraSections('priv');
   const { content: html } = await getFile('privacy.html');
 
   sf('priv-title',    extractH1Text(html));
@@ -2551,6 +2733,8 @@ async function publishPrivacy() {
           <h2>${encH(val('priv-h-changes'))}</h2>
           <p>${pChanges}</p>
 
+          ${collectExtraSections('priv').map(s => `<h2>${encH(s.h)}</h2>\n          <p>${encodeForHtml(s.p)}</p>`).join('\n\n          ')}
+
           <p class="updated">${val('priv-updated')}</p>
 
         `;
@@ -2560,6 +2744,7 @@ async function publishPrivacy() {
 
 // ── TERMS ─────────────────────────────────────────────────────────────────────
 async function hydrateTerms() {
+  _extraSections.terms = []; renderExtraSections('terms');
   const { content: html } = await getFile('terms.html');
 
   sf('terms-title',    extractH1Text(html));
@@ -2654,6 +2839,8 @@ async function publishTerms() {
 
           <h2>${encH(val('terms-h-contact'))}</h2>
           <p>${contact}</p>
+
+          ${collectExtraSections('terms').map(s => `<h2>${encH(s.h)}</h2>\n          <p>${encodeForHtml(s.p)}</p>`).join('\n\n          ')}
 
           <p class="updated">${val('terms-updated')}</p>
 
