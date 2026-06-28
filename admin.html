@@ -1179,7 +1179,15 @@ async function loadPanel(id) {
 
 function setField(id, value) {
   const el = document.getElementById(id);
-  if (el && value !== null && value !== undefined) el.value = decodeHtml(value.trim());
+  if (el && value !== null && value !== undefined) {
+    el.value = decodeHtml(value.trim());
+    el.dataset.original = el.value;
+  }
+}
+
+function valOriginal(id) {
+  const el = document.getElementById(id);
+  return el ? (el.dataset.original || '') : '';
 }
 
 function decodeHtml(str) {
@@ -1934,10 +1942,10 @@ async function publishHome() {
   const { content, sha, path } = await getFile('index.html');
   let html = content;
 
-  html = replaceText(html, 'The art of returning to yourself.', val('home-h1'));
-  html = replaceText(html, 'Isorropia Wellness Clinic \u2014 Established 2026', val('home-eyebrow'));
-  html = replaceText(html, 'Care that grows with the practice.', val('home-services-h2'));
-  html = replaceText(html, 'Two modalities, one practice', val('home-services-label'));
+  html = replaceText(html, valOriginal('home-h1') || 'The art of returning to yourself.', val('home-h1'));
+  html = replaceText(html, valOriginal('home-eyebrow') || 'Isorropia Wellness Clinic \u2014 Established 2026', val('home-eyebrow'));
+  html = replaceText(html, valOriginal('home-services-h2') || 'Care that grows with the practice.', val('home-services-h2'));
+  html = replaceText(html, valOriginal('home-services-label') || 'Two modalities, one practice', val('home-services-label'));
 
   // Pull quote
   html = replaceBetween(html, '<p class="pullquote-text rv">', '</p>',
@@ -1950,10 +1958,10 @@ async function publishHome() {
     '\n              ' + val('home-team-h2') + '\n            ');
 
   // Team teaser p
-  html = replaceParagraphAfter(html, 'Each member of the practice has been chosen for craft', val('home-team-p'));
+  html = replaceParagraphAfter(html, (valOriginal('home-team-p') || 'Each member of the practice has been chosen for craft').slice(0, 40), val('home-team-p'));
 
   // Closing
-  html = replaceText(html, 'Your recovery<br>starts here.', val('home-closing'));
+  html = replaceText(html, valOriginal('home-closing') || 'Your recovery<br>starts here.', val('home-closing'));
 
   await putFile(path, html, sha, 'CMS: update homepage');
 }
@@ -1965,13 +1973,13 @@ async function publishAbout() {
   let html = content;
 
   // Hero
-  html = replaceText(html, 'Evidence-based care,<br>\n          patient first.', val('about-h1'));
-  html = replaceParagraphAfter(html, 'A regulated wellness practice committed', val('about-hero-p'));
+  html = replaceText(html, valOriginal('about-h1') || 'Evidence-based care,<br>\n          patient first.', val('about-h1'));
+  html = replaceParagraphAfter(html, (valOriginal('about-hero-p') || 'A regulated wellness practice committed').slice(0, 40), val('about-hero-p'));
 
   // Philosophy
-  html = replaceText(html, 'Clinical care,<br>\n              whole person.', val('about-phil-h2'));
-  html = replaceParagraphAfterNth(html, 'Our philosophy is grounded', val('about-phil-p1'), 0);
-  html = replaceParagraphAfterNth(html, 'Our work is guided', val('about-phil-p2'), 0);
+  html = replaceText(html, valOriginal('about-phil-h2') || 'Clinical care,<br>\n              whole person.', val('about-phil-h2'));
+  html = replaceParagraphAfterNth(html, (valOriginal('about-phil-p1') || 'Our philosophy is grounded').slice(0, 40), val('about-phil-p1'), 0);
+  html = replaceParagraphAfterNth(html, (valOriginal('about-phil-p2') || 'Our work is guided').slice(0, 40), val('about-phil-p2'), 0);
 
   // Pause
   html = replaceBetween(html,
@@ -1984,21 +1992,21 @@ async function publishAbout() {
   DEFAULT_PRINCIPLES.forEach((p, i) => {
     const newName = document.getElementById('principle-name-' + i)?.value || p.name;
     const newDesc = document.getElementById('principle-desc-' + i)?.value || p.desc;
-    html = replaceText(html, p.name, newName);
-    html = replaceText(html, p.desc, newDesc);
+    html = replaceText(html, document.getElementById('principle-name-' + i)?.dataset.original || p.name, newName);
+    html = replaceText(html, document.getElementById('principle-desc-' + i)?.dataset.original || p.desc, newDesc);
   });
 
   // Pull quote
   html = replaceBetween(html,
-    '<p class="pullquote-text rv">\n          \u201c',
+    '<p class="pullquote-text rv">',
     '</p>',
     '\n          ' + val('about-pullquote') + '\n        '
   );
 
   // Mission
-  html = replaceText(html, 'Our Mission', val('about-mission-h2'));
-  html = replaceParagraphAfterNth(html, 'At Isorropia Wellness Clinic our commitment', val('about-mission-p1'), 0);
-  html = replaceParagraphAfterNth(html, 'We strive to create a therapeutic environment', val('about-mission-p2'), 0);
+  html = replaceText(html, valOriginal('about-mission-h2') || 'Our Mission', val('about-mission-h2'));
+  html = replaceParagraphAfterNth(html, (valOriginal('about-mission-p1') || 'At Isorropia Wellness Clinic our commitment').slice(0, 40), val('about-mission-p1'), 0);
+  html = replaceParagraphAfterNth(html, (valOriginal('about-mission-p2') || 'We strive to create a therapeutic environment').slice(0, 40), val('about-mission-p2'), 0);
 
   await putFile(path, html, sha, 'CMS: update about page');
 }
@@ -2008,13 +2016,13 @@ async function publishServices() {
   const { content, sha, path } = await getFile('services.html');
   let html = content;
 
-  html = replaceText(html, 'Two modalities,<br>\n          one practice.', val('svc-h1'));
-  html = replaceParagraphAfterNth(html, 'Registered massage therapy and acupuncture, under the', val('svc-hero-p'), 0);
-  html = replaceParagraphAfterNth(html, 'Restore movement. Reduce pain. Improve function. Our RMTs', val('svc-massage-p'), 0);
-  html = replaceBetween(html, '<p class="pause-line rv">\n        Hands', '</p>', '\n        ' + val('svc-pause') + '\n      ');
-  html = replaceParagraphAfterNth(html, 'Balance the body. Support healing. Reduce stress. A safe', val('svc-acu-p'), 0);
-  html = replaceParagraphAfterNth(html, 'We accept direct billing with most major', val('svc-ins-p1'), 0);
-  html = replaceParagraphAfterNth(html, 'If you are unsure whether your plan covers', val('svc-ins-p2'), 0);
+  html = replaceText(html, valOriginal('svc-h1') || 'Two modalities,<br>\n          one practice.', val('svc-h1'));
+  html = replaceParagraphAfterNth(html, (valOriginal('svc-hero-p') || 'Registered massage therapy and acupuncture, under the').slice(0, 40), val('svc-hero-p'), 0);
+  html = replaceParagraphAfterNth(html, (valOriginal('svc-massage-p') || 'Restore movement. Reduce pain. Improve function. Our RMTs').slice(0, 40), val('svc-massage-p'), 0);
+  html = replaceBetween(html, '<p class="pause-line rv">', '</p>', '\n        ' + val('svc-pause') + '\n      ');
+  html = replaceParagraphAfterNth(html, (valOriginal('svc-acu-p') || 'Balance the body. Support healing. Reduce stress. A safe').slice(0, 40), val('svc-acu-p'), 0);
+  html = replaceParagraphAfterNth(html, (valOriginal('svc-ins-p1') || 'We accept direct billing with most major').slice(0, 40), val('svc-ins-p1'), 0);
+  html = replaceParagraphAfterNth(html, (valOriginal('svc-ins-p2') || 'If you are unsure whether your plan covers').slice(0, 40), val('svc-ins-p2'), 0);
 
   await putFile(path, html, sha, 'CMS: update services page');
 }
@@ -2024,20 +2032,22 @@ async function publishMassage() {
   const { content, sha, path } = await getFile('service-massage.html');
   let html = content;
 
-  html = replaceParagraphAfterNth(html, 'Restore movement. Reduce pain. Improve function.\n          Tailored', val('massage-hero-p'), 0);
-  html = replaceText(html, 'Care for the body<br>\n              in full.', val('massage-about-h2'));
-  html = replaceParagraphAfterNth(html, 'Registered Massage Therapy (RMT) addresses the body', val('massage-about-p1'), 0);
-  html = replaceParagraphAfterNth(html, 'Our RMTs use orthopedic assessment, manual therapy, and targeted treatment techniques. Whether', val('massage-about-p2'), 0);
+  html = replaceParagraphAfterNth(html, (valOriginal('massage-hero-p') || 'Restore movement. Reduce pain. Improve function.\n          Tailored').slice(0, 40), val('massage-hero-p'), 0);
+  html = replaceText(html, valOriginal('massage-about-h2') || 'Care for the body<br>\n              in full.', val('massage-about-h2'));
+  html = replaceParagraphAfterNth(html, (valOriginal('massage-about-p1') || 'Registered Massage Therapy (RMT) addresses the body').slice(0, 40), val('massage-about-p1'), 0);
+  html = replaceParagraphAfterNth(html, (valOriginal('massage-about-p2') || 'Our RMTs use orthopedic assessment, manual therapy, and targeted treatment techniques. Whether').slice(0, 40), val('massage-about-p2'), 0);
 
   // Steps
   DEFAULT_MASSAGE_STEPS.forEach((s, i) => {
-    const newTitle = document.getElementById('massage-step-title-' + i)?.value || s.title;
-    const newBody  = document.getElementById('massage-step-body-' + i)?.value || s.body;
-    html = replaceText(html, s.title, newTitle);
-    html = replaceParagraphAfterNth(html, s.body, newBody, 0);
+    const titleEl = document.getElementById('massage-step-title-' + i);
+    const bodyEl  = document.getElementById('massage-step-body-' + i);
+    const newTitle = titleEl?.value || s.title;
+    const newBody  = bodyEl?.value || s.body;
+    html = replaceText(html, titleEl?.dataset.original || s.title, newTitle);
+    html = replaceParagraphAfterNth(html, (bodyEl?.dataset.original || s.body).slice(0, 40), newBody, 0);
   });
 
-  html = replaceParagraphAfterNth(html, 'Book online in minutes. First visits are 60 minutes', val('massage-closing-p'), 0);
+  html = replaceParagraphAfterNth(html, (valOriginal('massage-closing-p') || 'Book online in minutes. First visits are 60 minutes').slice(0, 40), val('massage-closing-p'), 0);
 
   await putFile(path, html, sha, 'CMS: update massage page');
 }
@@ -2047,19 +2057,21 @@ async function publishAcupuncture() {
   const { content, sha, path } = await getFile('service-acupuncture.html');
   let html = content;
 
-  html = replaceParagraphAfterNth(html, 'Balance the body. Support healing. Reduce stress.\n          Now available', val('acu-hero-p'), 0);
-  html = replaceText(html, 'Ancient practice,<br>\n              modern evidence.', val('acu-about-h2'));
-  html = replaceParagraphAfterNth(html, 'Acupuncture is a safe, evidence-supported therapy that stimulates', val('acu-about-p1'), 0);
-  html = replaceParagraphAfterNth(html, 'By targeting specific points along', val('acu-about-p2'), 0);
+  html = replaceParagraphAfterNth(html, (valOriginal('acu-hero-p') || 'Balance the body. Support healing. Reduce stress.\n          Now available').slice(0, 40), val('acu-hero-p'), 0);
+  html = replaceText(html, valOriginal('acu-about-h2') || 'Ancient practice,<br>\n              modern evidence.', val('acu-about-h2'));
+  html = replaceParagraphAfterNth(html, (valOriginal('acu-about-p1') || 'Acupuncture is a safe, evidence-supported therapy that stimulates').slice(0, 40), val('acu-about-p1'), 0);
+  html = replaceParagraphAfterNth(html, (valOriginal('acu-about-p2') || 'By targeting specific points along').slice(0, 40), val('acu-about-p2'), 0);
 
   DEFAULT_ACU_STEPS.forEach((s, i) => {
-    const newTitle = document.getElementById('acu-step-title-' + i)?.value || s.title;
-    const newBody  = document.getElementById('acu-step-body-' + i)?.value || s.body;
-    html = replaceText(html, s.title, newTitle);
-    html = replaceParagraphAfterNth(html, s.body, newBody, 0);
+    const titleEl = document.getElementById('acu-step-title-' + i);
+    const bodyEl  = document.getElementById('acu-step-body-' + i);
+    const newTitle = titleEl?.value || s.title;
+    const newBody  = bodyEl?.value || s.body;
+    html = replaceText(html, titleEl?.dataset.original || s.title, newTitle);
+    html = replaceParagraphAfterNth(html, (bodyEl?.dataset.original || s.body).slice(0, 40), newBody, 0);
   });
 
-  html = replaceParagraphAfterNth(html, 'Acupuncture is now available at Isorropia. Book online', val('acu-closing-p'), 0);
+  html = replaceParagraphAfterNth(html, (valOriginal('acu-closing-p') || 'Acupuncture is now available at Isorropia. Book online').slice(0, 40), val('acu-closing-p'), 0);
 
   await putFile(path, html, sha, 'CMS: update acupuncture page');
 }
@@ -2069,15 +2081,16 @@ async function publishPractitionersPage() {
   const { content, sha, path } = await getFile('team.html');
   let html = content;
 
-  html = replaceText(html, 'The people who<br>\n          will care for you.', val('tp-h1'));
-  html = replaceParagraphAfter(html, 'Each member of the practice has been chosen for craft', val('tp-hero-p'));
-  html = replaceText(html, 'Chosen for craft.', val('tp-intro-h2'));
-  html = replaceParagraphAfter(html, 'Every practitioner here has been brought into the practice', val('tp-intro-p1'));
-  html = replaceParagraphAfter(html, 'You will find specialists in chronic pain', val('tp-intro-p2'));
-  html = replaceText(html, 'Each treatment is a conversation<br>\n        between hands and body.', val('tp-pause').replace(' between ', '<br>\n        between '));
-  html = replaceText(html, 'Eight therapists, one acupuncturist.', val('tp-grid-label'));
-  html = replaceText(html, 'Looking to join the team?', val('tp-join-h2'));
-  html = replaceParagraphAfter(html, 'We are always interested in conversations with RMTs', val('tp-join-p'));
+  html = replaceText(html, valOriginal('tp-h1') || 'The people who<br>\n          will care for you.', val('tp-h1'));
+  html = replaceParagraphAfter(html, (valOriginal('tp-hero-p') || 'Each member of the practice has been chosen for craft').slice(0, 40), val('tp-hero-p'));
+  html = replaceText(html, valOriginal('tp-intro-h2') || 'Chosen for craft.', val('tp-intro-h2'));
+  html = replaceParagraphAfter(html, (valOriginal('tp-intro-p1') || 'Every practitioner here has been brought into the practice').slice(0, 40), val('tp-intro-p1'));
+  html = replaceParagraphAfter(html, (valOriginal('tp-intro-p2') || 'You will find specialists in chronic pain').slice(0, 40), val('tp-intro-p2'));
+  html = replaceBetween(html, '<p class="pause-line rv">', '</p>',
+    '\n        ' + val('tp-pause').replace(/ between /g, '<br>\n        between ') + '\n      ');
+  html = replaceText(html, valOriginal('tp-grid-label') || 'Eight therapists, one acupuncturist.', val('tp-grid-label'));
+  html = replaceText(html, valOriginal('tp-join-h2') || 'Looking to join the team?', val('tp-join-h2'));
+  html = replaceParagraphAfter(html, (valOriginal('tp-join-p') || 'We are always interested in conversations with RMTs').slice(0, 40), val('tp-join-p'));
 
   await putFile(path, html, sha, 'CMS: update practitioners page');
 }
