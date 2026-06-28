@@ -1832,16 +1832,36 @@ async function flushBatch(message) {
   const files = _batchQueue;
   _batchQueue = null;
 
-  const res = await fetch(`${WORKER_URL}/batch-publish`, {
+  // Try batch endpoint first (single commit = single build).
+  // Falls back to sequential /publish calls if the worker hasn't been updated yet.
+  const batchRes = await fetch(`${WORKER_URL}/batch-publish`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'X-CMS-Password': ADMIN_PASSWORD },
     body: JSON.stringify({ files, message })
   });
-  let data;
-  try { data = await res.json(); } catch(_) { data = {}; }
-  if (!res.ok) throw new Error(data.error || data.message || 'HTTP ' + res.status + ' from worker');
-  if (data && data.commit) setOverlayCommitLink(data.commit.html_url, data.commit.sha);
-  return data;
+
+  if (batchRes.status !== 404) {
+    // Worker supports batch — use it
+    let data;
+    try { data = await batchRes.json(); } catch(_) { data = {}; }
+    if (!batchRes.ok) throw new Error(data.error || data.message || 'HTTP ' + batchRes.status + ' from worker');
+    if (data && data.commit) setOverlayCommitLink(data.commit.html_url, data.commit.sha);
+    return data;
+  }
+
+  // Fallback: worker not updated yet — send files one by one via /publish
+  // (This produces one build per file but keeps publishing functional)
+  for (const f of files) {
+    const res = await fetch(`${WORKER_URL}/publish`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-CMS-Password': ADMIN_PASSWORD },
+      body: JSON.stringify({ filename: f.filename, content: f.content, message })
+    });
+    let data;
+    try { data = await res.json(); } catch(_) { data = {}; }
+    if (!res.ok) throw new Error(data.error || data.message || 'HTTP ' + res.status + ' from worker');
+    if (data && data.commit) setOverlayCommitLink(data.commit.html_url, data.commit.sha);
+  }
 }
 
 async function putImage(filePath, file, sha, message) {
