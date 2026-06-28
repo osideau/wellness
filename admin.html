@@ -2773,14 +2773,14 @@ function startPublishPoll(section) {
 
   let elapsed = 0;
   const maxWait = 120000; // 2 min hard cap
-  const interval = 5000;
+  const interval = 3000;  // poll every 3 seconds
 
   clearTimeout(window._deployTimer);
 
   async function poll() {
     try {
       const res = await fetch(
-        `${WORKER_URL}/check-live?file=${encodeURIComponent(file)}&marker=${encodeURIComponent(marker)}`,
+        `${WORKER_URL}/check-live?file=${encodeURIComponent(file)}&marker=${encodeURIComponent(marker)}&_t=${Date.now()}`,
         { headers: { 'X-CMS-Password': ADMIN_PASSWORD }, cache: 'no-store' }
       );
       const data = await res.json();
@@ -2789,15 +2789,14 @@ function startPublishPoll(section) {
 
     elapsed += interval;
     if (elapsed >= maxWait) {
-      // Hit cap — assume live and let user verify
       overlayLive();
       return;
     }
     window._deployTimer = setTimeout(poll, interval);
   }
 
-  // First check after 8s (Cloudflare Pages needs time to start building)
-  window._deployTimer = setTimeout(poll, 8000);
+  // First check after 5s, then every 3s
+  window._deployTimer = setTimeout(poll, 5000);
 }
 </script>
 </body>
