@@ -1190,7 +1190,7 @@ function setField(id, value) {
 }
 
 function _autoResizeHeading(el) {
-  el.style.height = 'auto';
+  el.style.height = '0';
   el.style.height = el.scrollHeight + 'px';
 }
 
@@ -1261,7 +1261,7 @@ async function hydrateHome() {
 
   // h1 — find it between the h1 tag and </h1>
   const h1raw = extractBetween(html, '<h1 class="rv" data-delay="1"', '</h1>');
-  if (h1raw) setField('home-h1', h1raw.replace(/^[^>]*>/, '').replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '').trim());
+  if (h1raw) setField('home-h1', h1raw.replace(/^[^>]*>/, '').replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '').replace(/\n[ \t]+/g, '\n').trim());
 
   // Eyebrow
   const eyebrow = extractBetween(html, '<span class="label">Isorropia', '</span>');
@@ -1287,7 +1287,7 @@ async function hydrateHome() {
   const closing = extractBetween(html, '<section class="closing">', '</section>');
   if (closing) {
     const closingH2 = extractBetween(closing, '<h2 class="rv" data-delay="1">', '</h2>');
-    if (closingH2) setField('home-closing', closingH2.replace(/<br\s*\/?>/gi, '\n').trim());
+    if (closingH2) setField('home-closing', closingH2.replace(/<br\s*\/?>/gi, '\n').replace(/\n[ \t]+/g, '\n').trim());
   }
 }
 
@@ -1296,7 +1296,7 @@ async function hydrateAbout() {
 
   // Hero h1
   const h1 = extractBetween(html, '<h1 class="rv" data-delay="1">', '</h1>');
-  if (h1) setField('about-h1', h1.replace(/<br\s*\/?>/gi, '\n').trim());
+  if (h1) setField('about-h1', h1.replace(/<br\s*\/?>/gi, '\n').replace(/\n[ \t]+/g, '\n').trim());
 
   // Hero subtext
   const heroPRaw = extractParagraph(html, 'A regulated wellness practice committed');
@@ -1305,7 +1305,7 @@ async function hydrateAbout() {
   // Philosophy h2
   const philH2 = extractBetween(html, '<span class="eyebrow rv">— Our philosophy</span>', '</h2>');
   if (philH2) {
-    const h2clean = philH2.replace(/.*<h2[^>]*>/s, '').replace(/<br\s*\/?>/gi, '\n').trim();
+    const h2clean = philH2.replace(/.*<h2[^>]*>/s, '').replace(/<br\s*\/?>/gi, '\n').replace(/\n[ \t]+/g, '\n').trim();
     setField('about-phil-h2', h2clean);
   }
 
@@ -1359,7 +1359,7 @@ async function hydrateServices() {
   const { content: html } = await getFile('services.html');
 
   const h1 = extractBetween(html, '<h1 class="rv" data-delay="1">', '</h1>');
-  if (h1) setField('svc-h1', h1.replace(/<br\s*\/?>/gi, '\n').trim());
+  if (h1) setField('svc-h1', h1.replace(/<br\s*\/?>/gi, '\n').replace(/\n[ \t]+/g, '\n').trim());
 
   const heroP = extractParagraph(html, 'Registered massage therapy and acupuncture, under the');
   if (heroP) setField('svc-hero-p', heroP);
@@ -1387,7 +1387,7 @@ async function hydrateMassage() {
   if (heroP) setField('massage-hero-p', heroP);
 
   const aboutH2 = extractBetween(html, '<span class="eyebrow rv">— About this service</span>', '</h2>');
-  if (aboutH2) setField('massage-about-h2', aboutH2.replace(/.*<h2[^>]*>/s, '').replace(/<br\s*\/?>/gi, '\n').trim());
+  if (aboutH2) setField('massage-about-h2', aboutH2.replace(/.*<h2[^>]*>/s, '').replace(/<br\s*\/?>/gi, '\n').replace(/\n[ \t]+/g, '\n').trim());
 
   const p1 = extractParagraph(html, 'Registered Massage Therapy (RMT) addresses');
   if (p1) setField('massage-about-p1', p1);
@@ -1422,7 +1422,7 @@ async function hydrateAcupuncture() {
   if (heroP) setField('acu-hero-p', heroP);
 
   const aboutH2 = extractBetween(html, '<span class="eyebrow rv">— About this service</span>', '</h2>');
-  if (aboutH2) setField('acu-about-h2', aboutH2.replace(/.*<h2[^>]*>/s, '').replace(/<br\s*\/?>/gi, '\n').trim());
+  if (aboutH2) setField('acu-about-h2', aboutH2.replace(/.*<h2[^>]*>/s, '').replace(/<br\s*\/?>/gi, '\n').replace(/\n[ \t]+/g, '\n').trim());
 
   const p1 = extractParagraph(html, 'Acupuncture is a safe, evidence-supported therapy');
   if (p1) setField('acu-about-p1', p1);
@@ -1452,7 +1452,7 @@ async function hydratePractitionersPage() {
 
   // Hero h1
   const h1 = extractBetween(html, '<h1 class="rv" data-delay="1">', '</h1>');
-  if (h1) setField('tp-h1', h1.replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '').trim());
+  if (h1) setField('tp-h1', h1.replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '').replace(/\n[ \t]+/g, '\n').trim());
 
   // Hero subtext
   const heroP = extractParagraph(html, 'Each member of the practice has been chosen for craft');
@@ -2866,12 +2866,10 @@ function startPublishPoll(section) {
   window._deployTimer = setTimeout(poll, 5000);
 }
 
-// ── Heading-field auto-resize ──────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.heading-field').forEach(el => {
-    _autoResizeHeading(el);
-    el.addEventListener('input', () => _autoResizeHeading(el));
-  });
+// ── Heading-field auto-resize (runs immediately — script is at end of body)
+document.querySelectorAll('.heading-field').forEach(el => {
+  _autoResizeHeading(el);
+  el.addEventListener('input', () => _autoResizeHeading(el));
 });
 </script>
 </body>
