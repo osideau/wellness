@@ -99,6 +99,8 @@
     }
     input:focus, textarea:focus, select:focus { border-color: var(--tan); box-shadow: 0 0 0 3px rgba(168,138,92,0.12); }
     textarea { resize: vertical; min-height: 100px; }
+    .heading-field { resize: none; overflow: hidden; min-height: unset !important; height: auto; }
+    #po-timer { font-family: var(--font-d); font-size: 11px; color: var(--olive-mid); text-align: center; margin-top: 1rem; letter-spacing: 0.12em; }
 
     .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
     @media (max-width: 600px) { .field-row { grid-template-columns: 1fr; } }
@@ -353,7 +355,7 @@
 
       <div class="field-group">
         <div class="field-group-title">Hero section</div>
-        <div class="field"><label>Main headline</label><input type="text" id="home-h1" value="The art of returning to yourself."></div>
+        <div class="field"><label>Main headline</label><textarea class="heading-field" id="home-h1" rows="1">The art of returning to yourself.</textarea></div>
         <div class="field"><label>Hero eyebrow</label><input type="text" id="home-eyebrow" value="Isorropia Wellness Clinic — Established 2026"></div>
       </div>
 
@@ -376,7 +378,7 @@
 
       <div class="field-group">
         <div class="field-group-title">Closing CTA</div>
-        <div class="field"><label>Closing headline</label><input type="text" id="home-closing" value="Your recovery starts here."></div>
+        <div class="field"><label>Closing headline</label><textarea class="heading-field" id="home-closing" rows="1">Your recovery starts here.</textarea></div>
       </div>
 
       <div class="action-bar">
@@ -395,13 +397,13 @@
 
       <div class="field-group">
         <div class="field-group-title">Hero</div>
-        <div class="field"><label>Headline</label><input type="text" id="about-h1" value="Evidence-based care, patient first."></div>
+        <div class="field"><label>Headline</label><textarea class="heading-field" id="about-h1" rows="1">Evidence-based care, patient first.</textarea></div>
         <div class="field"><label>Subtext</label><textarea id="about-hero-p" rows="2">A regulated wellness practice committed to clinical excellence, individualized treatment, and measurable outcomes.</textarea></div>
       </div>
 
       <div class="field-group">
         <div class="field-group-title">Philosophy section</div>
-        <div class="field"><label>Headline</label><input type="text" id="about-phil-h2" value="Clinical care, whole person."></div>
+        <div class="field"><label>Headline</label><textarea class="heading-field" id="about-phil-h2" rows="1">Clinical care, whole person.</textarea></div>
         <div class="field"><label>Paragraph 1</label><textarea id="about-phil-p1" rows="4">Our philosophy is grounded in a clinical approach that prioritizes thorough assessment, individualized treatment planning, and evidence-informed therapeutic interventions. We recognize that each patient presents with a unique combination of symptoms, functional limitations, and contributing factors.</textarea></div>
         <div class="field"><label>Paragraph 2</label><textarea id="about-phil-p2" rows="4">Our work is guided by principles of clinical reasoning, collaborative goal-setting, and measurable functional outcomes. Every treatment plan is informed by current best practices, patient-reported findings, and ongoing reassessment to ensure care remains appropriate, safe, and effective.</textarea></div>
       </div>
@@ -447,7 +449,7 @@
 
       <div class="field-group">
         <div class="field-group-title">Hero</div>
-        <div class="field"><label>Headline</label><input type="text" id="svc-h1" value="Two modalities, one practice."></div>
+        <div class="field"><label>Headline</label><textarea class="heading-field" id="svc-h1" rows="1">Two modalities, one practice.</textarea></div>
         <div class="field"><label>Subtext</label><textarea id="svc-hero-p" rows="2">Registered massage therapy and acupuncture, under the same roof and the same standard of attention.</textarea></div>
       </div>
 
@@ -493,7 +495,7 @@
 
       <div class="field-group">
         <div class="field-group-title">About this service</div>
-        <div class="field"><label>Headline</label><input type="text" id="massage-about-h2" value="Care for the body in full."></div>
+        <div class="field"><label>Headline</label><textarea class="heading-field" id="massage-about-h2" rows="1">Care for the body in full.</textarea></div>
         <div class="field"><label>Paragraph 1</label><textarea id="massage-about-p1" rows="3">Registered Massage Therapy (RMT) addresses the body's soft tissues and joints — reducing pain, improving function, and supporting long-term recovery.</textarea></div>
         <div class="field"><label>Paragraph 2</label><textarea id="massage-about-p2" rows="3">Our RMTs use orthopedic assessment, manual therapy, and targeted treatment techniques. Whether you're managing a chronic condition, recovering from injury, or simply seeking relief from daily tension — your treatment is built around your specific needs.</textarea></div>
       </div>
@@ -529,7 +531,7 @@
 
       <div class="field-group">
         <div class="field-group-title">About this service</div>
-        <div class="field"><label>Headline</label><input type="text" id="acu-about-h2" value="Ancient practice, modern evidence."></div>
+        <div class="field"><label>Headline</label><textarea class="heading-field" id="acu-about-h2" rows="1">Ancient practice, modern evidence.</textarea></div>
         <div class="field"><label>Paragraph 1</label><textarea id="acu-about-p1" rows="3">Acupuncture is a safe, evidence-supported therapy that stimulates the body's natural healing response — integrating Traditional Chinese Medicine principles with modern clinical practice.</textarea></div>
         <div class="field"><label>Paragraph 2</label><textarea id="acu-about-p2" rows="3">By targeting specific points along the body's meridian pathways, acupuncture helps regulate the nervous system, reduce inflammation, and support the body's own capacity to heal. It's effective for a wide range of conditions, from chronic pain and stress to hormonal balance and sleep.</textarea></div>
       </div>
@@ -560,7 +562,7 @@
 
       <div class="field-group">
         <div class="field-group-title">Hero</div>
-        <div class="field"><label>Headline</label><input type="text" id="tp-h1" value="The people who will care for you."></div>
+        <div class="field"><label>Headline</label><textarea class="heading-field" id="tp-h1" rows="1">The people who will care for you.</textarea></div>
         <div class="field"><label>Subtext</label><textarea id="tp-hero-p" rows="3">Each member of the practice has been chosen for craft, for attention, and for the way they hold a room. Book directly with the practitioner whose work speaks to you.</textarea></div>
       </div>
 
@@ -908,6 +910,7 @@
       <span>Live on isorropia.ca</span>
     </div>
     <div class="po-bar-wrap" id="po-bar-wrap" style="display:none"><div class="po-bar-fill" id="po-bar-fill"></div></div>
+    <div id="po-timer" style="display:none"></div>
     <div id="po-error-msg" class="po-error-msg" style="display:none"></div>
     <button class="po-close-btn" id="po-close-btn" onclick="closePublishOverlay()" style="display:none">Done</button>
   </div>
@@ -1182,7 +1185,13 @@ function setField(id, value) {
   if (el && value !== null && value !== undefined) {
     el.value = decodeHtml(value.trim());
     el.dataset.original = el.value;
+    if (el.classList.contains('heading-field')) _autoResizeHeading(el);
   }
+}
+
+function _autoResizeHeading(el) {
+  el.style.height = 'auto';
+  el.style.height = el.scrollHeight + 'px';
 }
 
 function valOriginal(id) {
@@ -1252,7 +1261,7 @@ async function hydrateHome() {
 
   // h1 — find it between the h1 tag and </h1>
   const h1raw = extractBetween(html, '<h1 class="rv" data-delay="1"', '</h1>');
-  if (h1raw) setField('home-h1', h1raw.replace(/^[^>]*>/, '').replace(/<[^>]+>/g, '').trim());
+  if (h1raw) setField('home-h1', h1raw.replace(/^[^>]*>/, '').replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '').trim());
 
   // Eyebrow
   const eyebrow = extractBetween(html, '<span class="label">Isorropia', '</span>');
@@ -1278,7 +1287,7 @@ async function hydrateHome() {
   const closing = extractBetween(html, '<section class="closing">', '</section>');
   if (closing) {
     const closingH2 = extractBetween(closing, '<h2 class="rv" data-delay="1">', '</h2>');
-    if (closingH2) setField('home-closing', closingH2.replace(/<br>/g, ' ').trim());
+    if (closingH2) setField('home-closing', closingH2.replace(/<br\s*\/?>/gi, '\n').trim());
   }
 }
 
@@ -1287,7 +1296,7 @@ async function hydrateAbout() {
 
   // Hero h1
   const h1 = extractBetween(html, '<h1 class="rv" data-delay="1">', '</h1>');
-  if (h1) setField('about-h1', h1.replace(/<br>/g, ' ').trim());
+  if (h1) setField('about-h1', h1.replace(/<br\s*\/?>/gi, '\n').trim());
 
   // Hero subtext
   const heroPRaw = extractParagraph(html, 'A regulated wellness practice committed');
@@ -1296,7 +1305,7 @@ async function hydrateAbout() {
   // Philosophy h2
   const philH2 = extractBetween(html, '<span class="eyebrow rv">— Our philosophy</span>', '</h2>');
   if (philH2) {
-    const h2clean = philH2.replace(/.*<h2[^>]*>/s, '').replace(/<br>/g, ' ').trim();
+    const h2clean = philH2.replace(/.*<h2[^>]*>/s, '').replace(/<br\s*\/?>/gi, '\n').trim();
     setField('about-phil-h2', h2clean);
   }
 
@@ -1350,7 +1359,7 @@ async function hydrateServices() {
   const { content: html } = await getFile('services.html');
 
   const h1 = extractBetween(html, '<h1 class="rv" data-delay="1">', '</h1>');
-  if (h1) setField('svc-h1', h1.replace(/<br>/g, ' ').trim());
+  if (h1) setField('svc-h1', h1.replace(/<br\s*\/?>/gi, '\n').trim());
 
   const heroP = extractParagraph(html, 'Registered massage therapy and acupuncture, under the');
   if (heroP) setField('svc-hero-p', heroP);
@@ -1378,7 +1387,7 @@ async function hydrateMassage() {
   if (heroP) setField('massage-hero-p', heroP);
 
   const aboutH2 = extractBetween(html, '<span class="eyebrow rv">— About this service</span>', '</h2>');
-  if (aboutH2) setField('massage-about-h2', aboutH2.replace(/.*<h2[^>]*>/s, '').replace(/<br>/g, ' ').trim());
+  if (aboutH2) setField('massage-about-h2', aboutH2.replace(/.*<h2[^>]*>/s, '').replace(/<br\s*\/?>/gi, '\n').trim());
 
   const p1 = extractParagraph(html, 'Registered Massage Therapy (RMT) addresses');
   if (p1) setField('massage-about-p1', p1);
@@ -1413,7 +1422,7 @@ async function hydrateAcupuncture() {
   if (heroP) setField('acu-hero-p', heroP);
 
   const aboutH2 = extractBetween(html, '<span class="eyebrow rv">— About this service</span>', '</h2>');
-  if (aboutH2) setField('acu-about-h2', aboutH2.replace(/.*<h2[^>]*>/s, '').replace(/<br>/g, ' ').trim());
+  if (aboutH2) setField('acu-about-h2', aboutH2.replace(/.*<h2[^>]*>/s, '').replace(/<br\s*\/?>/gi, '\n').trim());
 
   const p1 = extractParagraph(html, 'Acupuncture is a safe, evidence-supported therapy');
   if (p1) setField('acu-about-p1', p1);
@@ -1443,7 +1452,7 @@ async function hydratePractitionersPage() {
 
   // Hero h1
   const h1 = extractBetween(html, '<h1 class="rv" data-delay="1">', '</h1>');
-  if (h1) setField('tp-h1', h1.replace(/<br>/g, ' ').replace(/<[^>]+>/g, '').trim());
+  if (h1) setField('tp-h1', h1.replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '').trim());
 
   // Hero subtext
   const heroP = extractParagraph(html, 'Each member of the practice has been chosen for craft');
@@ -1953,7 +1962,10 @@ async function publishHome() {
   const { content, sha, path } = await getFile('index.html');
   let html = content;
 
-  html = replaceText(html, valOriginal('home-h1') || 'The art of returning to yourself.', val('home-h1'));
+  // home-h1: structural replacement, converts \n → <br>
+  { const t = val('home-h1').replace(/\n/g, '<br>\n          ');
+    html = replaceBetween(html, '<h1 class="rv" data-delay="1" style="white-space: nowrap; font-size: clamp(1.8rem, 4.5vw, var(--fs-3xl));">',
+      '</h1>', '\n          ' + t + '\n        '); }
   html = replaceText(html, valOriginal('home-eyebrow') || 'Isorropia Wellness Clinic \u2014 Established 2026', val('home-eyebrow'));
   html = replaceText(html, valOriginal('home-services-h2') || 'Care that grows with the practice.', val('home-services-h2'));
   html = replaceText(html, valOriginal('home-services-label') || 'Two modalities, one practice', val('home-services-label'));
@@ -1972,7 +1984,11 @@ async function publishHome() {
   html = replaceParagraphAfter(html, (valOriginal('home-team-p') || 'Each member of the practice has been chosen for craft').slice(0, 40), val('home-team-p'));
 
   // Closing
-  html = replaceText(html, valOriginal('home-closing') || 'Your recovery<br>starts here.', val('home-closing'));
+  // home-closing: structural replacement, anchored to closing section
+  { const t = val('home-closing').replace(/\n/g, '<br>\n          ');
+    const closingIdx = html.indexOf('<section class="closing">');
+    html = replaceBetween(html, '<h2 class="rv" data-delay="1">', '</h2>',
+      '\n          ' + t + '\n        ', closingIdx); }
 
   await putFile(path, html, sha, 'CMS: update homepage');
 }
@@ -1984,11 +2000,18 @@ async function publishAbout() {
   let html = content;
 
   // Hero
-  html = replaceText(html, valOriginal('about-h1') || 'Evidence-based care,<br>\n          patient first.', val('about-h1'));
+  // about-h1: structural replacement
+  { const t = val('about-h1').replace(/\n/g, '<br>\n          ');
+    html = replaceBetween(html, '<h1 class="rv" data-delay="1">', '</h1>',
+      '\n          ' + t + '\n        '); }
   html = replaceParagraphAfter(html, (valOriginal('about-hero-p') || 'A regulated wellness practice committed').slice(0, 40), val('about-hero-p'));
 
   // Philosophy
-  html = replaceText(html, valOriginal('about-phil-h2') || 'Clinical care,<br>\n              whole person.', val('about-phil-h2'));
+  // about-phil-h2: structural replacement, anchored to philosophy eyebrow
+  { const t = val('about-phil-h2').replace(/\n/g, '<br>\n              ');
+    const philIdx = html.indexOf('\u2014 Our philosophy</span>');
+    html = replaceBetween(html, '<h2 class="rv" data-delay="1" style="margin-top: 1.5rem;">', '</h2>',
+      '\n              ' + t + '\n            ', philIdx); }
   html = replaceParagraphAfterNth(html, (valOriginal('about-phil-p1') || 'Our philosophy is grounded').slice(0, 40), val('about-phil-p1'), 0);
   html = replaceParagraphAfterNth(html, (valOriginal('about-phil-p2') || 'Our work is guided').slice(0, 40), val('about-phil-p2'), 0);
 
@@ -2027,7 +2050,10 @@ async function publishServices() {
   const { content, sha, path } = await getFile('services.html');
   let html = content;
 
-  html = replaceText(html, valOriginal('svc-h1') || 'Two modalities,<br>\n          one practice.', val('svc-h1'));
+  // svc-h1: structural replacement
+  { const t = val('svc-h1').replace(/\n/g, '<br>\n          ');
+    html = replaceBetween(html, '<h1 class="rv" data-delay="1">', '</h1>',
+      '\n          ' + t + '\n        '); }
   html = replaceParagraphAfterNth(html, (valOriginal('svc-hero-p') || 'Registered massage therapy and acupuncture, under the').slice(0, 40), val('svc-hero-p'), 0);
   html = replaceParagraphAfterNth(html, (valOriginal('svc-massage-p') || 'Restore movement. Reduce pain. Improve function. Our RMTs').slice(0, 40), val('svc-massage-p'), 0);
   html = replaceBetween(html, '<p class="pause-line rv">', '</p>', '\n        ' + val('svc-pause') + '\n      ');
@@ -2044,7 +2070,11 @@ async function publishMassage() {
   let html = content;
 
   html = replaceParagraphAfterNth(html, (valOriginal('massage-hero-p') || 'Restore movement. Reduce pain. Improve function.\n          Tailored').slice(0, 40), val('massage-hero-p'), 0);
-  html = replaceText(html, valOriginal('massage-about-h2') || 'Care for the body<br>\n              in full.', val('massage-about-h2'));
+  // massage-about-h2: structural replacement, anchored to about-service eyebrow
+  { const t = val('massage-about-h2').replace(/\n/g, '<br>\n              ');
+    const aboutIdx = html.indexOf('\u2014 About this service</span>');
+    html = replaceBetween(html, '<h2 class="rv" data-delay="1">', '</h2>',
+      '\n              ' + t + '\n            ', aboutIdx); }
   html = replaceParagraphAfterNth(html, (valOriginal('massage-about-p1') || 'Registered Massage Therapy (RMT) addresses the body').slice(0, 40), val('massage-about-p1'), 0);
   html = replaceParagraphAfterNth(html, (valOriginal('massage-about-p2') || 'Our RMTs use orthopedic assessment, manual therapy, and targeted treatment techniques. Whether').slice(0, 40), val('massage-about-p2'), 0);
 
@@ -2069,7 +2099,11 @@ async function publishAcupuncture() {
   let html = content;
 
   html = replaceParagraphAfterNth(html, (valOriginal('acu-hero-p') || 'Balance the body. Support healing. Reduce stress.\n          Now available').slice(0, 40), val('acu-hero-p'), 0);
-  html = replaceText(html, valOriginal('acu-about-h2') || 'Ancient practice,<br>\n              modern evidence.', val('acu-about-h2'));
+  // acu-about-h2: structural replacement, anchored to about-service eyebrow
+  { const t = val('acu-about-h2').replace(/\n/g, '<br>\n              ');
+    const aboutIdx = html.indexOf('\u2014 About this service</span>');
+    html = replaceBetween(html, '<h2 class="rv" data-delay="1">', '</h2>',
+      '\n              ' + t + '\n            ', aboutIdx); }
   html = replaceParagraphAfterNth(html, (valOriginal('acu-about-p1') || 'Acupuncture is a safe, evidence-supported therapy that stimulates').slice(0, 40), val('acu-about-p1'), 0);
   html = replaceParagraphAfterNth(html, (valOriginal('acu-about-p2') || 'By targeting specific points along').slice(0, 40), val('acu-about-p2'), 0);
 
@@ -2092,7 +2126,10 @@ async function publishPractitionersPage() {
   const { content, sha, path } = await getFile('team.html');
   let html = content;
 
-  html = replaceText(html, valOriginal('tp-h1') || 'The people who<br>\n          will care for you.', val('tp-h1'));
+  // tp-h1: structural replacement
+  { const t = val('tp-h1').replace(/\n/g, '<br>\n          ');
+    html = replaceBetween(html, '<h1 class="rv" data-delay="1">', '</h1>',
+      '\n          ' + t + '\n        '); }
   html = replaceParagraphAfter(html, (valOriginal('tp-hero-p') || 'Each member of the practice has been chosen for craft').slice(0, 40), val('tp-hero-p'));
   html = replaceText(html, valOriginal('tp-intro-h2') || 'Chosen for craft.', val('tp-intro-h2'));
   html = replaceParagraphAfter(html, (valOriginal('tp-intro-p1') || 'Every practitioner here has been brought into the practice').slice(0, 40), val('tp-intro-p1'));
@@ -2661,8 +2698,8 @@ function replaceText(html, oldStr, newStr) {
   return html.split(oldStr).join(newStr);
 }
 
-function replaceBetween(html, startMarker, endMarker, replacement) {
-  const s = html.indexOf(startMarker);
+function replaceBetween(html, startMarker, endMarker, replacement, startFrom) {
+  const s = html.indexOf(startMarker, startFrom || 0);
   if (s === -1) return html;
   const contentStart = s + startMarker.length;
   const e = html.indexOf(endMarker, contentStart);
@@ -2718,18 +2755,29 @@ const DEPLOY_DURATION = 45000; // ms — estimated Cloudflare Pages build time
 
 function openPublishOverlay() {
   clearTimeout(window._deployTimer);
+  clearInterval(window._timerInterval);
   _stageSet('po-stage-commit', 'active');
   _stageSet('po-stage-deploy', 'pending');
   _stageSet('po-stage-live',   'pending');
   document.getElementById('po-bar-wrap').style.display = 'none';
   document.getElementById('po-error-msg').style.display = 'none';
   document.getElementById('po-close-btn').style.display = 'none';
+  const timerEl = document.getElementById('po-timer');
+  timerEl.style.display = 'block';
+  timerEl.textContent = '0:00';
+  let secs = 0;
+  window._timerInterval = setInterval(() => {
+    secs++;
+    const m = Math.floor(secs / 60), s = secs % 60;
+    timerEl.textContent = m + ':' + String(s).padStart(2, '0');
+  }, 1000);
   document.getElementById('publish-overlay').classList.add('active');
 }
 
 function closePublishOverlay() {
   document.getElementById('publish-overlay').classList.remove('active');
   clearTimeout(window._deployTimer);
+  clearInterval(window._timerInterval);
 }
 
 function _stageSet(id, state) {
@@ -2764,6 +2812,7 @@ function overlayCommitted() {
 
 function overlayLive() {
   clearTimeout(window._deployTimer);
+  clearInterval(window._timerInterval);
   const fill = document.getElementById('po-bar-fill');
   fill.style.transition = 'width 0.5s ease';
   fill.style.width = '100%';
@@ -2776,6 +2825,7 @@ function overlayLive() {
 
 function overlayError(msg) {
   clearTimeout(window._deployTimer);
+  clearInterval(window._timerInterval);
   _stageSet('po-stage-commit', 'active');
   const errEl = document.getElementById('po-error-msg');
   errEl.textContent = msg;
@@ -2815,6 +2865,14 @@ function startPublishPoll(section) {
   // First check after 5s, then every 3s
   window._deployTimer = setTimeout(poll, 5000);
 }
+
+// ── Heading-field auto-resize ──────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.heading-field').forEach(el => {
+    _autoResizeHeading(el);
+    el.addEventListener('input', () => _autoResizeHeading(el));
+  });
+});
 </script>
 </body>
 </html>
