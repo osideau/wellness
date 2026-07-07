@@ -963,9 +963,12 @@ body.menu-open .site-header .brand img {
   font-size: var(--fs-sm);
   color: var(--olive-soft);
   line-height: 1.6;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1rem;
   font-weight: 300;
-  flex-grow: 1;
+}
+.practitioner > .link {
+  margin-top: auto;
+  padding-top: 1.25rem;
 }
 
 /* ---------- Forms ---------- */
