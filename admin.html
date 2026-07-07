@@ -575,7 +575,7 @@
         <div class="field-group-title">Intro section</div>
         <div class="field"><label>Headline</label><input type="text" id="tp-intro-h2" value="Chosen for craft."></div>
         <div class="field"><label>Paragraph 1</label><textarea id="tp-intro-p1" rows="3">Every practitioner here has been brought into the practice for a specific reason. Not to fill a slot. Not to grow a roster. For the way they work, and the way they hold a room.</textarea></div>
-        <div class="field"><label>Paragraph 2</label><textarea id="tp-intro-p2" rows="3">You will find specialists in chronic pain, prenatal care, deep tissue, injury recovery, headache and TMJ, and relaxation. Book directly with the practitioner whose work speaks to you. We will help if you are not sure.</textarea></div>
+        <div class="field"><label>Paragraph 2</label><textarea id="tp-intro-p2" rows="3">You will find practitioners in chronic pain, prenatal care, deep tissue, injury recovery, headache and TMJ, and relaxation. Book directly with the practitioner whose work speaks to you. We will help if you are not sure.</textarea></div>
       </div>
 
       <div class="field-group">
@@ -993,7 +993,7 @@ const DEFAULT_MASSAGE_STEPS = [
 
 const DEFAULT_ACU_STEPS = [
   { title: 'Health history',  body: 'Your first acupuncture session begins with a detailed health history. Your practitioner will ask about your current concerns, lifestyle, sleep, digestion, and more — building a full picture of your constitution.' },
-  { title: 'Diagnosis',       body: 'Using pulse and tongue diagnosis alongside your history, your practitioner will identify patterns and imbalances to guide the treatment plan.' },
+  { title: 'assessment',       body: 'Using pulse and tongue assessment alongside your history, your practitioner will identify patterns and imbalances to guide the treatment plan.' },
   { title: 'Treatment',       body: 'Fine, sterile needles are placed at specific points. Most patients find it deeply relaxing. You\'ll rest comfortably for 20–30 minutes while the treatment takes effect.' },
   { title: 'After care',      body: 'Your practitioner will recommend a treatment schedule and any lifestyle or dietary adjustments to support the work between sessions.' },
 ];
@@ -1524,7 +1524,7 @@ async function hydratePractitionersPage() {
   // Intro paragraphs
   const p1 = extractParagraph(html, 'Every practitioner here has been brought into the practice');
   if (p1) setField('tp-intro-p1', p1);
-  const p2 = extractParagraph(html, 'You will find specialists in chronic pain');
+  const p2 = extractParagraph(html, 'You will find practitioners in chronic pain');
   if (p2) setField('tp-intro-p2', p2);
 
   // Pause line
@@ -2246,7 +2246,7 @@ async function publishPractitionersPage() {
   html = replaceParagraphAfter(html, (valOriginal('tp-hero-p') || 'Each member of the practice has been chosen for craft').slice(0, 40), val('tp-hero-p'));
   html = replaceText(html, valOriginal('tp-intro-h2') || 'Chosen for craft.', val('tp-intro-h2'));
   html = replaceParagraphAfter(html, (valOriginal('tp-intro-p1') || 'Every practitioner here has been brought into the practice').slice(0, 40), val('tp-intro-p1'));
-  html = replaceParagraphAfter(html, (valOriginal('tp-intro-p2') || 'You will find specialists in chronic pain').slice(0, 40), val('tp-intro-p2'));
+  html = replaceParagraphAfter(html, (valOriginal('tp-intro-p2') || 'You will find practitioners in chronic pain').slice(0, 40), val('tp-intro-p2'));
   html = replaceBetween(html, '<p class="pause-line rv">', '</p>',
     '\n        ' + val('tp-pause').replace(/ between /g, '<br>\n        between ') + '\n      ');
   html = replaceText(html, valOriginal('tp-grid-label') || 'Eight therapists, one acupuncturist.', val('tp-grid-label'));
